@@ -1,0 +1,71 @@
+package com.KMA.BookingCare.Controller.admin;import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.KMA.BookingCare.Dto.InteractiveDto;
+import com.KMA.BookingCare.Dto.MessageDto;
+import com.KMA.BookingCare.Dto.MyUser;
+import com.KMA.BookingCare.Dto.User;
+import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.Service.InteractiveService;
+import com.KMA.BookingCare.Service.MessageService;
+import com.KMA.BookingCare.Service.UserService;
+
+
+
+@Controller
+public class ChatController {
+	
+	@Autowired
+	private InteractiveService interactiveServiceImpl;
+	
+	@Autowired
+	private MessageService messageServiceImpl;
+	
+	@Autowired
+	private UserService userServiceImpl;
+	
+	@GetMapping(value = {"/admin/managerChat","/doctor/managerChat"})
+	public  String chatPage(Model model) {
+		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
+		model.addAttribute("lstInteractive", lstInteractive);
+		return "/admin/views/managerChat2";
+	}
+	  @RequestMapping(path = "/selectUser", method = RequestMethod.POST)
+	    public ResponseEntity<?> searchMessageUser(Model model, @RequestBody Long id) {
+	    	List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
+	    	User userDto= userServiceImpl.findOneById(id);
+	    	Object[] mang = new Object[2];
+	    	mang[0]=userDto;
+	    	mang[1]=lstMessageDto;
+	    	System.out.println("oke");
+	        return new ResponseEntity<Object>(mang, HttpStatus.OK);
+	    }
+	  
+	  @RequestMapping(path = "/mesageUser", method = RequestMethod.POST)
+	    public ResponseEntity<?> mesageUser(Model model, @RequestBody Long id) {
+			MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//	    	List<MessageDto> lstMessageDto= messageServiceImpl.findBySenderOrReceiver(userDetails.getId(),userDetails.getId());
+			List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
+	    	Object[] mang = new Object[2];
+	    	mang[0]=userDetails;
+	    	mang[1]=lstMessageDto;
+	    	System.out.println("oke");
+	        return new ResponseEntity<Object>(mang, HttpStatus.OK);
+	    }
+	  @RequestMapping(path = "/showLstUser", method = RequestMethod.POST)
+	    public ResponseEntity<?> showLstUser(Model model, @RequestBody Long id) {
+//	    	List<UserEntity> lstEntity= userServiceImpl.findLstUser();
+	    	User dto = userServiceImpl.findOneById(id);
+	        return new ResponseEntity<User>(dto, HttpStatus.OK);
+	    }
+}
