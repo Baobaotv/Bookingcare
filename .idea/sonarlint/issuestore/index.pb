@@ -25,8 +25,6 @@ p
 @src/main/java/com/KMA/BookingCare/Repository/RoleRepository.java,8\d\8d355ba8e7621ba101a0dadc57538260da7418c4
 r
 Bsrc/main/java/com/KMA/BookingCare/ServiceImpl/UserDetailsImpl.java,c\3\c3f1edb2fc240b7e582eba78dd70edd8b7b43d0e
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 c
 3src/main/java/com/KMA/BookingCare/Dto/LoginDto.java,0\d\0d425e159925670bd7ddb850eb0e9d289043fc07
 k
