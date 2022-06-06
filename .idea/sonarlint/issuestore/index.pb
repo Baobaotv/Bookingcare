@@ -53,10 +53,6 @@ f
 6src/main/java/com/KMA/BookingCare/Dto/HandbookDto.java,3\e\3ec9e407b37e60b5911f95b3220cfdd32b7ea96c
 h
 8src/main/java/com/KMA/BookingCare/Entity/RoleEntity.java,c\9\c9e1d1dfa898b064ff51331f6f4d99d133ff88da
-i
-9src/main/java/com/KMA/BookingCare/config/SpingConfig.java,5\b\5b9495bb71f4cd196c29739a9abfcfd7cdefd21f
-o
-?src/main/java/com/KMA/BookingCare/config/WebSecurityConfig.java,c\0\c02f353e63e7b6174bcce1f868dd4aa8e0f90ccf
 o
 ?src/main/java/com/KMA/BookingCare/config/AuthEntryPointJwt.java,a\8\a861091b8154c7daa06dc315ff633a91243cd107
 m
@@ -83,8 +79,6 @@ i
 9src/main/java/com/KMA/BookingCare/Dto/SpecializedDto.java,6\b\6b39a7fe70730168383150a8c494e56cc131d70e
 w
 Gsrc/main/java/com/KMA/BookingCare/Repository/SpecializedRepository.java,6\6\661c51e7bf6006607a78581bdf661093a2296471
-i
-9src/main/java/com/KMA/BookingCare/Api/AuthController.java,5\c\5c27d2255ec5d796df6f784e60a3187ff6b453d5
 t
 Dsrc/main/java/com/KMA/BookingCare/Repository/HandbookRepository.java,3\d\3d9ff1c441dfa29d549b3411d1e0c6111c9aa679
 y

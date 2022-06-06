@@ -48,9 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/signin").permitAll()
-                .antMatchers("/signup").permitAll()
-                .antMatchers("/api/test/**").permitAll()
+                .antMatchers("/booking-care-app.herokuapp.com/signin").permitAll()
+                .antMatchers("/booking-care-app.herokuapp.com/signup").permitAll()
+                .antMatchers("/booking-care-app.herokuapp.com/api/test/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
