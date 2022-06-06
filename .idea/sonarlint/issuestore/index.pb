@@ -83,8 +83,6 @@ t
 Dsrc/main/java/com/KMA/BookingCare/Repository/HandbookRepository.java,3\d\3d9ff1c441dfa29d549b3411d1e0c6111c9aa679
 y
 Isrc/main/java/com/KMA/BookingCare/ServiceImpl/UserDetailsServiceImpl.java,e\2\e20d9e593538b576352625e62a27938d9a3b932c
-f
-6src/main/java/com/KMA/BookingCare/Api/HandbookApi.java,e\8\e8c133f5672a7df5379f585d766de191e5a346f2
 h
 8src/main/java/com/KMA/BookingCare/Mapper/UserMapper.java,1\b\1b9c875e081b9cf0a7fb7a52167c3de22bf6ab96
 k
@@ -97,8 +95,6 @@ Vsrc/main/java/com/KMA/BookingCare/Repository/MedicalExaminationScheduleReposito
 Nsrc/main/java/com/KMA/BookingCare/Entity/MedicalExaminationScheduleEntity.java,4\e\4e6f1f593e40cf44149993a2b00aadd6e0da35d1
 e
 5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
-e
-5src/main/java/com/KMA/BookingCare/Api/BookingApi.java,1\0\10ea46e556c089cdb36774d89c0c9c2ada47ac97
 _
 /src/main/java/com/KMA/BookingCare/Dto/User.java,4\5\4542f457026ff575d7d9d0f8de2e27623ed0f00f
 f
