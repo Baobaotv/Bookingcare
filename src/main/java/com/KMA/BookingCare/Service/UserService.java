@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Service;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
@@ -27,16 +28,20 @@ public interface UserService {
 	public List<User> findAllBySpecializedIdAndStatus(Long id, Integer status);
 	List<User> findAllBySpecialized( String date, Long specialized, Integer status);
 	List<User> findAllByMedical( String date, Long specialized, Integer status);
-	List<User> findAllDoctorOfSpecialized(String date, Long specialized, Integer status);
-	List<User> findAllDoctorOfHospital(String date, Long hospitalId, Integer status);
+	List<User> findAllDoctorOfSpecialized( Long specialized, Integer status);
+	Page<User> findAllDoctorOfSpecializedApi(Long specialized, Integer status, Pageable pageable);
+	List<User> findAllDoctorOfHospital( Long hospitalId, Integer status);
+	Page<User> findAllDoctorOfHospitalApi( Long hospitalId, Integer status, Pageable pageable);
 	void updateClient(UpdateCientForm form);
 	List<User> findAllDoctor();
 	List<User> searchDoctor( searchDoctorForm form);
 	List<User> searchDoctorAndPageable( searchDoctorForm form, Pageable page);
+
+	Page<User> findAllDoctor(Pageable pageable);
 	
 	
 	//tìm bác sĩ và lịch khám trống của nó
-	User findOneDoctorAndWorktime(Long id,String date);
+	User findOneDoctorAndWorktime(Long id);
 	
 	String findPeerIdById(Long id);
 	Integer updatePeerId(String peerId, Long id);

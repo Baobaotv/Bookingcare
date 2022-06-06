@@ -1,0 +1,26 @@
+
+A
+java:S1452,"&Remove usage of generic wildcard type.(å²õòùÿÿÿÿ
+e
+java:S4488+"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(¿¤¬œÿÿÿÿÿ
+S	java:S1062"9Replace this use of System.out or System.err by a logger.(½€ü’şÿÿÿÿ
+<
+java:S14527"&Remove usage of generic wildcard type.(ªÀÕ
+`
+java:S44886"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(šöÃè
+Q	java:S1259"<This block of commented-out lines of code should be removed.(éÄÛí
+S	java:S106>"9Replace this use of System.out or System.err by a logger.(½€ü’şÿÿÿÿ
+<
+java:S1452B"&Remove usage of generic wildcard type.(š–‡„
+e
+java:S4488A"JReplace "@RequestMapping(method = RequestMethod.POST)" with "@PostMapping"(Ş¯ìÓúÿÿÿÿ
+Q	java:S125C"<This block of commented-out lines of code should be removed.(õƒœ°
+X
+java:S1128"BRemove this unused import 'com.KMA.BookingCare.Entity.UserEntity'.(¬Úü
+t
+java:S22933"YReplace the type specification in this constructor call with the diamond operator ("<>").(ú¡œ¶ûÿÿÿÿ
+t
+java:S2293?"YReplace the type specification in this constructor call with the diamond operator ("<>").(ú¡œ¶ûÿÿÿÿ
+t
+java:S2293E"YReplace the type specification in this constructor call with the diamond operator ("<>").(ä‡Áòøÿÿÿÿ
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(òø

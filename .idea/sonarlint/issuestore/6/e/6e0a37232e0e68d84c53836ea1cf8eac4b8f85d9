@@ -1,0 +1,18 @@
+
+A
+java:S1452%"&Remove usage of generic wildcard type.(¯«óùÿÿÿÿ
+;
+java:S3457&"%String contains no format specifiers.(ù«âĞ
+N	java:S106("9Replace this use of System.out or System.err by a logger.(ï¹Õš
+@
+java:S3457/"%String contains no format specifiers.(€ÊÌûÿÿÿÿ
+y
+java:S1128
+"\Remove this unused import 'org.springframework.messaging.handler.annotation.MessageMapping'.(Šî8…ÚœÀŒ0
+r
+java:S1128"URemove this unused import 'org.springframework.messaging.handler.annotation.Payload'.(®èÍ8…ÚœÀŒ0
+v
+java:S1128"YRemove this unused import 'org.springframework.messaging.simp.SimpMessageHeaderAccessor'.(Ü€¥ß8…ÚœÀŒ0
+{
+java:S14880"eImmediately return this expression instead of assigning it to the temporary variable "lstMessageDto".(éØÁ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

@@ -50,6 +50,15 @@ public class SpecializedDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
+	public SpecializedDto(Long id, String name, String code, String description, String img) {
+		this.id = id;
+		this.name = name;
+		this.code = code;
+		this.description = description;
+		this.img = img;
+	}
+
+	public SpecializedDto() {
+	}
 }

@@ -8,6 +8,6 @@ import com.KMA.BookingCare.Entity.RoleEntity;
 
 public interface RoleRepository extends JpaRepository<RoleEntity, Long>{
 	
-	public List<RoleEntity> findByName(String name);
+	List<RoleEntity> findByName(String name);
 
 }

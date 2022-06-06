@@ -26,7 +26,6 @@ public class MedicalExaminationSheduleEntityController {
 //		List<Medical> lstHandbook= new ArrayList<HandbookDto>();
 		List<MedicalExaminationScheduleDto> lstMedical= new ArrayList<MedicalExaminationScheduleDto>();
 		if(user.getRoles().contains("ROLE_DOCTOR")) {
-//			 lstHandbook= handbookSeviceImpl.findAllByStatusAndUserId(1, user.getId());
 			lstMedical= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
 		}else {
 			lstMedical= medicalServiceImpl.findAllByStatus(1);

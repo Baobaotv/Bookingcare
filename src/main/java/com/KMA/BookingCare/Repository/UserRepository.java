@@ -3,6 +3,8 @@ package com.KMA.BookingCare.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import com.KMA.BookingCare.Dto.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,9 +16,9 @@ import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-	public UserEntity findByUsername(String username);
+	 UserEntity findByUsername(String username);
 	
-	public Optional<UserEntity> findById(Long id);
+	 Optional<UserEntity> findById(Long id);
 	
 	List<UserEntity> findAllByStatus(Integer status,Pageable pageable);
 	
@@ -28,6 +30,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	Integer updateStatus(@Param("ids") List<String> ids);
 	
 	List<UserEntity> findAllBySpecializedIdAndStatus(Long id, Integer status );
+
+	@Query(value = "SELECT u FROM UserEntity u where u.specialized.id= :specialized and u.status =:status ")
+	Page<User> findAllBySpecializedApi(@Param("specialized") Long specialized, @Param("status") Integer status, Pageable pageable);
 	
 	//Lấy danh sách tất cả những bác sĩ không có lịch khám trong ngày theo chuyên khoa đã chọn
 	@Query(value = "SELECT * FROM bookingcare.user u where u.id not in (SELECT  doctor_id FROM bookingcare.medical_examination_schedule where date= :date and status =:statusMedical) and specialized_id= :specialized and status =:status ;", nativeQuery = true)
@@ -68,5 +73,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 				" AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)" + 
 				" AND  ( (:hospitalId IS NOT NULL AND hospital_id =:hospitalId) || :hospitalId IS NULL)",nativeQuery = true)
 		List<UserEntity> searchHandbookAndPageable(@Param("fullName") String fullName,@Param("specializedId") Long specializedId,@Param("hospitalId") Long hospitalId,Pageable page);
+
+
+	Boolean existsByUsername(String username);
+
+	@Query(value = "SELECT u FROM UserEntity u where u.hospital.id= :hospitalId and u.status =:status ")
+	Page<User> findAllDoctorByHospitalAndStatus(@Param("hospitalId") Long hospitalId,
+												@Param("status")Integer status, Pageable pageable);
+
+	@Query(value = "SELECT u FROM UserEntity  u inner join u.roles ur WHERE ur.id=2")
+	Page<User>  findAllDoctor(Pageable pageable);
+
 
 }

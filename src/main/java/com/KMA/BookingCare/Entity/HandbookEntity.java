@@ -1,5 +1,8 @@
 package com.KMA.BookingCare.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -104,9 +107,11 @@ public class HandbookEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "specializedId")
+	@JsonIgnoreProperties(value = {"lstuser", "lstHandbook"}, allowSetters = true)
 	private SpecializedEntity specialized;
 	
 	@OneToMany(mappedBy = "handbook")
+	@JsonIgnoreProperties(value = {"handbook", "user"}, allowSetters = true)
 	private List<CommentEntity> comment =new ArrayList<CommentEntity>();
 
 	

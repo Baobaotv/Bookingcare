@@ -1,5 +1,11 @@
 package com.KMA.BookingCare.Dto;
 
+import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.Entity.WorkTimeEntity;
+import com.KMA.BookingCare.Mapper.WorkTimeMapper;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -185,7 +191,38 @@ public class User {
 		this.email = email;
 	}
 
-	
-	
-
+	public User(UserEntity entity) {
+		this.setId(entity.getId());
+		this.setImg(entity.getImg());
+		this.setName(entity.getFullName());
+		this.setDescription(entity.getDescription());
+		this.setShortDescription(entity.getShortDescription());
+		this.setSex(entity.getSex());
+		this.setPhone(entity.getPhoneNumber());
+		this.setLocation(entity.getLocation());
+		if(entity.getHospital()!=null) {
+			this.setHospitalId(entity.getHospital().getId());
+		}
+		this.setEmail(entity.getEmail());
+		this.setUsername(entity.getUsername());
+		this.setYearOfBirth(entity.getYearOfBirth());
+		if(entity.getSpecialized()!=null) {
+			this.setSpecializedId(entity.getSpecialized().getId());
+			this.setSpecializedName(entity.getSpecialized().getName());
+		}
+		if(entity.getHospital()!=null) {
+			this.setHospitalName(entity.getHospital().getName());
+			this.setHospitalLocation(entity.getHospital().getLocation());
+		}
+		if(entity.getWorkTimeEntity()!=null) {
+			Set<WorkTimeEntity> wkEntityLst= entity.getWorkTimeEntity();
+			Set<WorkTimeDto> wkDtoLst= new HashSet<WorkTimeDto>();
+			for(WorkTimeEntity wkEntity: wkEntityLst) {
+				WorkTimeDto wkDto = WorkTimeMapper.convertToDto(wkEntity);
+				wkDtoLst.add(wkDto);
+			}
+			List<WorkTimeDto> targetList = new ArrayList<>(wkDtoLst);
+			this.setLstWorkTime( targetList);
+		}
+	}
 }

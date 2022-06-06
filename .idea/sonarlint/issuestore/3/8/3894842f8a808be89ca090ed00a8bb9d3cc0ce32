@@ -1,0 +1,14 @@
+
+A
+java:S1452"&Remove usage of generic wildcard type.(ëæ©Èüÿÿÿÿ
+N	java:S106!"9Replace this use of System.out or System.err by a logger.(¯Ä¢›
+S	java:S106%"9Replace this use of System.out or System.err by a logger.(ÓÔ­¬þÿÿÿÿ
+A
+java:S1452+"&Remove usage of generic wildcard type.(Þ‚¨¯øÿÿÿÿ
+b
+java:S1128"ERemove this unused import 'com.KMA.BookingCare.Entity.CommentEntity'.(Û¢Ôø8†›•ú’0
+a
+java:S1128"DRemove this unused import 'com.KMA.BookingCare.Api.form.formDelete'.(›õ«³8†›•ú’0
+G
+java:S5411-"*Use the primitive boolean expression here.(—°ê¯8†›•ú’0
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

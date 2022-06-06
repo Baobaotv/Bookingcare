@@ -1,0 +1,35 @@
+
+D
+java:S3740?"/Provide the parametrized type for this generic.(öğ¨_
+n	java:S116+"YRename this field "UserRepository" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(…°«±
+Q	java:S1252"<This block of commented-out lines of code should be removed.(¬ã·¡
+S	java:S106D"9Replace this use of System.out or System.err by a logger.(™§èÂşÿÿÿÿ
+M
+java:S1135m"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+Y
+java:S1854‹"=Remove this useless assignment to local variable "lstEntity".(—ºöıÿÿÿÿ
+l
+java:S2159"VRemove this call to "equals"; comparisons between unrelated types always return false.(Ã»®}
+l
+java:S2159“"VRemove this call to "equals"; comparisons between unrelated types always return false.(Ã»®}
+o
+java:S2293W"YReplace the type specification in this constructor call with the diamond operator ("<>").(Î´²µ
+p
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Î´²µ
+u
+java:S2293‹"YReplace the type specification in this constructor call with the diamond operator ("<>").(—ºöıÿÿÿÿ
+p
+java:S2293™"YReplace the type specification in this constructor call with the diamond operator ("<>").(Î´²µ
+p
+java:S2293¤"YReplace the type specification in this constructor call with the diamond operator ("<>").(Î´²µ
+p
+java:S2293³"YReplace the type specification in this constructor call with the diamond operator ("<>").(Î´²µ
+q
+java:S1488a"\Immediately return this expression instead of assigning it to the temporary variable "dtos".(º—
+q
+java:S1488t"[Immediately return this expression instead of assigning it to the temporary variable "dto".(©òúª
+}
+java:S1488z"[Immediately return this expression instead of assigning it to the temporary variable "dto".(áÙÔ¸ıÿÿÿÿ8Ã²æÔ’0
+
+java:S1488½"\Immediately return this expression instead of assigning it to the temporary variable "page".(ÔıÂİúÿÿÿÿ8ÃµùÒ’0
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(æş½˜

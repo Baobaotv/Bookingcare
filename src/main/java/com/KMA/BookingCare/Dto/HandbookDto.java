@@ -144,11 +144,62 @@ public class HandbookDto {
 	}
 
 
+	public HandbookDto(Long id, String title, String description, String content,
+					   String createdBy,
+					   String createdDate,
+					   String modifiedDate,
+					   String modifiedBy,
+					   String specialized,
+					   Long specializedId,
+					   String img,
+					   String createdByName,
+					   Long createdById) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.content = content;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate;
+		this.modifiedDate = modifiedDate;
+		this.modifiedBy = modifiedBy;
+		this.specialized = specialized;
+		this.specializedId = specializedId;
+		this.img = img;
+		this.createdByName = createdByName;
+		this.createdById = createdById;
+	}
 
-	
-	
-	
-	
-	
+	public HandbookDto(Long id, String title, String description, String content,
+					   String createdBy,
+					   Date createdDate,
+					   Date modifiedDate,
+					   String modifiedBy,
+					   String specialized,
+					   Long specializedId,
+					   String img,
+					   String createdByName,
+					   Long createdById) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.content = content;
+		this.createdBy = createdBy;
+		this.createdDate = createdDate.toString();
+		this.modifiedDate = modifiedDate.toString();
+		this.modifiedBy = modifiedBy;
+		this.specialized = specialized;
+		this.specializedId = specializedId;
+		this.img = img;
+		this.createdByName = createdByName;
+		this.createdById = createdById;
+	}
 
+	public HandbookDto() {
+	}
+
+	public HandbookDto(Long id, String title, String img) {
+		this.id = id;
+		this.title = title;
+		this.img = img;
+	}
 }

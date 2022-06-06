@@ -1,0 +1,13 @@
+
+Q	java:S125-"<This block of commented-out lines of code should be removed.(„ÔÎ
+M
+java:S1128"7Remove this unused import 'javax.persistence.OneToOne'.(Ø½ïâ
+o
+java:S2293x"YReplace the type specification in this constructor call with the diamond operator ("<>").(öú¢ð
+t
+java:S2293}"YReplace the type specification in this constructor call with the diamond operator ("<>").(ù·¥ãþÿÿÿÿ
+p
+java:S2293€"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÕÑ•ù
+u
+java:S2293ƒ"YReplace the type specification in this constructor call with the diamond operator ("<>").(ŠÝÝ®þÿÿÿÿ
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬Ü—b

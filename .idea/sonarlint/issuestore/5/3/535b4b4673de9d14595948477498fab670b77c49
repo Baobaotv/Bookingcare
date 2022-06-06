@@ -1,0 +1,43 @@
+
+A
+java:S14526"&Remove usage of generic wildcard type.(Ó‹×ùÿÿÿÿ
+S	java:S1069"9Replace this use of System.out or System.err by a logger.(½€ü’şÿÿÿÿ
+M
+java:S1135;"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
+N	java:S106="9Replace this use of System.out or System.err by a logger.(š¥ì‚
+<
+java:S1452D"&Remove usage of generic wildcard type.(Œß»”
+Q	java:S125F"<This block of commented-out lines of code should be removed.(¢…÷ö
+M
+java:S1135I"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
+N	java:S106K"9Replace this use of System.out or System.err by a logger.(š¥ì‚
+<
+java:S1452Q"&Remove usage of generic wildcard type.(ı„úÙ
+N	java:S106R"9Replace this use of System.out or System.err by a logger.(±È¢—
++
+java:S3457]"Not enough arguments.(õÛŒ°
++
+java:S3457e"Not enough arguments.(ó¾»Ô
+0
+java:S3457l"Not enough arguments.(€ºÔäúÿÿÿÿ
+1
+java:S3457‚"Not enough arguments.(Ùı³äûÿÿÿÿ
+=
+java:S1452‰"&Remove usage of generic wildcard type.(Â÷¿¾
+T
+java:S1128"7Remove this unused import 'java.text.SimpleDateFormat'.(ú¡ÙÛ8œ‚ßü’0
+H
+java:S1128"+Remove this unused import 'java.util.Date'.(¸…¼ü8œ‚ßü’0
+_
+java:S1128	"BRemove this unused import 'com.KMA.BookingCare.Entity.UserEntity'.(¬Úü8œ‚ßü’0
+m
+java:S1128"KRemove this unused import 'org.springframework.security.core.parameters.P'.(Æ­Åıÿÿÿÿ8œ‚ßü’0
+t
+java:S22932"YReplace the type specification in this constructor call with the diamond operator ("<>").(º—Şÿÿÿÿÿ
+{
+java:S1488^"`Immediately return this expression instead of assigning it to the temporary variable "lstBacsi".(ÌĞÃ÷ıÿÿÿÿ
+t
+java:S1488|"_Immediately return this expression instead of assigning it to the temporary variable "lstUser".(·Â7
+{
+java:S1488„"_Immediately return this expression instead of assigning it to the temporary variable "userDto".(ûúÂøÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

@@ -21,4 +21,6 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 	@Modifying
 	@Query(value = "UPDATE medical_examination_schedule  SET status = :status WHERE id in :ids", nativeQuery = true)
 	Integer updateByStatus(@Param("status") Integer status,@Param("ids") List<String> ids);
+
+	Boolean existsByDateAndAndDoctorIdAndWorkTimeID(String date, Long docterId, Long workTimeId);
 }

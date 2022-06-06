@@ -7,7 +7,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.KMA.BookingCare.Dto.SpecializedDto;
+import com.KMA.BookingCare.Mapper.SpecializedMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -96,6 +99,17 @@ public class HospitalServiceImpl implements HospitalService{
 	}
 
 	@Override
+	public List<HospitalDto> findRandomSpecicalized() {
+		List<HospitalEntity> lstEntity = hospitalRepository.findRandomSpecicalized(1);
+		List<HospitalDto> lstDto = new ArrayList<HospitalDto>();
+		for(HospitalEntity entity: lstEntity) {
+			HospitalDto dto = HospitalMapper.convertToDto(entity);
+			lstDto.add(dto);
+		}
+		return lstDto;
+	}
+
+	@Override
 	public List<HospitalDto> findAllByStatus(Integer status, Pageable pageable) {
 		List<HospitalEntity> lstEntity = hospitalRepository.findAllByStatus(1,pageable);
 		List<HospitalDto> lstDto = new ArrayList<HospitalDto>();
@@ -104,6 +118,12 @@ public class HospitalServiceImpl implements HospitalService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public Page<HospitalDto> findAllByStatusApi(Integer status, Pageable pageable) {
+		Page<HospitalDto> page = hospitalRepository.findAllByStatusApi(1,pageable);
+		return page;
 	}
 
 }

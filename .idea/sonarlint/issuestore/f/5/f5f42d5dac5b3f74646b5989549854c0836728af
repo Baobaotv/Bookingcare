@@ -1,0 +1,90 @@
+
+E
+java:S3740"/Provide the parametrized type for this generic.(öğ¨_
+E
+java:S3740­"/Provide the parametrized type for this generic.(öğ¨_
+Q
+java:S1854n"<Remove this useless assignment to local variable "password".(Î—‰u
+B
+java:S1481n"-Remove this unused "password" local variable.(Î—‰u
+M
+java:S1135u"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+A
+java:S1168}"+Return an empty collection instead of null.(¥¹ï
+M
+java:S1135|"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+S
+java:S1854Š"7Remove this useless assignment to local variable "set".(õ¾†´øÿÿÿÿ
+D
+java:S1481Š"(Remove this unused "set" local variable.(õ¾†´øÿÿÿÿ
+Q
+java:S1854Ê":Remove this useless assignment to local variable "entity".(©¾‘’
+m
+java:S2159š"VRemove this call to "equals"; comparisons between unrelated types always return false.(õ‹¢
+T	java:S106£"9Replace this use of System.out or System.err by a logger.(™§èÂşÿÿÿÿ
+T	java:S106²"9Replace this use of System.out or System.err by a logger.(™§èÂşÿÿÿÿ
+R	java:S125¼"<This block of commented-out lines of code should be removed.(‡Ó‚É
+W	java:S125Â"<This block of commented-out lines of code should be removed.(¯ıí”ûÿÿÿÿ
+R	java:S125Ş"<This block of commented-out lines of code should be removed.(–Î±¤
+?	java:S108ş")Either remove or fill this block of code.(å¥‡
+O	java:S106Ñ"9Replace this use of System.out or System.err by a logger.(ëôßÊ
+W	java:S125˜"<This block of commented-out lines of code should be removed.(²­Ô´ûÿÿÿÿ
+N
+java:S3972"7Move this "if" to a new line or add the missing "else".(¢²„è
+S
+java:S3972¢"7Move this "if" to a new line or add the missing "else".(ĞúÑóüÿÿÿÿ
+N
+java:S1135Â"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+N
+java:S1135È"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+t
+java:S2293\"YReplace the type specification in this constructor call with the diamond operator ("<>").(Š¬É‹úÿÿÿÿ
+t
+java:S2293`"YReplace the type specification in this constructor call with the diamond operator ("<>").(æƒø›ûÿÿÿÿ
+t
+java:S2293d"YReplace the type specification in this constructor call with the diamond operator ("<>").(Èİ‡¹ùÿÿÿÿ
+p
+java:S2293‹"YReplace the type specification in this constructor call with the diamond operator ("<>").(çŞ¶
+u
+java:S2293ª"YReplace the type specification in this constructor call with the diamond operator ("<>").(¼ôŠÖıÿÿÿÿ
+u
+java:S2293Å"YReplace the type specification in this constructor call with the diamond operator ("<>").(ÚÔÀßşÿÿÿÿ
+u
+java:S2293Ğ"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293ò"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293 "YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293¯"YReplace the type specification in this constructor call with the diamond operator ("<>").(à—ˆ÷üÿÿÿÿ
+u
+java:S2293·"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293Â"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293â"YReplace the type specification in this constructor call with the diamond operator ("<>").(à—ˆ÷üÿÿÿÿ
+u
+java:S2293ë"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293‰"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293¬"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293º"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ş¨Ãøÿÿÿÿÿ
+u
+java:S2293Ï"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+u
+java:S2293Ş"YReplace the type specification in this constructor call with the diamond operator ("<>").(áä§†şÿÿÿÿ
+b
+java:S1192š"FDefine a constant instead of duplicating this literal " AND " 3 times.(ª¾Æûÿÿÿÿ
+b
+java:S1192Ì"KDefine a constant instead of duplicating this literal "dd/MM/yyyy" 3 times.(Öæ´Ô
+w
+java:S1488™"[Immediately return this expression instead of assigning it to the temporary variable "dto".(“§ÜÚüÿÿÿÿ
+w
+java:S1488¼"[Immediately return this expression instead of assigning it to the temporary variable "dto".(“§ÜÚüÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(æş½˜
+i
+java:S2259œ"RA "NullPointerException" could be thrown; "getOriginalFilename()" can return null.(÷­ Ü
+S
+java:S2589Æ"7Remove this expression which always evaluates to "true"(İğ‘şøÿÿÿÿ
