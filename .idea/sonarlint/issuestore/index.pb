@@ -119,13 +119,3 @@ v
 Fsrc/main/java/com/KMA/BookingCare/ServiceImpl/HospitalServiceImpl.java,8\1\81b09f63370d44658f4103e8602f21cc6c93082b
 f
 6src/main/java/com/KMA/BookingCare/Api/HospitalApi.java,1\7\171ea612b51dcb3031954737324e52674578df02
-}
-Msrc/main/java/com/KMA/BookingCare/Controller/client/HomeClientController.java,a\4\a4668b5d0f2660cebda4cee5d9f06d0168d4af85
-j
-:src/main/java/com/KMA/BookingCare/Service/UserService.java,1\8\18f9314b41668bd0a597aaaf177b287fe655a3a3
-p
-@src/main/java/com/KMA/BookingCare/Repository/UserRepository.java,d\c\dc3b479c1488df704c683b18eea92ce4e5b3bfd9
-r
-Bsrc/main/java/com/KMA/BookingCare/ServiceImpl/UserServiceImpl.java,f\5\f5f42d5dac5b3f74646b5989549854c0836728af
-b
-2src/main/java/com/KMA/BookingCare/Api/UserApi.java,5\3\535b4b4673de9d14595948477498fab670b77c49
