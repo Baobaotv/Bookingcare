@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Dto.HandbookDto;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Repository.SpecializedRepository;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class SpecialzedApi {
 	@Autowired
 	private SpecializedRepository specializedRepository;
 
+	@Hidden
 	@PostMapping(value = "/api/specialized")
 	public ResponseEntity<?> addHospital(@ModelAttribute SpecializedForm form) {
 		log.info("Request to add specialed {}");
@@ -45,7 +47,8 @@ public class SpecialzedApi {
 		}
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
+
+	@Hidden
 	@PutMapping(value = "/api/specialized")
 	public ResponseEntity<?> editHospital(@ModelAttribute SpecializedForm form) {
 		log.info("Request to update specialed");
@@ -74,6 +77,7 @@ public class SpecialzedApi {
 		return ResponseEntity.ok(lstChuyenKhoa);
 	}
 
+	@Hidden
 	@DeleteMapping(value = "/specicalized/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
@@ -81,6 +85,7 @@ public class SpecialzedApi {
 		return  ResponseEntity.noContent().build();
 	}
 
+	@Hidden
 	@DeleteMapping(value = "/specicalized/delete")
 	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){
 		log.info("Request to deletes by ids {}", ids);

@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class MedicalApi {
 
 	@Autowired
 	private MedicalExaminationScheduleRepository medicalExaminationScheduleRepository;
-	
+
+	@Hidden
 	@PutMapping(value = {"/medical/update-status"})
 	public ResponseEntity<?> updateStatusMedical(@RequestBody List<String> ids) {
 		log.info("Request to update status");
@@ -65,6 +67,7 @@ public class MedicalApi {
 		return  lstDto;
 	}
 
+	@Hidden
 	@GetMapping(value = "/media/get-all-complete")
 	public List<MedicalExaminationScheduleDto> getAllComplete(HttpSession session){
 		MyUser user = (MyUser) session.getAttribute("userDetails");
@@ -85,6 +88,7 @@ public class MedicalApi {
 		medicalExaminationScheduleRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
+
 
 	@DeleteMapping("/media/deletes")
 	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){

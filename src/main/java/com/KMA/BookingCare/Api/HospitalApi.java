@@ -4,6 +4,7 @@ import com.KMA.BookingCare.Dto.HospitalDto;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Repository.HospitalRepository;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class HospitalApi {
 	private HospitalRepository hospitalRepository;
 
 
+	@Hidden
 	@PostMapping(value = "/hospital")
 	public ResponseEntity<?> addHospital(@RequestBody HospitalForm form) {
 		log.info("Request to save hospital {}");
@@ -44,7 +46,8 @@ public class HospitalApi {
 		}
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
-	
+
+	@Hidden
 	@PutMapping(value = "/hospital/{id}")
 	public ResponseEntity<?> editHospital(@RequestBody HospitalForm form, @PathVariable long id) {
 		log.info("Request to update hospital {}", id);
@@ -81,6 +84,7 @@ public class HospitalApi {
 		return ResponseEntity.ok(page);
 	}
 
+	@Hidden
 	@DeleteMapping("/hospital/deletes")
 	public ResponseEntity<?> deleteAll(@RequestBody List<Long> ids){
 		log.info("Request to delete all by ids {}", ids);
@@ -88,6 +92,7 @@ public class HospitalApi {
 		return ResponseEntity.noContent().build();
 	}
 
+	@Hidden
 	@DeleteMapping("/hospital/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);

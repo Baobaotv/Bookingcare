@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Entity.UserEntity;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class UserApi {
 		User user=userServiceImpl.findByUsername(userInput.getUsername());
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 }
-	
+	@Hidden
 	@PostMapping(value = "/admin/api/managerUser/add")
 	public ResponseEntity<?> addOrUser(@ModelAttribute UserForm form) {
 		try {
@@ -64,6 +65,7 @@ public class UserApi {
 		
 	}
 	
+	@Hidden
 	@PostMapping(value = "/admin/api/managerUser/delete")
 	public ResponseEntity<?> deleteUserOke(@RequestBody formDelete userDelete) {
 		try {

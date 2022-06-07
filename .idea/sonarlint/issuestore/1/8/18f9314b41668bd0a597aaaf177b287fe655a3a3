@@ -1,0 +1,8 @@
+
+b
+java:S1128"LRemove this unused import 'org.springframework.data.repository.query.Param'.(©”šô
+O
+java:S1128"9Remove this unused import 'com.KMA.BookingCare.Dto.Role'.(í‘ªï
+_
+java:S1128"BRemove this unused import 'com.KMA.BookingCare.Entity.UserEntity'.(¬ÚŽü8êîûù’0
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.( †žä

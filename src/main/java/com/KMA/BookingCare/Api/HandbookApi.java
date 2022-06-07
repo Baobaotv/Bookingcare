@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Api;
 import java.util.List;
 
 import com.KMA.BookingCare.Repository.HandbookRepository;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class HandbookApi {
 	@Autowired
 	private SpecializedService specializeServiceImpl;
 
+	@Hidden
 	@PostMapping(value = "/handbook")
 	public ResponseEntity<?> addHandbook(@RequestBody HandbookForm form) {
 		log.info("Request to add handbook {}");
@@ -51,7 +53,7 @@ public class HandbookApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	
+	@Hidden
 	@PutMapping(value = "/handbok")
 	public ResponseEntity<?> editHandbook(@RequestBody HandbookForm form) {
 		log.info("Request to edit handbook {}");
@@ -113,6 +115,7 @@ public class HandbookApi {
 		return ResponseEntity.ok(dto);
 	}
 
+	@Hidden
 	@DeleteMapping("/handbook/{id}")
 	public ResponseEntity<?> delete(@PathVariable long id){
 		log.info("Request to delete {}", id);
@@ -121,7 +124,7 @@ public class HandbookApi {
 				.noContent()
 				.build();
 	}
-
+	@Hidden
 	@DeleteMapping("/handbook/deletes")
 	public ResponseEntity<?> deleteALl(@RequestBody List<Long> ids){
 		log.info("Request to delete multi {}", ids);

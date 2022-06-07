@@ -29,8 +29,6 @@ c
 3src/main/java/com/KMA/BookingCare/Dto/LoginDto.java,0\d\0d425e159925670bd7ddb850eb0e9d289043fc07
 k
 ;src/main/java/com/KMA/BookingCare/Mapper/CommentMapper.java,8\b\8bcdb967ae88a9ded29c9fb180bbfb2b624ff0c6
-i
-9src/main/java/com/KMA/BookingCare/Api/InteractiveApi.java,1\5\1515bcb65c4a1a91689f0a927c1caf352d1dda75
 e
 5src/main/java/com/KMA/BookingCare/Api/MessageApi.java,6\e\6e0a37232e0e68d84c53836ea1cf8eac4b8f85d9
 l
@@ -67,8 +65,6 @@ m
 =src/main/java/com/KMA/BookingCare/Service/CommentService.java,c\3\c36c2821f379abd8c490dc2c15c4449a021c99fd
 u
 Esrc/main/java/com/KMA/BookingCare/ServiceImpl/CommentServiceImpl.java,a\d\adb7bf01a46bd27ceea4e697e5f1a004631082fe
-h
-8src/main/java/com/KMA/BookingCare/Api/SpecialzedApi.java,b\2\b222fa648e2f19ce1bf096334353b849fb1490eb
 q
 Asrc/main/java/com/KMA/BookingCare/Service/SpecializedService.java,b\b\bbeea45544d0ede49ce1f58a931eea09a2dfc844
 y
@@ -85,14 +81,10 @@ h
 8src/main/java/com/KMA/BookingCare/Mapper/UserMapper.java,1\b\1b9c875e081b9cf0a7fb7a52167c3de22bf6ab96
 k
 ;src/main/java/com/KMA/BookingCare/Api/form/BookingForm.java,0\c\0ccd12b176b2fed26a6b9705346ae7849bcc990d
-e
-5src/main/java/com/KMA/BookingCare/Api/CommentApi.java,3\8\3894842f8a808be89ca090ed00a8bb9d3cc0ce32
 †
 Vsrc/main/java/com/KMA/BookingCare/Repository/MedicalExaminationScheduleRepository.java,c\e\cee46e03723bdd886e13e274bc3e8d8a5f3facfa
 ~
 Nsrc/main/java/com/KMA/BookingCare/Entity/MedicalExaminationScheduleEntity.java,4\e\4e6f1f593e40cf44149993a2b00aadd6e0da35d1
-e
-5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
 _
 /src/main/java/com/KMA/BookingCare/Dto/User.java,4\5\4542f457026ff575d7d9d0f8de2e27623ed0f00f
 f
@@ -105,5 +97,11 @@ n
 >src/main/java/com/KMA/BookingCare/Service/HospitalService.java,5\7\57402174ab11c1520cc37cd6615515187bdb926e
 v
 Fsrc/main/java/com/KMA/BookingCare/ServiceImpl/HospitalServiceImpl.java,8\1\81b09f63370d44658f4103e8602f21cc6c93082b
-f
-6src/main/java/com/KMA/BookingCare/Api/HospitalApi.java,1\7\171ea612b51dcb3031954737324e52674578df02
+}
+Msrc/main/java/com/KMA/BookingCare/Controller/client/HomeClientController.java,a\4\a4668b5d0f2660cebda4cee5d9f06d0168d4af85
+j
+:src/main/java/com/KMA/BookingCare/Service/UserService.java,1\8\18f9314b41668bd0a597aaaf177b287fe655a3a3
+r
+Bsrc/main/java/com/KMA/BookingCare/ServiceImpl/UserServiceImpl.java,f\5\f5f42d5dac5b3f74646b5989549854c0836728af
+i
+9src/main/java/com/KMA/BookingCare/config/SpingConfig.java,5\b\5b9495bb71f4cd196c29739a9abfcfd7cdefd21f
