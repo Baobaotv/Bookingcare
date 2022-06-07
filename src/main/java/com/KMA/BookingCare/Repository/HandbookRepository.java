@@ -29,18 +29,18 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long> 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.content, h.createdBy, h.createdDate, h.modifiedDate, h.modifiedBy, h.specialized.name,h.specialized.id,h.img,h.createdBy,h.user.id) FROM HandbookEntity h WHERE h.id =:id")
 	HandbookDto findOneByIdApi(@Param("id") Long id);
 
-	@Query(value = "SELECT * FROM bookingcare.handbook as u where title like CONCAT('%',:title,'%')  and status =1 ;", nativeQuery = true)
+	@Query(value = "SELECT * FROM handbook as u where title like CONCAT('%',:title,'%')  and status =1 ;", nativeQuery = true)
 	List<HandbookEntity> findAllByTitleAndStatus(@Param("title") String title);
 	
-	@Query(value = "SELECT * FROM bookingcare.handbook as u where title like CONCAT('%',:title,'%') and specialized_id =:specializedId and status =1 ;", nativeQuery = true)
+	@Query(value = "SELECT * FROM handbook as u where title like CONCAT('%',:title,'%') and specialized_id =:specializedId and status =1 ;", nativeQuery = true)
 	List<HandbookEntity> findAllByTitleAndSpecializedId(@Param("title") String title,@Param("specializedId") Long specializedId);
 	
 	List<HandbookEntity> findAllBySpecializedIdAndStatus(Long SpecializedId, Integer status);
 	
-	@Query(value = "SELECT * FROM bookingcare.handbook h where h.status =1 ORDER BY RAND() LIMIT 4;",nativeQuery = true)
+	@Query(value = "SELECT * FROM handbook h where h.status =1 ORDER BY RAND() LIMIT 4;",nativeQuery = true)
 	List<HandbookEntity> findRandomHandbook();
 	
-	@Query(value = "SELECT * FROM bookingcare.handbook h  where h.status =1 AND title   like CONCAT('%',:title,'%') "
+	@Query(value = "SELECT * FROM handbook h  where h.status =1 AND title   like CONCAT('%',:title,'%') "
 			+ "AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)"
 			+ "AND ( (:userId IS NOT NULL AND user_id =:userId) || :userId IS NULL)",nativeQuery = true)
 	List<HandbookEntity> searchHandbookAndPageable(@Param("title") String title,@Param("specializedId") Long specializedId,@Param("userId") Long userId,Pageable page);

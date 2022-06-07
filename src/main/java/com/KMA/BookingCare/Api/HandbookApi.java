@@ -68,7 +68,7 @@ public class HandbookApi {
 	}
 
 	@GetMapping(value = "/handbook")
-	public ResponseEntity<Page<HandbookDto>> getAll(@PageableDefault(page = 0, size = 20) Pageable pageable){
+	public ResponseEntity<Page<HandbookDto>> getAll(@PageableDefault(page = 0, size = 10) Pageable pageable){
 		log.info("Request to getAll {}");
 		Page<HandbookDto> page = handbookServiceImpl.findAllByStatusPageable(1, pageable);
 		return ResponseEntity.ok(page);

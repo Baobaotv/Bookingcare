@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
 
 public interface MedicalExaminationScheduleRepository extends JpaRepository<MedicalExaminationScheduleEntity, Long> {
-	@Query(value = "SELECT work_time_id FROM bookingcare.medical_examination_schedule where doctor_id=:id and date=:date and status =1",nativeQuery = true)
+	@Query(value = "SELECT work_time_id FROM medical_examination_schedule where doctor_id=:id and date=:date and status =1",nativeQuery = true)
 	List<Long> findAllWorkTimeIdByDateAndDoctorIdAndStatus(@Param("id") Long id,@Param("date") String date);
 	List<MedicalExaminationScheduleEntity> findAllByStatus(Integer status);
 	List<MedicalExaminationScheduleEntity> findAllByDoctorIdAndStatus(Long doctorID,Integer Status);

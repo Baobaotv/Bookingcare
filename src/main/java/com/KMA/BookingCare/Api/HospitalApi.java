@@ -78,7 +78,7 @@ public class HospitalApi {
 
 	
 	@GetMapping(value = "/hospital/get-all-by-status")
-	public ResponseEntity<Page<HospitalDto>> getAllByStatus(@RequestParam Pageable pageable){
+	public ResponseEntity<Page<HospitalDto>> getAllByStatus(@PageableDefault(page = 0, size = 10) Pageable pageable){
 		log.info("Request to get All By Status {}");
 		Page<HospitalDto> page = hospitalServiceImpl.findAllByStatusApi(1,pageable);
 		return ResponseEntity.ok(page);
