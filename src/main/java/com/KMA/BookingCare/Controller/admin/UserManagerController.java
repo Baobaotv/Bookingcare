@@ -73,10 +73,8 @@ public class UserManagerController {
 	}
 	@PostMapping(value = {"/admin/editProfile","/doctor/editProfile"})
 	public ResponseEntity<?> editProfilePage( Model model, @ModelAttribute UserForm form) {
-		System.out.println("test");
 		try {
 			userServiceImpl.saveDoctor(form);
-			
 		} catch (IllegalStateException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

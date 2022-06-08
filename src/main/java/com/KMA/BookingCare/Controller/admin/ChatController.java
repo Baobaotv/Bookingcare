@@ -40,7 +40,7 @@ public class ChatController {
 	public  String chatPage(Model model) {
 		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
 		model.addAttribute("lstInteractive", lstInteractive);
-		return "/admin/views/managerChat2";
+		return "admin/views/managerChat2";
 	}
 	  @RequestMapping(path = "/selectUser", method = RequestMethod.POST)
 	    public ResponseEntity<?> searchMessageUser(Model model, @RequestBody Long id) {

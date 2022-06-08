@@ -1,8 +1,0 @@
-
-T
-java:S1854,"?Remove this useless assignment to local variable "lstHandbook".(ê¸ŒA
-e
-java:S1128"JRemove this unused import 'com.KMA.BookingCare.Api.form.searchDoctorForm'.(…ªÏÍýÿÿÿÿ
-n
-java:S2293,"YReplace the type specification in this constructor call with the diamond operator ("<>").(ê¸ŒA
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(î–¡±üÿÿÿÿ

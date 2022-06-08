@@ -1,14 +1,8 @@
 
 m
 =src/main/java/com/KMA/BookingCare/Service/MessageService.java,0\5\05faaae90e534fbec1584b24e3816a94647923a0
-z
-Jsrc/main/java/com/KMA/BookingCare/Controller/admin/HandbookController.java,3\c\3c6ece3830759b86646300c375f2c1bdf5957bf7
-‘
-asrc/main/java/com/KMA/BookingCare/Controller/admin/MedicalExaminationSheduleEntityController.java,f\9\f9a46fb18a62b4f2187356a2f97fd2b0a5db65ad
 h
 8src/main/java/com/KMA/BookingCare/Api/form/UserForm.java,4\7\47066014c400955bc24c46a619bc771477b74447
-}
-Msrc/main/java/com/KMA/BookingCare/Controller/admin/UserManagerController.java,2\b\2b90811a541466a35af402bfeed138b089b52e42
 h
 8src/main/java/com/KMA/BookingCare/Entity/UserEntity.java,f\d\fd21afae2453243bc0bba6c1420cb004cda60f0b
 e

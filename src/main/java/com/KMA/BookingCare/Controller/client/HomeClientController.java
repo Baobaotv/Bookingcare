@@ -160,12 +160,12 @@ public class HomeClientController {
 	
 	@GetMapping(value = "/lien-he")
 	public String contect(Model model){
-		return "/client/views/contect";
+		return "client/views/contect";
 	}
 	
 	@GetMapping(value = "/dieu-khoan")
 	public String rules(Model model){
-		return "/client/views/rules";
+		return "client/views/rules";
 	}
 	//done
 	@GetMapping(value = "/bac-si")
@@ -182,7 +182,7 @@ public class HomeClientController {
 		Integer curentPage=page;
 		model.addAttribute("curentPage", curentPage);
 		
-		return "/client/views/doctor";
+		return "client/views/doctor";
 	}
 	
 //	 @PostMapping(value = "/searchDoctor")
@@ -205,14 +205,13 @@ public class HomeClientController {
 		model.addAttribute("lstDto", lstDto);
 		Integer curentPage=page;	
 		model.addAttribute("curentPage", curentPage);
-		
-		return "/client/views/hospital";
+		return "client/views/hospital";
 	}
 	
 	
 	@GetMapping(value = "/khieu-nai")
 	public String complain(Model model){
-		return "/client/views/complain";
+		return "client/views/complain";
 	}
 
 	//done
@@ -229,7 +228,7 @@ public class HomeClientController {
 		model.addAttribute("formSearch",form);
 		Integer curentPage=page;
 		model.addAttribute("curentPage", curentPage);
-		return "/client/views/handbook";
+		return "client/views/handbook";
 	}
 	
 	//done
@@ -239,7 +238,7 @@ public class HomeClientController {
 		List<CommentDto> lstComment= commentServiceimpl.findAllByHandbookId(id);
 		model.addAttribute("dto", dto);
 		model.addAttribute("lstComment", lstComment);
-	    return "/client/views/contentHandbook";
+	    return "client/views/contentHandbook";
 	}
 	
 	@GetMapping(value="/book/{idDoctor}/{idWorktime}/{date}")
@@ -252,7 +251,7 @@ public class HomeClientController {
 		model.addAttribute("date", date);
 		model.addAttribute("idWorktime", idWorktime);
 		System.out.println("test");
-	    return "/client/views/book";
+	    return "client/views/book";
 	}
 	
 	@GetMapping(value="/updateProfile")
@@ -260,7 +259,7 @@ public class HomeClientController {
 		MyUser userDetails = (MyUser) session.getAttribute("userDetails");
 		User userDto = UserviceImpl.findOneById(userDetails.getId());
 		model.addAttribute("userDto", userDto);
-	    return "/client/views/updateClient";
+	    return "client/views/updateClient";
 	}
 
 	@GetMapping(value="/showMedical")
@@ -268,7 +267,7 @@ public class HomeClientController {
 		MyUser userDetails= (MyUser) session.getAttribute("userDetails");
 		List<MedicalExaminationScheduleDto> lstDto = medicalServiceImpl.findAllByUserIdAndStatus(userDetails.getId(), 1);
 		model.addAttribute("lstDto", lstDto);
-	    return "/client/views/showMedical";
+	    return "client/views/showMedical";
 	}
 	
 	 
@@ -278,6 +277,6 @@ public class HomeClientController {
 			MyUser userDetails= (MyUser) session.getAttribute("userDetails");
 			List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
 			model.addAttribute("lstInteractive", lstInteractive);
-		    return "/client/views/message";
+		    return "client/views/message";
 		}
 }
