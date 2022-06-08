@@ -103,7 +103,7 @@ public class HomeClientController {
 			log.error(e.getMessage());
 			log.error("User chưa đăng nhập!!!");
 		}
-		return "/client/views/home";
+		return "client/views/home";
 	}
 
 	//done
@@ -114,7 +114,7 @@ public class HomeClientController {
 		model.addAttribute("lstDto",lstDto);
 		Integer curentPage=page;	
 		model.addAttribute("curentPage", curentPage);
-		return "/client/views/specialized";
+		return "client/views/specialized";
 	}
 	//done
 	@GetMapping(value="/chuyen-khoa/{id}")
@@ -124,7 +124,7 @@ public class HomeClientController {
 //		List<User> lstDto=UserviceImpl.findAllBySpecializedIdAndStatus(id, 1);
 		model.addAttribute("lstDto",lstDto);
 	  System.out.println("test");
-	    return "/client/views/doctorOfSpecialized";
+	    return "client/views/doctorOfSpecialized";
 	}
 
 	//done
@@ -134,7 +134,7 @@ public class HomeClientController {
 //		List<User> lstDto=UserviceImpl.findAllBySpecializedIdAndStatus(id, 1);
 		model.addAttribute("lstDto",lstDto);
 	  System.out.println("test");
-	    return "/client/views/doctorOfSpecialized";
+	    return "client/views/doctorOfSpecialized";
 	}
 
 	//done
@@ -146,16 +146,16 @@ public class HomeClientController {
 		model.addAttribute("user", user);
 	
 	  System.out.println("test");
-	    return "/client/views/infoDoctor";
+	    return "client/views/infoDoctor";
 	}
 	
 	@GetMapping(value = "/danh-cho-benh-nhan")
 	public String forPatient(Model model){
-		return "/client/views/forPatient";
+		return "client/views/forPatient";
 	}
 	@GetMapping(value = "/vai-tro")
 	public String role(Model model){
-		return "/client/views/role";
+		return "client/views/role";
 	}
 	
 	@GetMapping(value = "/lien-he")
