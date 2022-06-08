@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import io.jsonwebtoken.lang.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,11 +91,13 @@ public class HomeClientController {
 			}
 		}
 		try {
-			UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+			Object result = SecurityContextHolder.getContext().getAuthentication()
 					.getPrincipal();
-			MyUser userDetails = UserMapper.convertToMyUser(user);
-			session.setAttribute("userDetails", userDetails);
-
+			if (result != null && !result.equals("anonymousUser")) {
+				UserDetailsImpl user = (UserDetailsImpl) result;
+				MyUser userDetails = UserMapper.convertToMyUser(user);
+				session.setAttribute("userDetails", userDetails);
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
 			log.error(e.getMessage());
