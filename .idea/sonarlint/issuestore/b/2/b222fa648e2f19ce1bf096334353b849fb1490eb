@@ -1,0 +1,24 @@
+
+<
+java:S1452("&Remove usage of generic wildcard type.(èœ·š
++
+java:S3457)"Not enough arguments.(å“Ž
+<
+java:S14525"&Remove usage of generic wildcard type.(—µÀË
++
+java:S3457A"Not enough arguments.(Éº‹
+<
+java:S1452R"&Remove usage of generic wildcard type.(ˆŸ‚»
+A
+java:S1452Z"&Remove usage of generic wildcard type.(Ëš½Úøÿÿÿÿ
+b
+java:S1128"@Remove this unused import 'com.KMA.BookingCare.Dto.HandbookDto'.(×–×¢úÿÿÿÿ8˜ÉÈë“0
+h
+java:S1128"FRemove this unused import 'org.springframework.stereotype.Controller'.(øŠ—Öùÿÿÿÿ8˜ÉÈë“0
+c
+java:S1128"FRemove this unused import 'com.KMA.BookingCare.Api.form.HospitalForm'.(€ÏõÅ8§ÉÈë“0
+a
+java:S1128"DRemove this unused import 'com.KMA.BookingCare.Api.form.formDelete'.(›õ«³8¨ÉÈë“0
+j
+java:S1128"HRemove this unused import 'com.KMA.BookingCare.Service.HospitalService'.(ãÉ”¸øÿÿÿÿ8¨ÉÈë“0
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

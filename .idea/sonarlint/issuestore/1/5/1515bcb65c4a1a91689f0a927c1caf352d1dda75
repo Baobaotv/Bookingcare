@@ -1,0 +1,12 @@
+
+Z
+java:S1854"?Remove this useless assignment to local variable "userDetails".(­±ï­üÿÿÿÿ
++
+java:S3457"Not enough arguments.(ÂÜ²
+K
+java:S1481"0Remove this unused "userDetails" local variable.(­±ï­üÿÿÿÿ
+|
+java:S1488"fImmediately return this expression instead of assigning it to the temporary variable "lstInteractive".(Ú‡©
+…
+java:S1488$"jImmediately return this expression instead of assigning it to the temporary variable "interactiveDtoList".(²ºê¤şÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

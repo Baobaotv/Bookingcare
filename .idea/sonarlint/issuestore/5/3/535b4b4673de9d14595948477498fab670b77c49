@@ -1,0 +1,43 @@
+
+A
+java:S14527"&Remove usage of generic wildcard type.(Ó‹×ùÿÿÿÿ
+S	java:S106:"9Replace this use of System.out or System.err by a logger.(½€ü’şÿÿÿÿ
+M
+java:S1135<"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
+N	java:S106>"9Replace this use of System.out or System.err by a logger.(š¥ì‚
+C
+java:S1452F"&Remove usage of generic wildcard type.(Œß»”8¥‚Ëë“0
+X	java:S125H"<This block of commented-out lines of code should be removed.(¢…÷ö8¥‚Ëë“0
+T
+java:S1135K"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ8¦‚Ëë“0
+U	java:S106M"9Replace this use of System.out or System.err by a logger.(š¥ì‚8§‚Ëë“0
+C
+java:S1452S"&Remove usage of generic wildcard type.(ı„úÙ8¨‚Ëë“0
+U	java:S106T"9Replace this use of System.out or System.err by a logger.(±È¢—8ª‚Ëë“0
+2
+java:S3457_"Not enough arguments.(õÛŒ°8»‚Ëë“0
+2
+java:S3457g"Not enough arguments.(ó¾»Ô8Ê‚Ëë“0
+7
+java:S3457n"Not enough arguments.(€ºÔäúÿÿÿÿ8Ú‚Ëë“0
+8
+java:S3457„"Not enough arguments.(Ùı³äûÿÿÿÿ8ê‚Ëë“0
+D
+java:S1452‹"&Remove usage of generic wildcard type.(Â÷¿¾8ï‚Ëë“0
+T
+java:S1128"7Remove this unused import 'java.text.SimpleDateFormat'.(ú¡ÙÛ8œ‚ßü’0
+H
+java:S1128"+Remove this unused import 'java.util.Date'.(¸…¼ü8œ‚ßü’0
+_
+java:S1128	"BRemove this unused import 'com.KMA.BookingCare.Entity.UserEntity'.(¬Úü8œ‚ßü’0
+m
+java:S1128"KRemove this unused import 'org.springframework.security.core.parameters.P'.(Æ­Åıÿÿÿÿ8œ‚ßü’0
+t
+java:S22933"YReplace the type specification in this constructor call with the diamond operator ("<>").(º—Şÿÿÿÿÿ
+‚
+java:S1488`"`Immediately return this expression instead of assigning it to the temporary variable "lstBacsi".(ÌĞÃ÷ıÿÿÿÿ8ô‚Ëë“0
+{
+java:S1488~"_Immediately return this expression instead of assigning it to the temporary variable "lstUser".(·Â78ô‚Ëë“0
+‚
+java:S1488†"_Immediately return this expression instead of assigning it to the temporary variable "userDto".(ûúÂøÿÿÿÿ8õ‚Ëë“0
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

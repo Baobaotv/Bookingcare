@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +46,11 @@ public class HomeClientController {
 	
 //	@Autowired
 //	private SpecializedService specializedDerviceImpl;
+
+	private final Logger log = LoggerFactory.getLogger(HomeClientController.class);
 	
 	@Autowired
 	private UserService UserviceImpl;
-	
 	@Autowired
 	private HandbookService handbookServiceImpl;
 	@Autowired
@@ -62,6 +67,7 @@ public class HomeClientController {
 	//done
 	@GetMapping(value = "/home")
 	public String homeClientPage(Model model,@RequestParam(required = false) String message,HttpSession session){
+		log.info("Reuqest to home page");
 		//
 		List<SpecializedDto> lstChuyenKhoa = specializedServiceImpl.findAll();
 		model.addAttribute("lstChuyenKhoa",lstChuyenKhoa);
@@ -84,13 +90,15 @@ public class HomeClientController {
 			}
 		}
 		try {
-			MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			MyUser userDetails = UserMapper.convertToMyUser(user);
 			session.setAttribute("userDetails", userDetails);
-			System.out.println("Đăng nhập thành công");
+
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println(e);
-			System.out.println("Error: User chưa đăng nhập!!!");
+			log.error(e.getMessage());
+			log.error("User chưa đăng nhập!!!");
 		}
 		return "/client/views/home";
 	}

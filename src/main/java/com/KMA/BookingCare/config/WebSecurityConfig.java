@@ -1,6 +1,7 @@
 package com.KMA.BookingCare.config;
 
 import com.KMA.BookingCare.ServiceImpl.UserDetailsServiceImpl;
+import com.KMA.BookingCare.common.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -46,12 +49,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).and()
                 .authorizeRequests().antMatchers("/api/**").permitAll()
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs/**").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/**").permitAll()
+                .antMatchers("/book/**").hasAnyRole("ADMIN","USER","DOCTER")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/login")
+                .successHandler(loginSuccessHandler)
+                .failureUrl("/register")
+                .permitAll().and().logout().logoutSuccessUrl("/login")
+                .logoutUrl("/logout").permitAll().and().exceptionHandling().accessDeniedPage("/access-deny")
+        ;
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
 }

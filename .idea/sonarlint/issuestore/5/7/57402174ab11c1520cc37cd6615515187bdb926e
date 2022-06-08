@@ -1,0 +1,9 @@
+
+`
+java:S1128"CRemove this unused import 'org.springframework.stereotype.Service'.(¼º¡Ú8¿…›û’0
+h
+java:S1128
+"FRemove this unused import 'com.KMA.BookingCare.Api.form.HandbookForm'.(¥‘úäúÿÿÿÿ8¿…›û’0
+h
+java:S1128"FRemove this unused import 'com.KMA.BookingCare.Entity.HospitalEntity'.(¿Ð©°ÿÿÿÿÿ8¿…›û’0
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.( †žä
