@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
+import com.KMA.BookingCare.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,9 @@ public class HospitalServiceImpl implements HospitalService{
 
 	@Override
 	public void saveHospital(HospitalForm form)  throws ParseException {
-		MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 		HospitalEntity entity= new HospitalEntity();
 		if(form.getId()!=null) {
 			entity.setId(form.getId());

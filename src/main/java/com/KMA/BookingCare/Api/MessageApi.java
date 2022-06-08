@@ -1,7 +1,9 @@
 package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Dto.MessageDto;
+import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Service.MessageService;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,10 @@ public class MessageApi {
     @PostMapping("/savePeerId")
     public ResponseEntity<?> addUser(@RequestBody String peerId) {
         log.info("Request to save peerId", peerId);
-        MyUser a = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("tét");
-        userServiceImpl.updatePeerId(peerId, a.getId());
+        UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        MyUser userDetails = UserMapper.convertToMyUser(user);
+        userServiceImpl.updatePeerId(peerId, userDetails.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

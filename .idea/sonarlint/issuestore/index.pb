@@ -1,8 +1,6 @@
 
 m
 =src/main/java/com/KMA/BookingCare/Service/MessageService.java,0\5\05faaae90e534fbec1584b24e3816a94647923a0
-v
-Fsrc/main/java/com/KMA/BookingCare/Controller/admin/ChatController.java,9\4\94685f02f664b678cefbd638569a89f2260aae51
 z
 Jsrc/main/java/com/KMA/BookingCare/Controller/admin/HandbookController.java,3\c\3c6ece3830759b86646300c375f2c1bdf5957bf7
 ‘
@@ -59,18 +57,10 @@ l
 <src/main/java/com/KMA/BookingCare/Entity/HospitalEntity.java,1\0\10c02d565b808b305bf90c780ac91f9b9b4ad62a
 j
 :src/main/java/com/KMA/BookingCare/Service/UserService.java,1\8\18f9314b41668bd0a597aaaf177b287fe655a3a3
-r
-Bsrc/main/java/com/KMA/BookingCare/ServiceImpl/UserServiceImpl.java,f\5\f5f42d5dac5b3f74646b5989549854c0836728af
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-y
-Isrc/main/java/com/KMA/BookingCare/ServiceImpl/SpecializedServiceImpl.java,a\9\a91de9ade46aba86bae65525120305e99bf8e3c3
-i
-9src/main/java/com/KMA/BookingCare/Api/InteractiveApi.java,1\5\1515bcb65c4a1a91689f0a927c1caf352d1dda75
 e
 5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
-e
-5src/main/java/com/KMA/BookingCare/Api/MessageApi.java,6\e\6e0a37232e0e68d84c53836ea1cf8eac4b8f85d9
 h
 8src/main/java/com/KMA/BookingCare/Api/SpecialzedApi.java,b\2\b222fa648e2f19ce1bf096334353b849fb1490eb
 b
@@ -79,8 +69,6 @@ n
 >src/main/java/com/KMA/BookingCare/Service/HandbookService.java,6\0\600e36add504567788fc3c6405c086be5022539d
 n
 >src/main/java/com/KMA/BookingCare/Service/HospitalService.java,5\7\57402174ab11c1520cc37cd6615515187bdb926e
-v
-Fsrc/main/java/com/KMA/BookingCare/ServiceImpl/HospitalServiceImpl.java,8\1\81b09f63370d44658f4103e8602f21cc6c93082b
 s
 Csrc/main/java/com/KMA/BookingCare/Repository/CommentRepository.java,5\0\501d3e5721e3b192ee53988176fb1ba985524437
 t

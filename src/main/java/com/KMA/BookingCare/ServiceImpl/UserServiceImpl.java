@@ -375,7 +375,9 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void updateClient(UpdateCientForm form) {
-		MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 		UserEntity entity = userRepository.findOneById(userDetails.getId());
 		entity.setFullName(form.getFullName());
 		entity.setEmail(form.getEmail());

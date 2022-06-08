@@ -48,7 +48,9 @@ public class HandbookServiceImpl implements HandbookService{
 	@Override
 	public void saveHandbook(HandbookForm form) throws ParseException {
 //		UserDetails userDetails= (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 		HandbookEntity entity= new HandbookEntity();
 		if(form.getId()!=null) {
 			SimpleDateFormat datFormate = new SimpleDateFormat("dd/MM/yyyy");

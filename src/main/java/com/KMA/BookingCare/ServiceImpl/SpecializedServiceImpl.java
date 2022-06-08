@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +65,9 @@ public class SpecializedServiceImpl implements SpecializedService{
 
 	@Override
 		public void saveOrUpdateSpecialized(SpecializedForm form) throws ParseException {
-			MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 			SpecializedEntity entity= new SpecializedEntity();
 			if(form.getId()!=null) {
 				entity.setId(form.getId());
