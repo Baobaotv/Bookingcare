@@ -81,7 +81,6 @@ public class UserApi {
 	}
 	 @PostMapping(value = "/updateClient")
 	   public ResponseEntity<?> addUser(@ModelAttribute UpdateCientForm form) {
-		   System.out.println("hohi");
 		   userServiceImpl.updateClient(form);
 				return ResponseEntity.ok("true");
 			

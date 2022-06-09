@@ -244,8 +244,6 @@ public class HomeClientController {
 	@GetMapping(value="/book/{idDoctor}/{idWorktime}/{date}")
 	public String  book(Model model,@PathVariable("idDoctor") Long idDoctor, @PathVariable("idWorktime") Long idWorktime,
 			@PathVariable("date") String date){
-//		HandbookDto dto = handbookServiceImpl.findOneById(id);
-//		model.addAttribute("dto", dto);y
 		User userDto = UserviceImpl.findOneById(idDoctor);
 		model.addAttribute("userDto", userDto);
 		model.addAttribute("date", date);

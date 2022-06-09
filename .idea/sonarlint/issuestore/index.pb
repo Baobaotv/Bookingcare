@@ -49,16 +49,12 @@ f
 6src/main/java/com/KMA/BookingCare/Dto/HospitalDto.java,6\5\657663709710dea956eeca276a37cf1d0d66cef6
 l
 <src/main/java/com/KMA/BookingCare/Entity/HospitalEntity.java,1\0\10c02d565b808b305bf90c780ac91f9b9b4ad62a
-j
-:src/main/java/com/KMA/BookingCare/Service/UserService.java,1\8\18f9314b41668bd0a597aaaf177b287fe655a3a3
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 e
 5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
 h
 8src/main/java/com/KMA/BookingCare/Api/SpecialzedApi.java,b\2\b222fa648e2f19ce1bf096334353b849fb1490eb
-b
-2src/main/java/com/KMA/BookingCare/Api/UserApi.java,5\3\535b4b4673de9d14595948477498fab670b77c49
 n
 >src/main/java/com/KMA/BookingCare/Service/HandbookService.java,6\0\600e36add504567788fc3c6405c086be5022539d
 n

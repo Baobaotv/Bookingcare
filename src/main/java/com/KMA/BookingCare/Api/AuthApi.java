@@ -3,10 +3,12 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Dto.JwtReponse;
 import com.KMA.BookingCare.Dto.LoginDto;
 import com.KMA.BookingCare.Dto.SignupRequest;
+import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Entity.RoleEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Repository.RoleRepository;
 import com.KMA.BookingCare.Repository.UserRepository;
+import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.common.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,9 @@ public class AuthApi {
     UserRepository userRepository;
 
     @Autowired
+    private UserService userServiceImpl;
+
+    @Autowired
     RoleRepository roleRepository;
 
     @Autowired
@@ -62,29 +67,38 @@ public class AuthApi {
                 roles));
     }
 
+//    @PostMapping(value = "/signup")
+//    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest){
+//        if(userRepository.existsByUsername(signupRequest.getUsername())){
+//            return ResponseEntity.badRequest().body("Error: username is already taken!");
+//        }
+//        UserEntity user = new UserEntity();
+//        user.setUsername(signupRequest.getUsername());
+//        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+//
+//        Set<String> strRoles = signupRequest.getRoles();
+//        Set<RoleEntity> roles = new HashSet<>();
+//
+//        if(strRoles == null){
+//            List<RoleEntity> rolelst = roleRepository.findByName("ROLE_USER");
+//            roles.addAll(roles);
+//        }else {
+//            strRoles.forEach( role ->{
+//                List<RoleEntity> rolelst = roleRepository.findByName(role);
+//                roles.addAll(roles);
+//            });
+//        }
+//        user.setRoles(roles);
+//        userRepository.save(user);
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
+
     @PostMapping(value = "/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest){
-        if(userRepository.existsByUsername(signupRequest.getUsername())){
+    public ResponseEntity<?> signup(@RequestBody User user){
+        if(userRepository.existsByUsername(user.getUsername())){
             return ResponseEntity.badRequest().body("Error: username is already taken!");
         }
-        UserEntity user = new UserEntity();
-        user.setUsername(signupRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
-
-        Set<String> strRoles = signupRequest.getRoles();
-        Set<RoleEntity> roles = new HashSet<>();
-
-        if(strRoles == null){
-            List<RoleEntity> rolelst = roleRepository.findByName("ROLE_USER");
-            roles.addAll(roles);
-        }else {
-            strRoles.forEach( role ->{
-                List<RoleEntity> rolelst = roleRepository.findByName(role);
-                roles.addAll(roles);
-            });
-        }
-        user.setRoles(roles);
-        userRepository.save(user);
+        userServiceImpl.add(user, "user");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
