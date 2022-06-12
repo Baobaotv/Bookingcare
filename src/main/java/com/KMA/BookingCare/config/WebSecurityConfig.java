@@ -5,6 +5,7 @@ import com.KMA.BookingCare.common.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -54,8 +55,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/signin").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs/**").permitAll()
+                .antMatchers("/api/handbook/deletes").hasAnyRole("ADMIN","USER","DOCTER")
+                .antMatchers("/api/handbook/deletes").hasAnyRole("ADMIN","USER","DOCTER")
+                .antMatchers(HttpMethod.POST,"/api/handbook").hasAnyRole("ADMIN","DOCTER")
+                .antMatchers(HttpMethod.GET,"/api/current-login").authenticated()
+                .antMatchers(HttpMethod.GET,"/api/media/check/**").authenticated()
+                .antMatchers(HttpMethod.GET,"/api/media/get-by-current-login").authenticated()
                 .antMatchers("/**").permitAll()
-                .antMatchers("/book/**").hasAnyRole("ADMIN","USER","DOCTER")
+                .antMatchers("/book/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

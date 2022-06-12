@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -127,11 +130,13 @@ public class UserApi {
 	}
 
 	@GetMapping(value = "/api/current-login")
-	public User getCurrentLogin(HttpSession session){
+	public ResponseEntity<User> getCurrentLogin(HttpSession session){
 		log.info("Request to get current login {}");
-		MyUser userDetails = (MyUser) session.getAttribute("userDetails");
-		User userDto = userServiceImpl.findOneById(userDetails.getId());
-		return  userDto;
+		Object result = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		UserDetailsImpl userDetails = (UserDetailsImpl) result;
+				User userDto = userServiceImpl.findOneById(userDetails.getId());
+		return  ResponseEntity.ok(userDto);
 	}
 
 	@PutMapping(value = "/api/user/{id}")

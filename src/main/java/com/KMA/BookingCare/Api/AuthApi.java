@@ -67,31 +67,6 @@ public class AuthApi {
                 roles));
     }
 
-//    @PostMapping(value = "/signup")
-//    public ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest){
-//        if(userRepository.existsByUsername(signupRequest.getUsername())){
-//            return ResponseEntity.badRequest().body("Error: username is already taken!");
-//        }
-//        UserEntity user = new UserEntity();
-//        user.setUsername(signupRequest.getUsername());
-//        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
-//
-//        Set<String> strRoles = signupRequest.getRoles();
-//        Set<RoleEntity> roles = new HashSet<>();
-//
-//        if(strRoles == null){
-//            List<RoleEntity> rolelst = roleRepository.findByName("ROLE_USER");
-//            roles.addAll(roles);
-//        }else {
-//            strRoles.forEach( role ->{
-//                List<RoleEntity> rolelst = roleRepository.findByName(role);
-//                roles.addAll(roles);
-//            });
-//        }
-//        user.setRoles(roles);
-//        userRepository.save(user);
-//        return ResponseEntity.ok(HttpStatus.OK);
-//    }
 
     @PostMapping(value = "/signup")
     public ResponseEntity<?> signup(@RequestBody User user){

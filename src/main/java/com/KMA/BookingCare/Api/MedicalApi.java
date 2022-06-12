@@ -3,22 +3,26 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping("/api")
@@ -43,6 +47,8 @@ public class MedicalApi {
 		}
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
+
+	@Hidden
 	@PostMapping(value ="/medical/complete")
 	public ResponseEntity<?> completeMedical(@RequestBody List<String> ids) {
 		log.info("Request to update medical complete {}", ids);
@@ -54,17 +60,41 @@ public class MedicalApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
+	@Operation(description = "get lịch khám của user đang login")
 	@GetMapping(value = "/media/get-by-current-login")
-	public List<MedicalExaminationScheduleDto> getAllByCurrentLogin(HttpSession session){
+	public ResponseEntity<List<MedicalExaminationScheduleDto>> getAllByCurrentLogin(HttpSession session){
 		log.info("Request to get all by current login {}");
-		MyUser user = (MyUser) session.getAttribute("userDetails");
+		AtomicReference<String> checkUser= new AtomicReference<>("");
+		// 1 là bác sĩ
+		// 2 là admin
+		// 3 là user
+		Object result = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) result;
+		user.getAuthorities().forEach(p->{
+			if(p.getAuthority().equals("ROLE_ADMIN")) {
+				checkUser.set("2");
+			} else if(p.getAuthority().equals("ROLE_DOCTOR")) {
+				checkUser.set("1");
+			}  else {
+				checkUser.set("3");
+			}
+		});
 		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<>();
-		if(user.getRoles().contains("ROLE_DOCTOR")) {
+		if(checkUser.toString().equals("1")) {
+			// role_doctor
 			lstDto= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
 		}else {
-			lstDto= medicalServiceImpl.findAllByStatus(1);
+
+			if (checkUser.toString().equals("2")) {
+				//role _admin
+				lstDto= medicalServiceImpl.findAllByStatus(1);
+			} else {
+				//role user
+				 lstDto = medicalServiceImpl.findAllByUserIdAndStatus(user.getId(), 1);
+			}
 		}
-		return  lstDto;
+		return  ResponseEntity.ok(lstDto);
 	}
 
 	@Hidden
@@ -82,6 +112,7 @@ public class MedicalApi {
 		return  lstMedical;
 	}
 
+	@Hidden
 	@DeleteMapping("/media/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
@@ -90,6 +121,7 @@ public class MedicalApi {
 	}
 
 
+	@Hidden
 	@DeleteMapping("/media/deletes")
 	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){
 		log.info("Request to delete multi by ids {}", ids);
@@ -98,6 +130,12 @@ public class MedicalApi {
 	}
 
 	// check bac si co... lich kham vao ngay...
+	@Operation(description = "Check xem ngày {date}, ca {idWorktine, bác siz {idDoctor} có lịch khám không")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "OK.true- đã có lịch khám chuyển sang ca khác,false- không có lịch khám được phép đặt"
+			),
+			@ApiResponse(responseCode = "401", description = "Unauthorized"),
+	})
 	@GetMapping(value="/media/check/{idDoctor}/{idWorktime}/{date}")
 	public ResponseEntity<?>  book(Model model, @PathVariable("idDoctor") Long idDoctor, @PathVariable("idWorktime") Long idWorktime,
 								   @PathVariable("date") String date){
