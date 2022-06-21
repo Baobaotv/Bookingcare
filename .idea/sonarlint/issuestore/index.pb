@@ -37,8 +37,6 @@ q
 Asrc/main/java/com/KMA/BookingCare/Service/SpecializedService.java,b\b\bbeea45544d0ede49ce1f58a931eea09a2dfc844
 i
 9src/main/java/com/KMA/BookingCare/Dto/SpecializedDto.java,6\b\6b39a7fe70730168383150a8c494e56cc131d70e
-k
-;src/main/java/com/KMA/BookingCare/Api/form/BookingForm.java,0\c\0ccd12b176b2fed26a6b9705346ae7849bcc990d
 ~
 Nsrc/main/java/com/KMA/BookingCare/Entity/MedicalExaminationScheduleEntity.java,4\e\4e6f1f593e40cf44149993a2b00aadd6e0da35d1
 f
@@ -81,8 +79,6 @@ v
 Fsrc/main/java/com/KMA/BookingCare/Controller/admin/ChatController.java,9\4\94685f02f664b678cefbd638569a89f2260aae51
 z
 Jsrc/main/java/com/KMA/BookingCare/Controller/admin/HandbookController.java,3\c\3c6ece3830759b86646300c375f2c1bdf5957bf7
-v
-Fsrc/main/java/com/KMA/BookingCare/Controller/admin/HomeController.java,e\4\e41f3e8ea5139ab4fc69284e38af5e518b74e74e
 ‘
 asrc/main/java/com/KMA/BookingCare/Controller/admin/MedicalExaminationSheduleEntityController.java,f\9\f9a46fb18a62b4f2187356a2f97fd2b0a5db65ad
 m
@@ -99,3 +95,15 @@ h
 8src/main/java/com/KMA/BookingCare/Api/form/UserForm.java,4\7\47066014c400955bc24c46a619bc771477b74447
 _
 /src/main/java/com/KMA/BookingCare/Dto/User.java,4\5\4542f457026ff575d7d9d0f8de2e27623ed0f00f
+b
+2src/main/java/com/KMA/BookingCare/Api/UserApi.java,5\3\535b4b4673de9d14595948477498fab670b77c49
+j
+:src/main/java/com/KMA/BookingCare/Service/UserService.java,1\8\18f9314b41668bd0a597aaaf177b287fe655a3a3
+f
+6src/main/java/com/KMA/BookingCare/Api/HandbookApi.java,e\8\e8c133f5672a7df5379f585d766de191e5a346f2
+e
+5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
+o
+?src/main/java/com/KMA/BookingCare/config/WebSecurityConfig.java,c\0\c02f353e63e7b6174bcce1f868dd4aa8e0f90ccf
+}
+Msrc/main/java/com/KMA/BookingCare/Controller/client/HomeClientController.java,a\4\a4668b5d0f2660cebda4cee5d9f06d0168d4af85

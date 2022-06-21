@@ -1,6 +1,0 @@
-
-l
-java:S1128"VRemove this unused import 'org.springframework.security.core.userdetails.UserDetails'.(ÊÁ¥
-O
-java:S1128"9Remove this unused import 'com.KMA.BookingCare.Dto.Role'.(í‘ªï
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(î–¡±üÿÿÿÿ

@@ -4,11 +4,15 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +28,8 @@ import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 import com.KMA.BookingCare.Service.WorkTimeService;
 
 //@Controller
-@RestController(value = "/api")
+@RestController()
+@RequestMapping("/api")
 public class BookingApi {
 
 	private final Logger log = LoggerFactory.getLogger(BookingApi.class);
@@ -37,11 +42,19 @@ public class BookingApi {
 	
 	@PostMapping(value = "/booking")
 	public ResponseEntity<?>  booking(@ModelAttribute BookingForm form,HttpSession session) {
-		if(session.getAttribute("userDetails")!=null) {
-			MyUser user =(MyUser) session.getAttribute("userDetails");
-			form.setUserId(user.getId());
+		try {
+			if(session.getAttribute("userDetails")!=null) {
+				MyUser user =(MyUser) session.getAttribute("userDetails");
+				form.setUserId(user.getId());
+			}
+		}catch (Exception e){
+			log.error("login by app");
+			UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			MyUser userDetails = UserMapper.convertToMyUser(user);
+			form.setUserId(userDetails.getId());
 		}
-		System.out.println("test");
+
 		medicalServiceImpl.save(form);
 		return ResponseEntity.ok("true");
 	}
@@ -52,5 +65,4 @@ public class BookingApi {
 	 return new ResponseEntity<Object>(lstDtos, HttpStatus.OK);
 	}
 
-//	@GetMapping("/handbook/get")
 }
