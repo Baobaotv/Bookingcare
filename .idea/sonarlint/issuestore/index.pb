@@ -105,5 +105,3 @@ e
 5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
 o
 ?src/main/java/com/KMA/BookingCare/config/WebSecurityConfig.java,c\0\c02f353e63e7b6174bcce1f868dd4aa8e0f90ccf
-}
-Msrc/main/java/com/KMA/BookingCare/Controller/client/HomeClientController.java,a\4\a4668b5d0f2660cebda4cee5d9f06d0168d4af85

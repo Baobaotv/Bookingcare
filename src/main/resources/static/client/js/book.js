@@ -69,29 +69,51 @@ a.validate({
 	},
 
 	submitHandler: function(form) {
-		var data = new FormData(form);
+		var dataform = new FormData(form);
+		var object = {};
+		dataform.forEach(function(value, key){
+			object[key] = value;
+		});
+		var json = JSON.stringify(object);
 		var urlpath = window.location.origin;
-		alert('oke');
+
 		$.ajax({
 			url: '/api/booking',
 			type: "post",
-			enctype: 'multipart/form-data',
-			data: data,
-			processData: false,
-			contentType: false,
+			data: JSON.stringify(object),
+			dataType: 'json',
+			contentType: "application/json",
 			cache: false,
 			success: function(result) {
 				if($('#bookOn').prop("checked")){
 					sendNoti();
 				}
-					alert('Đăng kí thành công');
-					window.location
+				alert('Đăng kí thành công');
+				window.location
 					.replace(urlpath+"/home");
 			},
 			error: function(error) {
 				alert('Đã có lỗi xảy ra !');
 			}
 		});
+
+		// $.ajax({
+		// 	url: "/api/booking",
+		// 	type: "post",
+		// 	data: JSON.stringify(object),
+		// 	dataType: 'jsonp',
+		// 	success: function(result) {
+		// 		if($('#bookOn').prop("checked")){
+		// 			sendNoti();
+		// 		}
+		// 			alert('Đăng kí thành công');
+		// 			window.location
+		// 			.replace(urlpath+"/home");
+		// 	},
+		// 	error: function(error) {
+		// 		alert('Đã có lỗi xảy ra !');
+		// 	}
+		// });
 	}
 });
 

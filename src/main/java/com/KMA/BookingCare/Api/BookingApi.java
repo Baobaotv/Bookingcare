@@ -41,7 +41,7 @@ public class BookingApi {
 	private WorkTimeService workTimeserviceImpl;
 	
 	@PostMapping(value = "/booking")
-	public ResponseEntity<?>  booking(@ModelAttribute BookingForm form,HttpSession session) {
+	public ResponseEntity<?>  booking(@RequestBody BookingForm form, HttpSession session) {
 		try {
 			if(session.getAttribute("userDetails")!=null) {
 				MyUser user =(MyUser) session.getAttribute("userDetails");
@@ -56,6 +56,7 @@ public class BookingApi {
 		}
 
 		medicalServiceImpl.save(form);
+		System.out.println("++++++++++++++++++++++++++++++++++");
 		return ResponseEntity.ok("true");
 	}
 	
