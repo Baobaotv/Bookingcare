@@ -82,8 +82,8 @@ public class UserApi {
 			return ResponseEntity.ok("true");
 		
 	}
-	 @PostMapping(value = "/updateClient")
-	   public ResponseEntity<?> addUser(@ModelAttribute UpdateCientForm form) {
+	 @PutMapping (value = "/api/updateClient")
+	   public ResponseEntity<?> addUser(@RequestBody UpdateCientForm form) {
 		   userServiceImpl.updateClient(form);
 				return ResponseEntity.ok("true");
 			

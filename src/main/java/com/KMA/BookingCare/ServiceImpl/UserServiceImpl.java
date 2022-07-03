@@ -382,7 +382,7 @@ public class UserServiceImpl implements UserService{
 		entity.setFullName(form.getFullName());
 		entity.setEmail(form.getEmail());
 		entity.setPhoneNumber(form.getPhone());
-		if(form.getPasswod()!=null&&!form.getPasswod().equals("")) {
+		if(form.getPasswod() != null && !form.getPasswod().equals("")) {
 			entity.setPassword(passwordEncoder.encode(form.getPasswod()));
 		}
 		userRepository.save(entity);

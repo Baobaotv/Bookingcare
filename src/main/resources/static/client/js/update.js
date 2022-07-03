@@ -79,14 +79,19 @@ function myFunction() {
 
 		submitHandler: function(form) {
 			var data = new FormData(form);
+			var object = {};
+			dataform.forEach(function(value, key){
+				object[key] = value;
+			});
+			var json = JSON.stringify(object);
 			$.ajax({
 
-				url: '/updateClient',
-				type: "post",
+				url: '/api/updateClient',
+				type: "put",
 				enctype: 'multipart/form-data',
-				data: data,
-				processData: false,
-				contentType: false,
+				data: JSON.stringify(object),
+				dataType: 'json',
+				contentType: "application/json",
 				cache: false,
 				success: function(result) {
 			
