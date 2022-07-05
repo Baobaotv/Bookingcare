@@ -109,3 +109,7 @@ b
 2src/main/java/com/KMA/BookingCare/Api/AuthApi.java,7\0\70f7cefbec88469d0abd205b4203e85b00b9f685
 v
 Fsrc/main/java/com/KMA/BookingCare/Controller/admin/HomeController.java,e\4\e41f3e8ea5139ab4fc69284e38af5e518b74e74e
+}
+Msrc/main/java/com/KMA/BookingCare/Controller/client/HomeClientController.java,a\4\a4668b5d0f2660cebda4cee5d9f06d0168d4af85
+e
+5src/main/java/com/KMA/BookingCare/Api/BookingApi.java,1\0\10ea46e556c089cdb36774d89c0c9c2ada47ac97

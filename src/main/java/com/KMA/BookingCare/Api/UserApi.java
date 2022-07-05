@@ -122,7 +122,7 @@ public class UserApi {
 		return ResponseEntity.ok(user);
 	}
 
-	@GetMapping(value = "api/user/search-docter")
+	@PostMapping(value = "api/user/search-docter")
 	public List<User> searchDocter (@RequestBody searchDoctorForm form, @PageableDefault(page = 0, size = 10) Pageable pageable){
 		log.info("Request to search docter {}", form);
 		List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, pageable);
