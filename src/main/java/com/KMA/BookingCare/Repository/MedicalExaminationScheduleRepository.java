@@ -23,4 +23,14 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 	Integer updateByStatus(@Param("status") Integer status,@Param("ids") List<String> ids);
 
 	Boolean existsByDateAndAndDoctorIdAndWorkTimeID(String date, Long docterId, Long workTimeId);
+
+	@Query(value = "SELECT COUNT(*) FROM medical_examination_schedule m " +
+			"WHERE m.date =:date and m.doctor_id = :idDoctor and m.work_time_id >:startId and m.work_time_id<=:endId ", nativeQuery = true)
+	Long countMedicalWhenChangeWk(@Param("date") String date, @Param("idDoctor") Long idDoctor,
+								  @Param("startId") Long startId, @Param("endId") Long endId);
+
+	@Query(value = "select * from medical_examination_schedule m \n" +
+			"where m.date = :date and m.doctor_id =:doctorId \n" +
+			"order by work_time_id asc", nativeQuery = true)
+	List<MedicalExaminationScheduleEntity> findAllByDateAnđoctorId(@Param("date") String date,@Param("doctorId")Long doctorId);
 }

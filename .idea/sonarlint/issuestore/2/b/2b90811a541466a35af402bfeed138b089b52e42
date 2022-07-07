@@ -1,20 +1,0 @@
-
-V	java:S125="<This block of commented-out lines of code should be removed.(´Ê´èıÿÿÿÿ
-V	java:S125C"<This block of commented-out lines of code should be removed.(ıáÛ•úÿÿÿÿ
-<
-java:S1452K"&Remove usage of generic wildcard type.(ÓÉ«’
-M
-java:S1135O"2Complete the task associated to this TODO comment.(ÕÌ®şÿÿÿÿ
-X
-java:S1128"BRemove this unused import 'javax.servlet.http.HttpServletRequest'.(ø©¹…
-W
-java:S1128"ARemove this unused import 'org.springframework.http.HttpRequest'.(ÌÖÁÛ
-[
-java:S1128"@Remove this unused import 'org.springframework.http.HttpStatus'.(íŸ¤Šúÿÿÿÿ
-k
-java:S1128"URemove this unused import 'org.springframework.web.bind.annotation.RequestAttribute'.(³º„„
-k
-java:S1128"PRemove this unused import 'org.springframework.web.bind.annotation.RequestPart'.(æñ³şÿÿÿÿ
-[
-java:S1128$"ERemove this unused import 'io.netty.handler.codec.http.HttpResponse'.(™ô³
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(î–¡±üÿÿÿÿ

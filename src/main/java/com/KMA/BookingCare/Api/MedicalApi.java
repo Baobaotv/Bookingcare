@@ -1,13 +1,16 @@
 package com.KMA.BookingCare.Api;
 
+import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
+import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -144,6 +148,19 @@ public class MedicalApi {
 		//true da co lich
 		//false chua co lich
 		return ResponseEntity.ok(check);
+	}
+
+	@PostMapping(value = "/media/change-time-close")
+	public ResponseEntity<?> changTimeClose(@RequestBody ChangeTimeCloseForm changeTimeCloseForm) {
+		log.info("Request to changTimeClose {}");
+		System.out.println(changeTimeCloseForm.getIdWk()+"-"+ changeTimeCloseForm.getIdMedical());
+		boolean result = medicalServiceImpl.changTimeClose(changeTimeCloseForm);
+		if (result) {
+			return  ResponseEntity.ok(HttpStatus.OK);
+		} else {
+			return  ResponseEntity.badRequest().build();
+		}
+
 	}
 
 

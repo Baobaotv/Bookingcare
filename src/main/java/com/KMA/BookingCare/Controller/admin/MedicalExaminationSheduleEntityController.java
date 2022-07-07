@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.KMA.BookingCare.Dto.WorkTimeDto;
+import com.KMA.BookingCare.Service.WorkTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +21,13 @@ public class MedicalExaminationSheduleEntityController {
 	
 	@Autowired
 	private MedicalExaminationScheduleService medicalServiceImpl;
+	@Autowired
+	private WorkTimeService workTimeServiceImpl;
 	
 	@GetMapping(value = {"/admin/managerMedical","/doctor/managerMedical"})
 	public String medicalPage(Model model,HttpSession session) {
 		MyUser user = (MyUser) session.getAttribute("userDetails");
-//		List<Medical> lstHandbook= new ArrayList<HandbookDto>();
+		List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
 		List<MedicalExaminationScheduleDto> lstMedical= new ArrayList<MedicalExaminationScheduleDto>();
 		if(user.getRoles().contains("ROLE_DOCTOR")) {
 			lstMedical= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
@@ -32,6 +36,7 @@ public class MedicalExaminationSheduleEntityController {
 		}
 
 		model.addAttribute("lstMedical", lstMedical);
+		model.addAttribute("lstWorkTime", lstWorkTime);
 		return "admin/views/managerMedical";
 	}
 	

@@ -72,7 +72,6 @@ public class UserApi {
 	@PostMapping(value = "/admin/api/managerUser/delete")
 	public ResponseEntity<?> deleteUserOke(@RequestBody formDelete userDelete) {
 		try {
-//			userServiceImpl.saveDoctor(form);
 			userServiceImpl.updateUserByStatus(userDelete.getIds());
 		} catch (Exception e ) {
 			// TODO Auto-generated catch block

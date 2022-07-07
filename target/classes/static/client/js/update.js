@@ -84,6 +84,7 @@ function myFunction() {
 				object[key] = value;
 			});
 			var json = JSON.stringify(object);
+			var urlpath=window.location.origin;
 			$.ajax({
 
 				url: '/api/updateClient',
@@ -95,7 +96,7 @@ function myFunction() {
 				cache: false,
 				success: function(result) {
 			
-						window.location.replace("http://localhost:8080/home")
+						window.location.replace(urlpath+"/home")
 						alert('Đăng kí thành công');
 				},
 				error: function(error) {

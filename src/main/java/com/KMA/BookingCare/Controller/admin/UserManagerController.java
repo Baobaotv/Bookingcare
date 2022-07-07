@@ -58,7 +58,6 @@ public class UserManagerController {
 		List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
 		List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
 		List<Role> lstRole= roleSeviceImpl.findAll();
-//		List<User> lstUser= userServiceImpl.findAllByStatus(1,pageable);
 		model.addAttribute("lstRole", lstRole);
 		model.addAttribute("lstWorkTime", lstWorkTime);
 		model.addAttribute("lstHospital", lstHospital);

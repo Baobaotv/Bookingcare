@@ -1,8 +1,13 @@
 package com.KMA.BookingCare.ServiceImpl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
+import com.cloudinary.api.exceptions.BadRequest;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -85,6 +90,90 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public boolean changTimeClose(ChangeTimeCloseForm changeTimeCloseForm) {
+		Long idWk = changeTimeCloseForm.getIdWk();
+		MedicalExaminationScheduleEntity itemUpdate = medicalRepository.findById(changeTimeCloseForm.getIdMedical()).get();
+		if(!validateChangTimeClose(changeTimeCloseForm, itemUpdate)){
+			return false;
+		};
+		String date = "";
+		Long count = medicalRepository.countMedicalWhenChangeWk(
+				itemUpdate.getDate(),itemUpdate.getDoctor().getId(), itemUpdate.getWorkTimeID(), idWk
+		);
+		List<MedicalExaminationScheduleEntity> lstUpdate = new ArrayList<>();
+		if(count == 0) {
+			//update
+			itemUpdate.setWorkTimeID(idWk);
+			medicalRepository.save(itemUpdate);
+		} else {
+			// lst medical, id > changTimeClose.idMedical
+			do {
+				List<MedicalExaminationScheduleEntity> lst = new ArrayList<>();
+				if (Strings.isEmpty(date)) {
+					// lst get theo id
+					lst = medicalRepository.findAllByDateAnđoctorId(itemUpdate.getDate(), itemUpdate.getDoctor().getId());
+				}else {
+					// lst get theo id va date
+					lst = medicalRepository.findAllByDateAnđoctorId(date, itemUpdate.getDoctor().getId());
+				}
+
+				for (MedicalExaminationScheduleEntity item : lst) {
+					if (item.getWorkTimeID() < idWk ) {
+						if (idWk <= 16 ) {
+							// truong hop tang nhưng chua vuot qua ca cuoi ngay
+							item.setWorkTimeID(idWk);
+							idWk = idWk +1;
+
+						} else {
+							// truong hop vuot qua ca cuoi ngay
+							//cong ngay
+							if(Strings.isEmpty(date) || Strings.isBlank(date)) {
+								date = plusDate(itemUpdate.getDate());
+							} else {
+								date = plusDate(date);
+							}
+							idWk = 1L;
+							item.setWorkTimeID(idWk);
+							item.setDate(date);
+							idWk ++;
+						}
+						lstUpdate.add(item);
+					} else {
+						if(!date.equals(itemUpdate.getDate()) && !Strings.isEmpty(date)) {
+							item.setWorkTimeID(idWk);
+							idWk = idWk +1;
+						} else {
+							date = "";
+							break;
+						}
+
+					}
+				}
+			} while (Strings.isEmpty(date) || Strings.isBlank(date));
+			medicalRepository.saveAll(lstUpdate);
+		}
+		return  true;
+	}
+
+	public String plusDate(String date) {
+		String[] arr = date.split("-");
+		LocalDate l = LocalDate.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
+		l = l.plusDays(1);
+		date = l.toString();
+		return date;
+	}
+
+	public boolean validateChangTimeClose(ChangeTimeCloseForm changeTimeCloseForm, MedicalExaminationScheduleEntity entity) {
+		if(changeTimeCloseForm.getIdWk() == null || changeTimeCloseForm.getIdWk().equals("") ) {
+			return false;
+		}
+		if (changeTimeCloseForm.getIdWk() <= entity.getWorkTimeID()) {
+			return false;
+		}
+		return  true;
 	}
 
 }

@@ -18,20 +18,27 @@
 						<button style="width: 60px;"type="button"
 							class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
 							data-toggle="modal" data-target="#exampleModal"
-							title='Xem chi tiêt'  id="btnInforMedia">
+							title='Xem chi tiết'  id="btnInforMedia">
 							<span> <i class="bi bi-eye"></i>
 							</span>
 						</button>
 						<button type="button" style="width: 60px;" class="btn btn-primary"
-							 id ="btnComplete">
+							 id ="btnComplete" title='Hoàn thành lịch khám'>
 							<span> <i class="bi bi-check2-square"></i>
 							</span>
 						</button>
 
-						
+						<button style="width: 60px;"type="button"
+								class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
+								data-toggle="modal" data-target="#updateTimeClose"
+								title='Thay đổi thời gian kết thúc'  id="btnUpdateTimeClose">
+							<span> <i class="bi bi-eye"></i>
+							</span>
+						</button>
+
 						<button style="width: 60px;" id="btnDeleteMedical" type="button"
 							class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-							title='Xóa sản phẩm'>
+							title='Xóa lịch khám'>
 							<span> <i class="far fa-trash-alt"></i>
 							</span>
 						</button>
@@ -50,7 +57,7 @@
 											<div class="col-12">
 												<div class="card">
 													<div class="card-header">
-														<h4 class="card-title">Quản lịch khám</h4>
+														<h4 class="card-title">Quản lý lịch khám</h4>
 													</div>
 													<div class="card-content">
 														<div class="card-body">
@@ -172,11 +179,6 @@
 										<button type="button" class="btn btn-secondary"
 											data-dismiss="modal">Close</button>
 
-
-									<!-- 	<button type="button" id="addMedical" class="btn btn-primary">Thêm
-											bài viết</button>
-										<button type="button" id="editMedical" class="btn btn-primary">Cập
-											nhập thông tin</button> -->
 									</div>
 
 								</div>
@@ -185,6 +187,86 @@
 
 
 					</form>
+				</div>
+
+				<div class="modal fade" id="updateTimeClose" tabindex="-1"
+					 aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-xl" role="document">
+						<div class="modal-content">
+
+							<div class="modal-body">
+								<div class="row match-height">
+									<div class="col-12">
+										<div class="card">
+											<div class="card-header">
+												<h4 class="card-title">Thay đổi thời gian kết thúc khám</h4>
+											</div>
+											<div class="card-content">
+												<div class="card-body">
+
+													<div class="row">
+														</br>
+														<div class="col-md-6 col-12">
+															<div class="form-group">
+																<label for="first-name-column">Tên bệnh nhân: </label>
+
+																<label for="first-name-column" id="namePatientTime"></label>
+															</div>
+														</div>
+														<div class="col-md-6 col-12">
+															<div class="form-group">
+																<div class="form-group">
+																	<label for="first-name-column">Ca khám hiện tại: </label>
+
+																	<label for="first-name-column"id="wordTimeTimeOld"></label>
+																</div>
+															</div>
+														</div>
+														<br></br>
+
+
+														<div class="col-md-12 col-24">
+															<div class="form-group">
+																<label for="email-id-column">Chọn ca khám muốn kết thúc</label>
+																<th:block th:each="itemlstWorkTime : ${lstWorkTime}">
+																	<div class="form-check form-check-inline">
+																		<input class="form-check-input checkWorkTime"
+																			   type="radio" name="workTimeId"
+																			   id="inlineCheckbox1"
+																			   th:value="${itemlstWorkTime.id}"> <label
+																			th:utext="${itemlstWorkTime.time}"
+																			class="form-check-label " for="inlineCheckbox1"></label>
+																	</div>
+																</th:block>
+															</div>
+															<input type="hidden" id="idMedicalChange" value="">
+														</div>
+
+													</div>
+
+												</div>
+<!--												<div class="modal-footer">-->
+<!--													<button type="button" class="btn btn-secondary"-->
+<!--															data-dismiss="modal">Close</button>-->
+
+
+
+<!--													-->
+<!--												</div>-->
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+										data-dismiss="modal">Close</button>
+								<button type="button" id="changeTime" class="btn btn-primary">Xác nhận</button>
+							</div>
+
+						</div>
+					</div>
 				</div>
 
 
