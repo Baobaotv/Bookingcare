@@ -164,7 +164,7 @@ $(document)
 								},
 								error: function(error) {
 									window.location.replace(urlpath+"/admin/managerMedical")
-									alert('Đã có lỗi xảy ra !');
+									alert('Đã có lỗi xảy ra ! Bạn chưa chọn thời gian (hoặc thời gian không thoả mãn)');
 								}
 							});
 

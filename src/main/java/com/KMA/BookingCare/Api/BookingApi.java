@@ -46,17 +46,19 @@ public class BookingApi {
 			if(session.getAttribute("userDetails")!=null) {
 				MyUser user =(MyUser) session.getAttribute("userDetails");
 				form.setUserId(user.getId());
+			} else {
+				log.error("login by app");
+				Object result = SecurityContextHolder.getContext().getAuthentication()
+						.getPrincipal();
+				UserDetailsImpl user = (UserDetailsImpl) result;
+				MyUser userDetails = UserMapper.convertToMyUser(user);
+				form.setUserId(userDetails.getId());
 			}
 		}catch (Exception e){
-			log.error("login by app");
-			UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-					.getPrincipal();
-			MyUser userDetails = UserMapper.convertToMyUser(user);
-			form.setUserId(userDetails.getId());
+			log.error(e.getMessage());
 		}
 
-		medicalServiceImpl.save(form);
-		System.out.println("++++++++++++++++++++++++++++++++++");
+//		medicalServiceImpl.save(form);
 		return ResponseEntity.ok("true");
 	}
 	

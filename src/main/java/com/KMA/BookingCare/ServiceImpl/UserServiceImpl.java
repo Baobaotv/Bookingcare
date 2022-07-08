@@ -81,11 +81,14 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void add(User user,String nameRole) {
 		UserEntity userEntity= new UserEntity();
-		userEntity.setId(user.getId());
+		if(user.getId() != null && !user.getId().equals("")) {
+			userEntity.setId(user.getId());
+		}
 	    userEntity.setEmail(user.getEmail());
 	    userEntity.setUsername(user.getUsername());
 	    userEntity.setLocation(user.getLocation());
 	    userEntity.setSex(user.getSex());
+		userEntity.setPhoneNumber(user.getPhone());
 	    userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 	
 	    if(nameRole.equals("admin")) {
