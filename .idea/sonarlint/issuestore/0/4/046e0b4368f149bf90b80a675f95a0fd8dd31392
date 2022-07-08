@@ -1,0 +1,26 @@
+
+A
+java:S1452-"&Remove usage of generic wildcard type.(âáÅãÿÿÿÿÿ
+<
+java:S14529"&Remove usage of generic wildcard type.(ò—Œ«
+U
+java:S1854W":Remove this useless assignment to local variable "lstDto".(™êòšýÿÿÿÿ
+0
+java:S3457F"Not enough arguments.(á©×ýÿÿÿÿ
+Y
+java:S1854m">Remove this useless assignment to local variable "lstMedical".(í·š¹úÿÿÿÿ
+Q	java:S125o"<This block of commented-out lines of code should be removed.(Û™Üˆ
+<
+java:S1452y"&Remove usage of generic wildcard type.(ˆŸ‚»
+B
+java:S1452‚"&Remove usage of generic wildcard type.(Ëš½Úøÿÿÿÿ
+<
+java:S1452"&Remove usage of generic wildcard type.(õ•Y
+<
+java:S1452š"&Remove usage of generic wildcard type.(©—Í%
+1
+java:S3457›"Not enough arguments.(¦‚Ò¿ùÿÿÿÿ
+O	java:S106œ"9Replace this use of System.out or System.err by a logger.(ëÄâå
+t
+java:S2293m"YReplace the type specification in this constructor call with the diamond operator ("<>").(í·š¹úÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

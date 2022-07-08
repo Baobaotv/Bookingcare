@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void add(User user,String nameRole) {
 		UserEntity userEntity= new UserEntity();
-		if(user.getId() != null && !user.getId().equals("")) {
+		if(user.getId() != null && !user.getId().equals("") && user.getId() != 0) {
 			userEntity.setId(user.getId());
 		}
 	    userEntity.setEmail(user.getEmail());

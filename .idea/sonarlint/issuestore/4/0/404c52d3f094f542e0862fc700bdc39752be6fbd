@@ -1,0 +1,25 @@
+
+M
+java:S1135!"2Complete the task associated to this TODO comment.(» æÿÿÿÿÿ
+l
+java:S21592"VRemove this call to "equals"; comparisons between unrelated types always return false.(®¨ÿ«
+m
+java:S3776`"RRefactor this method to reduce its Cognitive Complexity from 39 to the 15 allowed.(Î˜×«üÿÿÿÿ
+R
+java:S1854r"7Remove this useless assignment to local variable "lst".(¤ı£Ôÿÿÿÿÿ
+7
+java:S1116e"Remove this empty statement.(ôŸìúÿÿÿÿ
+m
+java:S2159ª"VRemove this call to "equals"; comparisons between unrelated types always return false.(«ï‰ñ
+X
+java:S1126­"AReplace this if-then-else statement by a single return statement.(Âòö
+o
+java:S2293<"YReplace the type specification in this constructor call with the diamond operator ("<>").(ç»äÎ
+o
+java:S2293G"YReplace the type specification in this constructor call with the diamond operator ("<>").(ç»äÎ
+o
+java:S2293W"YReplace the type specification in this constructor call with the diamond operator ("<>").(ç»äÎ
+k	java:S117E"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‘ã×šÿÿÿÿÿ
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(æş½˜
+R
+java:S3655b"7Call "Optional#isPresent()" before accessing the value.(÷¨šÆøÿÿÿÿ
