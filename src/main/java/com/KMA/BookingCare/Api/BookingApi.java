@@ -58,7 +58,7 @@ public class BookingApi {
 			log.error(e.getMessage());
 		}
 
-//		medicalServiceImpl.save(form);
+		medicalServiceImpl.save(form);
 		return ResponseEntity.ok("true");
 	}
 	
