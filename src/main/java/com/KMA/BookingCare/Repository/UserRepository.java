@@ -84,5 +84,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	@Query(value = "SELECT u FROM UserEntity  u inner join u.roles ur WHERE ur.id=2")
 	Page<User>  findAllDoctor(Pageable pageable);
 
+	@Query(value = "select email from user u where u.id in (\n" +
+			"select user_id from medical_examination_schedule where id in :ids " +
+			")", nativeQuery = true)
+	List<String> getEmailByIds(@Param("ids") Long[] ids);
+
 
 }

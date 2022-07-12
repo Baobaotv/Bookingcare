@@ -225,8 +225,8 @@
 
 									<th><label class="d-flex justify-content-center">Ngày cập nhâp cuối cùng
 											</label></th>
-										<th><label class="d-flex justify-content-center">Thao tác
-											</label></th>
+									<!--	<th><label class="d-flex justify-content-center">Thao tác
+											</label></th>-->
 
 
 								</tr>
@@ -248,7 +248,7 @@
 										<td style="text-align: center;"th:utext="${itemHandbook.modifiedDate}"></td>
 										<input name="id" type="hidden" id="contentHtml" th:value="${itemHandbook.content}">
 										<input name="id" type="hidden" id="descriptionHtml" th:value="${itemHandbook.description}">
-										<td style="text-align: center;"><a th:href="@{/cam-nang/{id}(id=${itemHandbook.id})}"><i class="bi bi-eye-fill"></i></a></td>
+<!--										<td style="text-align: center;"><a th:href="@{/cam-nang/{id}(id=${itemHandbook.id})}"><i class="bi bi-eye-fill"></i></a></td>-->
 										
 									</tr>
 								</th:block>

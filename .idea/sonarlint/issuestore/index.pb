@@ -57,8 +57,6 @@ p
 @src/main/java/com/KMA/BookingCare/Repository/RoleRepository.java,8\d\8d355ba8e7621ba101a0dadc57538260da7418c4
 w
 Gsrc/main/java/com/KMA/BookingCare/Repository/SpecializedRepository.java,6\6\661c51e7bf6006607a78581bdf661093a2296471
-p
-@src/main/java/com/KMA/BookingCare/Repository/UserRepository.java,d\c\dc3b479c1488df704c683b18eea92ce4e5b3bfd9
 t
 Dsrc/main/java/com/KMA/BookingCare/Repository/WorkTimeRepository.java,b\0\b00afea2f60e8c4c20a3b3b99b01172be911f7b0
 w
@@ -77,8 +75,6 @@ z
 Jsrc/main/java/com/KMA/BookingCare/Controller/admin/HandbookController.java,3\c\3c6ece3830759b86646300c375f2c1bdf5957bf7
 m
 =src/main/java/com/KMA/BookingCare/BookingCareApplication.java,0\5\05722043142ba31ad796d6082e9197f2bd604d69
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 p
 @src/main/java/com/KMA/BookingCare/Controller/UserController.java,b\8\b82e0b9869172664fcef50d7906f409c7af6e9c9
 d
@@ -101,10 +97,6 @@ asrc/main/java/com/KMA/BookingCare/Controller/admin/MedicalExaminationSheduleEnt
 Msrc/main/java/com/KMA/BookingCare/Controller/admin/UserManagerController.java,2\b\2b90811a541466a35af402bfeed138b089b52e42
 ~
 Nsrc/main/java/com/KMA/BookingCare/Entity/MedicalExaminationScheduleEntity.java,4\e\4e6f1f593e40cf44149993a2b00aadd6e0da35d1
-e
-5src/main/java/com/KMA/BookingCare/Api/MedicalApi.java,0\4\046e0b4368f149bf90b80a675f95a0fd8dd31392
-ˆ
-Xsrc/main/java/com/KMA/BookingCare/ServiceImpl/MedicalExaminationScheduleServiceImpl.java,4\0\404c52d3f094f542e0862fc700bdc39752be6fbd
 €
 Psrc/main/java/com/KMA/BookingCare/Service/MedicalExaminationScheduleService.java,c\6\c62637ff619f7f6edb2a795ce2d7e187d1caf4d1
 v
