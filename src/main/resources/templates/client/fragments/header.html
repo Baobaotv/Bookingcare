@@ -45,12 +45,11 @@
 							href="/register" class="login-item js-dangKy">Đăng Ký</a>
 					</div>
 					<th:block th:if="${#session?.getAttribute('userDetails')}">
-				<!-- 	<th:block th:if="${userDetails}"> -->
-				
+
 					<div class="login-list" >
 					
 						<a href="#" class="login-item js-dangNhap" id="test"
-							th:utext="${#session.getAttribute('userDetails').fullName}"></a> 
+							th:utext="${#session?.getAttribute('userDetails').fullName}"></a>
 							
 							<input type="hidden"
 							id="idUser" th:value="${#session?.getAttribute('userDetails').id}"> <a
