@@ -51,16 +51,6 @@ changeimg = () => {
 }
 // setInterval(changeimg, 1000)
 
-// $('.slider__list').slick({
-//     slidesToShow: 1,
-//     slidesToScroll: 1,
-//     autoplay: true,
-//     autoplaySpeed: 3000,
-//     arrows: false,
-//     isfinite: false,
-//     draggable: false,
-//     cssEase: 'linear'
-// });
 //  cconsep chugn cua content  là nut arow
 $('.content__list-video').slick({
     slidesToShow: 4,

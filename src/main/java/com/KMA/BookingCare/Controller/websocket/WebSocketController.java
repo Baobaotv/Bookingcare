@@ -42,13 +42,9 @@ public class WebSocketController {
 
 	@MessageMapping("/sendToUSer")
 	public void sendMessage(@Payload MessageDto chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-
-//    	MessageDto entity= messageServiceImpl.save(chatMessage);
-		System.out.println("tét");
 		interactiveserviceImpl.saveOrUpdate(chatMessage);
 		chatMessage = messageServiceImpl.save(chatMessage);
 		simpMessagingTemplate.convertAndSend("/topic/" + chatMessage.getReceiverId(), chatMessage);
-//        return chatMessage;
 	}
 
 //    UserSendToServer
@@ -77,12 +73,12 @@ public class WebSocketController {
 	}
 
 	@MessageMapping("/close")
-	  public void close(@Payload MessageDto chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-	    	if(chatMessage.getReceiverId()==0) {
-	    		simpMessagingTemplate.convertAndSend("/topic/server", chatMessage);
-	    	}else {
-	    		simpMessagingTemplate.convertAndSend("/topic/" + chatMessage.getReceiverId(), chatMessage);
-	    	}
+	public void close(@Payload MessageDto chatMessage, SimpMessageHeaderAccessor headerAccessor) {
+		if(chatMessage.getReceiverId()==0) {
+			simpMessagingTemplate.convertAndSend("/topic/server", chatMessage);
+		}else {
+			simpMessagingTemplate.convertAndSend("/topic/" + chatMessage.getReceiverId(), chatMessage);
+		}
 	}
 	
 	@MessageMapping("/notification")
@@ -104,8 +100,7 @@ public class WebSocketController {
 		
 		interactiveserviceImpl.saveOrUpdate(messageDoctor);
 		messageDoctor = messageServiceImpl.save(messageDoctor);
-//		messageUser = messageServiceImpl.save(messageUser);
-		
+
 		simpMessagingTemplate.convertAndSend("/topic/" + messageDoctor.getReceiverId(), messageDoctor);
 		simpMessagingTemplate.convertAndSend("/topic/" + messageUser.getReceiverId(), messageUser);
 	}
@@ -120,12 +115,9 @@ public class WebSocketController {
 
 	@MessageMapping("/sendToHieu")
 	public void sendMessageToHieu(@Payload MessageDto chatMessage) {
-
-		System.out.println("tét");
 		interactiveserviceImpl.saveOrUpdate(chatMessage);
 		chatMessage = messageServiceImpl.save(chatMessage);
 		simpMessagingTemplate.convertAndSend("/topic/hieu" , chatMessage);
-//        return chatMessage;
 	}
 
 

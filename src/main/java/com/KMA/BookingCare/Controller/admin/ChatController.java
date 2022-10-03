@@ -58,7 +58,6 @@ public class ChatController {
 		  UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
 				  .getPrincipal();
 		  MyUser userDetails = UserMapper.convertToMyUser(user);
-//	    	List<MessageDto> lstMessageDto= messageServiceImpl.findBySenderOrReceiver(userDetails.getId(),userDetails.getId());
 			List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
 	    	Object[] mang = new Object[2];
 	    	mang[0]=userDetails;
@@ -68,7 +67,6 @@ public class ChatController {
 	    }
 	  @RequestMapping(path = "/showLstUser", method = RequestMethod.POST)
 	    public ResponseEntity<?> showLstUser(Model model, @RequestBody Long id) {
-//	    	List<UserEntity> lstEntity= userServiceImpl.findLstUser();
 	    	User dto = userServiceImpl.findOneById(id);
 	        return new ResponseEntity<User>(dto, HttpStatus.OK);
 	    }
