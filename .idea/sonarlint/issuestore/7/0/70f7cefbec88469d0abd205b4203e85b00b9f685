@@ -1,0 +1,20 @@
+
+A
+java:S14526"&Remove usage of generic wildcard type.(°ğÏ–ûÿÿÿÿ
+a
+java:S1612>"KReplace this lambda with method reference 'GrantedAuthority::getAuthority'.(¡©é½
+H
+java:S1452H"&Remove usage of generic wildcard type.(Äéúûÿÿÿÿ8ŠùªÈ”0
+d
+java:S1128"BRemove this unused import 'com.KMA.BookingCare.Dto.SignupRequest'.(§Äóûùÿÿÿÿ8Ê¯È”0
+_
+java:S1128"BRemove this unused import 'com.KMA.BookingCare.Entity.RoleEntity'.(Ş©ˆÆ8Ê¯È”0
+_
+java:S1128"BRemove this unused import 'com.KMA.BookingCare.Entity.UserEntity'.(¬Úü8Ê¯È”0
+J
+java:S1128".Remove this unused import 'java.util.HashSet'.(Ê‚êX8Ê¯È”0
+L
+java:S1128"*Remove this unused import 'java.util.Set'.(ö²„¤şÿÿÿÿ8Ê¯È”0
+L
+java:S5411I"*Use the primitive boolean expression here.(—¬Íßÿÿÿÿÿ8æú¬È”0
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Š†«Ïøÿÿÿÿ

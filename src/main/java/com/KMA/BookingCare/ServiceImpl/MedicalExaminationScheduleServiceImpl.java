@@ -31,8 +31,8 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Autowired
 	private UserRepository userRepository;
 
-//	@Autowired
-//	public JavaMailSender emailSender;
+	@Autowired
+	public JavaMailSender emailSender;
 	
 	@Override
 	public void  save(BookingForm form) {
@@ -160,7 +160,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 				}
 			} while (Strings.isEmpty(date) || Strings.isBlank(date));
 			medicalRepository.saveAll(lstUpdate);
-			sendMail(lstUpdate);
+//			sendMail(lstUpdate);
 
 		}
 		return  true;
@@ -184,7 +184,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		return  true;
 	}
 
-	public void sendMail(List<MedicalExaminationScheduleEntity> lstUpdate) {
+	private void sendMail(List<MedicalExaminationScheduleEntity> lstUpdate) {
 		Long[] ids = new Long[lstUpdate.size()];
 		for(int i = 0; i<lstUpdate.size();i++) {
 			ids[i] = lstUpdate.get(i).getId();
@@ -197,15 +197,15 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		content.append("Mời bạn truy cập vào hệ thống để cập nhập lại tình hình ca khám của mình. ");
 		content.append("Bookingcare rất xin lỗi vì sự cố trên. ");
 		content.append("Chúng tôi xin chân thành cảm ơn!");
-//		if(lstEmail != null && lstEmail.size() != 0) {
-//			lstEmail.forEach(p->{
-//				SimpleMailMessage message = new SimpleMailMessage();
-//				message.setTo(p);
-//				message.setSubject("Hệ thống đăng kí lịch khám BookingCare ");
-//				message.setText(content.toString());
-//				emailSender.send(message);
-//			});
-//		}
+		if(lstEmail != null && lstEmail.size() != 0) {
+			lstEmail.forEach(p->{
+				SimpleMailMessage message = new SimpleMailMessage();
+				message.setTo(p);
+				message.setSubject("Hệ thống đăng kí lịch khám BookingCare ");
+				message.setText(content.toString());
+				emailSender.send(message);
+			});
+		}
 	}
 
 }
