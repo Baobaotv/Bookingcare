@@ -39,12 +39,8 @@ public class WebSocketController {
 	@Autowired
 	private CommentService commentServiceImpl;
 
-//	
-//	@Autowired 
-//	private UserService userServiceImpl;
-// send to user
+
 	@MessageMapping("/sendToUSer")
-//    @SendTo("/topic/publicChatRoom")
 	public void sendMessage(@Payload MessageDto chatMessage, SimpMessageHeaderAccessor headerAccessor) {
 
 //    	MessageDto entity= messageServiceImpl.save(chatMessage);
@@ -120,6 +116,16 @@ public class WebSocketController {
 	  public void comment(@Payload CommentDto commentDto, SimpMessageHeaderAccessor headerAccessor) {
 		commentDto = commentServiceImpl.save(commentDto);
 	    	simpMessagingTemplate.convertAndSend("/topic/comment" , commentDto);
+	}
+
+	@MessageMapping("/sendToHieu")
+	public void sendMessageToHieu(@Payload MessageDto chatMessage) {
+
+		System.out.println("tét");
+		interactiveserviceImpl.saveOrUpdate(chatMessage);
+		chatMessage = messageServiceImpl.save(chatMessage);
+		simpMessagingTemplate.convertAndSend("/topic/hieu" , chatMessage);
+//        return chatMessage;
 	}
 
 

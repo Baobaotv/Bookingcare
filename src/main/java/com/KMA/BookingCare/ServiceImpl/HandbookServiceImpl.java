@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,7 +48,9 @@ public class HandbookServiceImpl implements HandbookService{
 	@Override
 	public void saveHandbook(HandbookForm form) throws ParseException {
 //		UserDetails userDetails= (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 		HandbookEntity entity= new HandbookEntity();
 		if(form.getId()!=null) {
 			SimpleDateFormat datFormate = new SimpleDateFormat("dd/MM/yyyy");
@@ -92,14 +95,9 @@ public class HandbookServiceImpl implements HandbookService{
 	}
 	
 	@Override
-	public List<HandbookDto> findAllByStatusPageable(Integer status,Pageable pageable) {
-		List<HandbookEntity> lstEntity= handbookRepository.findAllByStatus(status,pageable);
-		List<HandbookDto> lstDto = new ArrayList<HandbookDto>();
-		for(HandbookEntity entity:lstEntity) {
-			HandbookDto dto =HandbookMapper.covertToDto(entity);
-			lstDto.add(dto);
-		}
-		return lstDto;
+	public Page<HandbookDto> findAllByStatusPageable(Integer status, Pageable pageable) {
+		Page<HandbookDto> dtos= handbookRepository.findAllByStatus(status,pageable);
+		return dtos;
 	}
 
 	@Override
@@ -118,6 +116,12 @@ public class HandbookServiceImpl implements HandbookService{
 	public HandbookDto findOneById(Long id) {
 		HandbookEntity entity= handbookRepository.findOneById(id);
 		HandbookDto dto= HandbookMapper.covertToDto(entity);
+		return dto;
+	}
+
+	@Override
+	public HandbookDto findOneByIdApi(Long id) {
+		HandbookDto dto= handbookRepository.findOneByIdApi(id);
 		return dto;
 	}
 
@@ -169,7 +173,7 @@ public class HandbookServiceImpl implements HandbookService{
 
 	@Override
 	public List<HandbookDto> searchHandbookAndPageable(searchHandbookForm form,Long userId, Pageable page) {
-		
+
 		if(form.getTitle()==null||form.getTitle().equals("")) {
 			form.setTitle("");
 		}
@@ -180,6 +184,12 @@ public class HandbookServiceImpl implements HandbookService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public Page<HandbookDto> searchHandbookAndPageableapi(String title, Long specialzed,String userId, Pageable pageable) {
+		Page<HandbookDto> page= handbookRepository.searchHandbookAndPageableApi(title,specialzed,userId,pageable);
+		return page;
 	}
 
 	

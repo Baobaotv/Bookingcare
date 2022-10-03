@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Dto.WorkTimeDto;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 
 public class UserMapper {
 	public static User convertToDto(UserEntity entity) {
@@ -46,6 +48,19 @@ public class UserMapper {
 			dto.setLstWorkTime( targetList);
 		}
 		return dto;
+	}
+
+	public static MyUser convertToMyUser(UserDetailsImpl user) {
+		MyUser myUser= new MyUser(user.getUsername(), user.getPassword(), true, true, true, true, user.getAuthorities());
+		myUser.setFullName(user.getFullName());
+		myUser.setId(user.getId());
+		myUser.setImg(user.getImg());
+		List<String> lstRole= new ArrayList<String>();
+		user.getAuthorities().forEach(p-> {
+			lstRole.add(p.getAuthority());
+		});
+		myUser.setRoles(lstRole);
+		return myUser;
 	}
 
 }

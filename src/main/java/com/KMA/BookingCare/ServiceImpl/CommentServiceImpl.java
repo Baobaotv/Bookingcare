@@ -3,6 +3,8 @@ package com.KMA.BookingCare.ServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Service.CommentService;
 @Service
 public class CommentServiceImpl implements CommentService{
+
+	private final Logger log = LoggerFactory.getLogger(CommentServiceImpl.class);
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -54,6 +58,12 @@ public class CommentServiceImpl implements CommentService{
 	public void delete(Long id) {
 		commentRepository.deleteById(id);
 		
+	}
+
+	@Override
+	public Boolean existsByHandbookId(Long id) {
+		log.debug("Request to check existsByHandbookId {}",id);
+		return commentRepository.existsByHandbookId(id);
 	}
 
 }

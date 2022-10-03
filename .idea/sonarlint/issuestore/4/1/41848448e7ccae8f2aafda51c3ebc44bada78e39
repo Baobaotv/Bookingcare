@@ -1,0 +1,6 @@
+
+^
+java:S1128"HRemove this unused import 'com.fasterxml.jackson.annotation.JsonIgnore'.(þ‘‹„
+t
+java:S2293s"YReplace the type specification in this constructor call with the diamond operator ("<>").(ŠÝÝ®þÿÿÿÿ
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬Ü—b

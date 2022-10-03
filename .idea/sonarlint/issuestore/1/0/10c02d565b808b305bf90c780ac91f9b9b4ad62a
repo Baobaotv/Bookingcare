@@ -1,0 +1,14 @@
+
+E
+java:S1128"*Remove this unused import 'java.util.Set'.(ö²„¤þÿÿÿÿ
+P
+java:S1128":Remove this unused import 'javax.persistence.CascadeType'.( ì¤Ê
+O
+java:S1128"9Remove this unused import 'javax.persistence.JoinColumn'.(´Å¼á
+S
+java:S1128"8Remove this unused import 'javax.persistence.JoinTable'.(ùö±µùÿÿÿÿ
+N
+java:S1128"9Remove this unused import 'javax.persistence.ManyToMany'.(Àð½
+t
+java:S2293<"YReplace the type specification in this constructor call with the diamond operator ("<>").(™ðûÉüÿÿÿÿ
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(¬Ü—b

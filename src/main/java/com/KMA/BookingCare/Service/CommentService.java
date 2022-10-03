@@ -9,4 +9,5 @@ public interface CommentService {
 	CommentDto save(CommentDto dto);
 	List<CommentDto> findAllByHandbookId(Long id);
 	void delete(Long id);
+	Boolean existsByHandbookId(Long id);
 }

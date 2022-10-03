@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -55,9 +57,17 @@ public class SpecializedServiceImpl implements SpecializedService{
 			return lstDto;
 		}
 
-		@Override
+	@Override
+	public Page<SpecializedDto> findAllByStatusApi(Integer status, Pageable pageable) {
+		Page<SpecializedDto> page = specializedRepository.findAllByStatusApi(1,pageable);
+		return page;
+	}
+
+	@Override
 		public void saveOrUpdateSpecialized(SpecializedForm form) throws ParseException {
-			MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 			SpecializedEntity entity= new SpecializedEntity();
 			if(form.getId()!=null) {
 				entity.setId(form.getId());
@@ -92,6 +102,16 @@ public class SpecializedServiceImpl implements SpecializedService{
 			
 		}
 
-	
+	@Override
+	public List<SpecializedDto> findRandomSpecicalized() {
+		List<SpecializedEntity> lstEntity = specializedRepository.findRandomSpecicalized(1);
+		List<SpecializedDto> lstDto = new ArrayList<SpecializedDto>();
+		for(SpecializedEntity entity: lstEntity) {
+			SpecializedDto dto = SpecializedMapper.convertToDto(entity);
+			lstDto.add(dto);
+		}
+		return lstDto;
+	}
+
 
 }

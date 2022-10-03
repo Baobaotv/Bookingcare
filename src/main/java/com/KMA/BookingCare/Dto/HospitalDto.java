@@ -40,6 +40,15 @@ public class HospitalDto {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
+	public HospitalDto() {
+	}
+
+	public HospitalDto(Long id, String name, String location, String description, String img) {
+		this.id = id;
+		this.name = name;
+		this.location = location;
+		this.description = description;
+		this.img = img;
+	}
 }

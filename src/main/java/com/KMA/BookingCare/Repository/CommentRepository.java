@@ -9,4 +9,6 @@ import com.KMA.BookingCare.Entity.CommentEntity;
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 	List<CommentEntity> findAllByHandbookId(Long id);
 
+	Boolean existsByHandbookId(Long id);
+
 }

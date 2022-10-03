@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,9 @@ public class InteractiveServiceImpl implements InteractiveService{
 
 	@Override
 	public List<InteractiveDto> findAll() {
-		MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 		List<InteractiveEntity> lstEntity= new ArrayList<InteractiveEntity>();
 		if(userDetails.getRoles().contains("ROLE_ADMIN")) {
 			lstEntity= interactiveRepository.findAllByYouId((long) 0);

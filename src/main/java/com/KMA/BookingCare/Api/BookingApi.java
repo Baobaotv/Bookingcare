@@ -4,14 +4,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.KMA.BookingCare.Api.form.BookingForm;
 import com.KMA.BookingCare.Api.form.ChangeDateForm;
@@ -23,28 +27,45 @@ import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 import com.KMA.BookingCare.Service.WorkTimeService;
 
-@Controller
+//@Controller
+@RestController()
+@RequestMapping("/api")
 public class BookingApi {
+
+	private final Logger log = LoggerFactory.getLogger(BookingApi.class);
+
 	@Autowired
 	private MedicalExaminationScheduleService medicalServiceImpl;
 	
 	@Autowired
 	private WorkTimeService workTimeserviceImpl;
 	
-	@PostMapping(value = "/api/booking")
-	public ResponseEntity<?>  booking(@ModelAttribute BookingForm form,HttpSession session) {
-		if(session.getAttribute("userDetails")!=null) {
-			MyUser user =(MyUser) session.getAttribute("userDetails");
-			form.setUserId(user.getId());
+	@PostMapping(value = "/booking")
+	public ResponseEntity<?>  booking(@RequestBody BookingForm form, HttpSession session) {
+		try {
+			if(session.getAttribute("userDetails")!=null) {
+				MyUser user =(MyUser) session.getAttribute("userDetails");
+				form.setUserId(user.getId());
+			} else {
+				log.error("login by app");
+				Object result = SecurityContextHolder.getContext().getAuthentication()
+						.getPrincipal();
+				UserDetailsImpl user = (UserDetailsImpl) result;
+				MyUser userDetails = UserMapper.convertToMyUser(user);
+				form.setUserId(userDetails.getId());
+			}
+		}catch (Exception e){
+			log.error(e.getMessage());
 		}
-		System.out.println("test");
+
 		medicalServiceImpl.save(form);
 		return ResponseEntity.ok("true");
 	}
 	
-	@PostMapping(value = "/api/changedate")
+	@PostMapping(value = "/changedate")
 	public ResponseEntity<?> changeDate(@RequestBody ChangeDateForm form) {
 	List<WorkTimeDto> lstDtos = workTimeserviceImpl.findByDateAndDoctorId(form.getDate(), form.getIdDoctor());
 	 return new ResponseEntity<Object>(lstDtos, HttpStatus.OK);
 	}
+
 }

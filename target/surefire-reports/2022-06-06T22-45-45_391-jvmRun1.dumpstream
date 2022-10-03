@@ -1,0 +1,41 @@
+# Created at 2022-06-06T22:45:56.036
+TestSet has not finished before stream error has appeared >> initializing exit by non-null configuration: null
+java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+	at org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:391)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+
+
+# Created at 2022-06-06T22:45:59.476
+Unexpected IOException with stream: 2022-06-06 22:45:59.476  INFO 14652 --- [           main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@168ffb0, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@ca90087, org.springframework.security.web.context.SecurityContextPersistenceFilter@1418a1bd, org.springframework.security.web.header.HeaderWriterFilter@77e42cbf, org.springframework.web.filter.CorsFilter@59a49dbc, org.springframework.security.web.authentication.logout.LogoutFilter@508de524, com.KMA.BookingCare.config.AuthTokenFilter@322c70bc, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@31c17fd4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@45594dfe, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6dde03ce, org.springframework.security.web.session.SessionManagementFilter@38f2342b, org.springframework.security.web.access.ExceptionTranslationFilter@59e24c62, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@1e5f3c4a]
+
+
+# Created at 2022-06-06T22:46:01.405
+Unexpected IOException with stream: 2022-06-06 22:46:01.405  INFO 14652 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+
+
+# Created at 2022-06-06T22:46:01.405
+Unexpected IOException with stream: 2022-06-06 22:46:01.405  INFO 14652 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@13c147f8]]
+
+
+# Created at 2022-06-06T22:46:01.405
+Unexpected IOException with stream: 2022-06-06 22:46:01.405  INFO 14652 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+
+
+# Created at 2022-06-06T22:46:01.421
+Unexpected IOException with stream: 2022-06-06 22:46:01.421  INFO 14652 --- [           main] c.K.B.BookingCareApplicationTests        : Started BookingCareApplicationTests in 14.063 seconds (JVM running for 15.672)
+
+
+# Created at 2022-06-06T22:46:01.452
+Unexpected IOException: 5,1,com.KMA.BookingCare.BookingCareApplicationTests,contextLoads,null,null,null
+
+
+# Created at 2022-06-06T22:46:01.624
+Unexpected IOException: 6,1,com.KMA.BookingCare.BookingCareApplicationTests,contextLoads,null,null,null
+
+
+# Created at 2022-06-06T22:46:01.640
+Unexpected IOException: 2,1,org.apache.maven.surefire.junitplatform.JUnitPlatformProvider,com.KMA.BookingCare.BookingCareApplicationTests,null,null,null
+
+

@@ -58,7 +58,6 @@ public class UserManagerController {
 		List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
 		List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
 		List<Role> lstRole= roleSeviceImpl.findAll();
-//		List<User> lstUser= userServiceImpl.findAllByStatus(1,pageable);
 		model.addAttribute("lstRole", lstRole);
 		model.addAttribute("lstWorkTime", lstWorkTime);
 		model.addAttribute("lstHospital", lstHospital);
@@ -73,10 +72,8 @@ public class UserManagerController {
 	}
 	@PostMapping(value = {"/admin/editProfile","/doctor/editProfile"})
 	public ResponseEntity<?> editProfilePage( Model model, @ModelAttribute UserForm form) {
-		System.out.println("test");
 		try {
 			userServiceImpl.saveDoctor(form);
-			
 		} catch (IllegalStateException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

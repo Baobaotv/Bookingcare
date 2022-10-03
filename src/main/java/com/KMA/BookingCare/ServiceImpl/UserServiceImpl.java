@@ -3,21 +3,18 @@ package com.KMA.BookingCare.ServiceImpl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.attribute.UserPrincipal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List
-
-;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,9 +56,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
 	@Autowired
-    private BCryptPasswordEncoder bcryptPasswordEncoder;
+	PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private WorkTimeService workTimeServiceImpl;
@@ -84,16 +81,16 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void add(User user,String nameRole) {
 		UserEntity userEntity= new UserEntity();
-		userEntity.setId(user.getId());
-//		userEntity.setName(user.getName());
+		if(user.getId() != null && !user.getId().equals("") && user.getId() != 0) {
+			userEntity.setId(user.getId());
+		}
 	    userEntity.setEmail(user.getEmail());
 	    userEntity.setUsername(user.getUsername());
-//	    userEntity.setBirthYear(user.getYearOfBirth());
 	    userEntity.setLocation(user.getLocation());
 	    userEntity.setSex(user.getSex());
-	    userEntity.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
+		userEntity.setPhoneNumber(user.getPhone());
+	    userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 	
-
 	    if(nameRole.equals("admin")) {
 	    	Set<RoleEntity> role= new HashSet<RoleEntity>(roleRepository.findAll());
 	    	userEntity.setRoles(role);
@@ -114,7 +111,7 @@ public class UserServiceImpl implements UserService{
 		UserEntity userEntity = new UserEntity();
 		UserDetails userDetails= (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String password= userDetails.getPassword();
-		userEntity.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
+		userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 		userRepository.save(userEntity);
 	}
 
@@ -141,7 +138,6 @@ public class UserServiceImpl implements UserService{
 		user.setPassword((userEntity.getPassword()));
 		user.setEmail(userEntity.getEmail());
 		user.setImg(userEntity.getImg());
-//		user.setRole(userEntity.getRole());
 		Set<RoleEntity> set = userEntity.getRoles();
 		Set<Role> roles = new HashSet<Role>();
 		for (RoleEntity roleEn : userEntity.getRoles()) {
@@ -171,7 +167,7 @@ public class UserServiceImpl implements UserService{
 				}
 			}
 		}else {
-			entity.setPassword(bcryptPasswordEncoder.encode(form.getPassword()));
+			entity.setPassword(passwordEncoder.encode(form.getPassword()));
 			entity.setUsername(form.getUsername());
 			entity.setStatus(1);
 			Set<RoleEntity> role= new HashSet<RoleEntity>(roleRepository.findByName(form.getRoleName()));
@@ -207,8 +203,6 @@ public class UserServiceImpl implements UserService{
 			}
 		}
 		entity= userRepository.save(entity);
-		System.out.println("xong");
-		
 	}
 
 	@Override
@@ -263,7 +257,6 @@ public class UserServiceImpl implements UserService{
 			}else {
 				
 			}
-			
 			Set<RoleEntity> lstRole= entity.getRoles();
 			StringBuilder roleName= new StringBuilder();
 			for(RoleEntity roleEntity: lstRole) {
@@ -327,7 +320,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> findAllBySpecialized(String date, Long specialized, Integer status) {
+	public List<User>  findAllBySpecialized(String date, Long specialized, Integer status) {
 		List<UserEntity> lstEntity= userRepository.findAllBySpecialized(date, specialized, status,1);
 		List<User> lstDto= new ArrayList<User>();
 		for(UserEntity entity: lstEntity) {
@@ -338,16 +331,25 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> findAllDoctorOfSpecialized(String date, Long specialized, Integer status) {
+	public List<User> findAllDoctorOfSpecialized( Long specialized, Integer status) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String date = formatter.format(new Date());
 		List<User> lstDto1=  findAllBySpecialized(date,  specialized,  status) ; //lấy danh sách những bác sĩ không có lịch khám trong ngày
 		List<User> lstDto2=  findAllByMedical(date,specialized, status);
 		lstDto1.addAll(lstDto2);
 		System.out.println("test");
 		return lstDto1;
 	}
-	
+
 	@Override
-	public List<User> findAllDoctorOfHospital(String date, Long hospitalId, Integer status) {
+	public Page<User> findAllDoctorOfSpecializedApi(Long specialized, Integer status, Pageable pageable) {
+		return  userRepository.findAllBySpecializedApi(specialized, status, pageable);
+	}
+
+	@Override
+	public List<User> findAllDoctorOfHospital( Long hospitalId, Integer status) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String date = formatter.format(new Date());
 		List<UserEntity> lstEntity1=  userRepository.findAllByHospital(date,  hospitalId,  status,1) ; //lấy danh sách những bác sĩ không có lịch khám trong ngày
 		List<UserEntity> lstEntity2=  userRepository.findAllByMedicalAndHospital(date,hospitalId, status,1);
 		for(UserEntity entity: lstEntity2) {
@@ -370,14 +372,21 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public Page<User> findAllDoctorOfHospitalApi(Long hospitalId, Integer status, Pageable pageable) {
+		return userRepository.findAllDoctorByHospitalAndStatus(hospitalId, status, pageable);
+	}
+
+	@Override
 	public void updateClient(UpdateCientForm form) {
-		MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		MyUser userDetails = UserMapper.convertToMyUser(user);
 		UserEntity entity = userRepository.findOneById(userDetails.getId());
 		entity.setFullName(form.getFullName());
 		entity.setEmail(form.getEmail());
 		entity.setPhoneNumber(form.getPhone());
-		if(form.getPasswod()!=null&&!form.getPasswod().equals("")) {
-			entity.setPassword(bcryptPasswordEncoder.encode(form.getPasswod()));
+		if(form.getPasswod() != null && !form.getPasswod().equals("")) {
+			entity.setPassword(passwordEncoder.encode(form.getPasswod()));
 		}
 		userRepository.save(entity);
 		
@@ -430,7 +439,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findOneDoctorAndWorktime(Long id, String date) {
+	public User findOneDoctorAndWorktime(Long id) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		String date = formatter.format(new Date());
 		UserEntity entity = userRepository.findOneById(id);
 		List<WorkTimeEntity> lstWkEntity= wkRepository.findByDateAndDoctorId(date, id);
 		Set<WorkTimeEntity> setWkEntity= new HashSet<WorkTimeEntity>(lstWkEntity);
@@ -475,6 +486,17 @@ public class UserServiceImpl implements UserService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public Page<User> findAllDoctor(Pageable pageable) {
+		return userRepository.findAllDoctor(pageable);
+	}
+
+	@Transactional
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		UserEntity user = userRepository.findByUsername(username);
+		return UserDetailsImpl.build(user);
 	}
 
 	

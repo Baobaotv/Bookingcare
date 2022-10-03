@@ -6,6 +6,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import io.jsonwebtoken.lang.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,10 +47,11 @@ public class HomeClientController {
 	
 //	@Autowired
 //	private SpecializedService specializedDerviceImpl;
+
+	private final Logger log = LoggerFactory.getLogger(HomeClientController.class);
 	
 	@Autowired
 	private UserService UserviceImpl;
-	
 	@Autowired
 	private HandbookService handbookServiceImpl;
 	@Autowired
@@ -58,17 +64,24 @@ public class HomeClientController {
 	private InteractiveService interactiveServiceImpl;
 	@Autowired
 	private CommentService commentServiceimpl;
-	
+
+	//done
 	@GetMapping(value = "/home")
 	public String homeClientPage(Model model,@RequestParam(required = false) String message,HttpSession session){
+		log.info("Reuqest to home page");
+		//
 		List<SpecializedDto> lstChuyenKhoa = specializedServiceImpl.findAll();
 		model.addAttribute("lstChuyenKhoa",lstChuyenKhoa);
+		//
 		List<HandbookDto> lstCamNang=handbookServiceImpl.findAllByStatus(1);
 		model.addAttribute("lstCamNang",lstCamNang);
+
 		List<HospitalDto> lstBenhVien=hospitalServiceImpl.findAllByStatus(1);
 		model.addAttribute("lstBenhVien",lstBenhVien);
+
 		List<User> lstBacsi= UserviceImpl.findRandomDoctor();
 		model.addAttribute("lstBacsi",lstBacsi);
+		//
 		List<HandbookDto> lstCamNangRandom=handbookServiceImpl.findRandomHandbook();
 		model.addAttribute("lstCamNangRandom",lstCamNangRandom);
 		if(message!=null) {
@@ -78,17 +91,22 @@ public class HomeClientController {
 			}
 		}
 		try {
-			MyUser userDetails = (MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			session.setAttribute("userDetails", userDetails);
-			System.out.println("Đăng nhập thành công");
+			Object result = SecurityContextHolder.getContext().getAuthentication()
+					.getPrincipal();
+			if (result != null && !result.equals("anonymousUser")) {
+				UserDetailsImpl user = (UserDetailsImpl) result;
+				MyUser userDetails = UserMapper.convertToMyUser(user);
+				session.setAttribute("userDetails", userDetails);
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println(e);
-			System.out.println("Error: User chưa đăng nhập!!!");
+			log.error(e.getMessage());
+			log.error("User chưa đăng nhập!!!");
 		}
-		return "/client/views/home";
+		return "client/views/home";
 	}
-	
+
+	//done
 	@GetMapping(value = "/chuyen-khoa")
 	public String specializedPage(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page){
 		Pageable pageable = PageRequest.of(page-1, 4);
@@ -96,59 +114,60 @@ public class HomeClientController {
 		model.addAttribute("lstDto",lstDto);
 		Integer curentPage=page;	
 		model.addAttribute("curentPage", curentPage);
-		return "/client/views/specialized";
+		return "client/views/specialized";
 	}
+	//done
 	@GetMapping(value="/chuyen-khoa/{id}")
 	public String  lstDoctorSpecialized(Model model,@PathVariable("id") Long id){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String strDate = formatter.format(new Date());
-		List<User> lstDto=UserviceImpl.findAllDoctorOfSpecialized(strDate,id,1);
+		//get all docter of sprcialzed
+		List<User> lstDto=UserviceImpl.findAllDoctorOfSpecialized(id,1);
 //		List<User> lstDto=UserviceImpl.findAllBySpecializedIdAndStatus(id, 1);
 		model.addAttribute("lstDto",lstDto);
 	  System.out.println("test");
-	    return "/client/views/doctorOfSpecialized";
+	    return "client/views/doctorOfSpecialized";
 	}
-	
+
+	//done
 	@GetMapping(value="/benh-vien/{id}")
 	public String  lstDoctorHospital(Model model,@PathVariable("id") Long id){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String strDate = formatter.format(new Date());
-		List<User> lstDto=UserviceImpl.findAllDoctorOfHospital(strDate,id,1);
+		List<User> lstDto=UserviceImpl.findAllDoctorOfHospital(id,1);
 //		List<User> lstDto=UserviceImpl.findAllBySpecializedIdAndStatus(id, 1);
 		model.addAttribute("lstDto",lstDto);
 	  System.out.println("test");
-	    return "/client/views/doctorOfSpecialized";
+	    return "client/views/doctorOfSpecialized";
 	}
-	
+
+	//done
 	@GetMapping(value="/bac-si/{id}")
 	public String  infoDoctor(Model model,@PathVariable("id") Long id){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String strDate = formatter.format(new Date());
-		User user=UserviceImpl.findOneDoctorAndWorktime(id, strDate);
+		User user=UserviceImpl.findOneDoctorAndWorktime(id);
 		model.addAttribute("user", user);
 	
 	  System.out.println("test");
-	    return "/client/views/infoDoctor";
+	    return "client/views/infoDoctor";
 	}
 	
 	@GetMapping(value = "/danh-cho-benh-nhan")
 	public String forPatient(Model model){
-		return "/client/views/forPatient";
+		return "client/views/forPatient";
 	}
 	@GetMapping(value = "/vai-tro")
 	public String role(Model model){
-		return "/client/views/role";
+		return "client/views/role";
 	}
 	
 	@GetMapping(value = "/lien-he")
 	public String contect(Model model){
-		return "/client/views/contect";
+		return "client/views/contect";
 	}
 	
 	@GetMapping(value = "/dieu-khoan")
 	public String rules(Model model){
-		return "/client/views/rules";
+		return "client/views/rules";
 	}
+	//done
 	@GetMapping(value = "/bac-si")
 	public String doctor(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page
 			,@ModelAttribute searchDoctorForm form){
@@ -163,7 +182,7 @@ public class HomeClientController {
 		Integer curentPage=page;
 		model.addAttribute("curentPage", curentPage);
 		
-		return "/client/views/doctor";
+		return "client/views/doctor";
 	}
 	
 //	 @PostMapping(value = "/searchDoctor")
@@ -177,7 +196,8 @@ public class HomeClientController {
 //			model.addAttribute("lstDto", lstDto);
 //		   return "/client/views/doctor";
 //	 }
-	
+
+	//done
 	@GetMapping(value = "/benh-vien")
 	public String hospital(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page){
 		Pageable pageable = PageRequest.of(page-1, 4);
@@ -185,16 +205,16 @@ public class HomeClientController {
 		model.addAttribute("lstDto", lstDto);
 		Integer curentPage=page;	
 		model.addAttribute("curentPage", curentPage);
-		
-		return "/client/views/hospital";
+		return "client/views/hospital";
 	}
 	
 	
 	@GetMapping(value = "/khieu-nai")
 	public String complain(Model model){
-		return "/client/views/complain";
+		return "client/views/complain";
 	}
-	
+
+	//done
 	@GetMapping(value = "/cam-nang")
 	public String handbookPage(Model model
 			,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page
@@ -208,30 +228,28 @@ public class HomeClientController {
 		model.addAttribute("formSearch",form);
 		Integer curentPage=page;
 		model.addAttribute("curentPage", curentPage);
-		return "/client/views/handbook";
+		return "client/views/handbook";
 	}
 	
-	
+	//done
 	@GetMapping(value="/cam-nang/{id}")
 	public String  contentHandbook(Model model,@PathVariable("id") Long id){
 		HandbookDto dto = handbookServiceImpl.findOneById(id);
 		List<CommentDto> lstComment= commentServiceimpl.findAllByHandbookId(id);
 		model.addAttribute("dto", dto);
 		model.addAttribute("lstComment", lstComment);
-	    return "/client/views/contentHandbook";
+	    return "client/views/contentHandbook";
 	}
 	
 	@GetMapping(value="/book/{idDoctor}/{idWorktime}/{date}")
 	public String  book(Model model,@PathVariable("idDoctor") Long idDoctor, @PathVariable("idWorktime") Long idWorktime,
 			@PathVariable("date") String date){
-//		HandbookDto dto = handbookServiceImpl.findOneById(id);
-//		model.addAttribute("dto", dto);y
 		User userDto = UserviceImpl.findOneById(idDoctor);
 		model.addAttribute("userDto", userDto);
 		model.addAttribute("date", date);
 		model.addAttribute("idWorktime", idWorktime);
 		System.out.println("test");
-	    return "/client/views/book";
+	    return "client/views/book";
 	}
 	
 	@GetMapping(value="/updateProfile")
@@ -239,14 +257,15 @@ public class HomeClientController {
 		MyUser userDetails = (MyUser) session.getAttribute("userDetails");
 		User userDto = UserviceImpl.findOneById(userDetails.getId());
 		model.addAttribute("userDto", userDto);
-	    return "/client/views/updateClient";
+	    return "client/views/updateClient";
 	}
+
 	@GetMapping(value="/showMedical")
 	public String  showMedical(Model model,HttpSession session){
 		MyUser userDetails= (MyUser) session.getAttribute("userDetails");
 		List<MedicalExaminationScheduleDto> lstDto = medicalServiceImpl.findAllByUserIdAndStatus(userDetails.getId(), 1);
 		model.addAttribute("lstDto", lstDto);
-	    return "/client/views/showMedical";
+	    return "client/views/showMedical";
 	}
 	
 	 
@@ -256,6 +275,6 @@ public class HomeClientController {
 			MyUser userDetails= (MyUser) session.getAttribute("userDetails");
 			List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
 			model.addAttribute("lstInteractive", lstInteractive);
-		    return "/client/views/message";
+		    return "client/views/message";
 		}
 }
