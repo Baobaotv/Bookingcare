@@ -26,14 +26,15 @@ public class InteractiveApi {
     public List<InteractiveDto> getByCurrentLogin(HttpSession httpSession){
         logger.info("Request to get all by current login {}");
         MyUser userDetails= (MyUser) httpSession.getAttribute("userDetails");
-        List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
+        List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll(userDetails);
         return lstInteractive;
     }
 
     @GetMapping(value = "/interactive")
-    public List<InteractiveDto> getAll(){
+    public List<InteractiveDto> getAll(HttpSession httpSession){
         logger.info("Request to get All");
-        List<InteractiveDto> interactiveDtoList = interactiveServiceImpl.findAll();
+        MyUser userDetails= (MyUser) httpSession.getAttribute("userDetails");
+        List<InteractiveDto> interactiveDtoList = interactiveServiceImpl.findAll(userDetails);
         return interactiveDtoList;
     }
 

@@ -1,11 +1,9 @@
 package com.KMA.BookingCare.Api;
 
-import com.KMA.BookingCare.Dto.JwtReponse;
-import com.KMA.BookingCare.Dto.LoginDto;
-import com.KMA.BookingCare.Dto.SignupRequest;
-import com.KMA.BookingCare.Dto.User;
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Entity.RoleEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Repository.RoleRepository;
 import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Service.UserService;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,13 +50,15 @@ public class AuthApi {
     private  JwtUtils jwtUtils;
 
     @PostMapping(value = "/signin")
-    public ResponseEntity<?> singin(@RequestBody LoginDto loginDto){
+    public ResponseEntity<?> singin(@RequestBody LoginDto loginDto, HttpSession session){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        MyUser myUser = UserMapper.convertToMyUser(userDetails);
+        session.setAttribute("userDetails", myUser);
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());

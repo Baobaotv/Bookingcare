@@ -268,7 +268,7 @@ public class HomeClientController {
 	@GetMapping(value="/myMessage")
 	public String  myMessage(Model model,HttpSession session){
 		MyUser userDetails= (MyUser) session.getAttribute("userDetails");
-		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
+		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll(userDetails);
 		model.addAttribute("lstInteractive", lstInteractive);
 		return "client/views/message";
 	}
