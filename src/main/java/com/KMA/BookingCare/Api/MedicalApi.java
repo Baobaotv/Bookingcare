@@ -6,6 +6,7 @@ import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -151,7 +152,7 @@ public class MedicalApi {
 	}
 
 	@PostMapping(value = "/media/change-time-close")
-	public ResponseEntity<?> changTimeClose(@RequestBody ChangeTimeCloseForm changeTimeCloseForm) {
+	public ResponseEntity<?> changTimeClose(@RequestBody ChangeTimeCloseForm changeTimeCloseForm) throws JsonProcessingException {
 		log.info("Request to changTimeClose {}");
 		System.out.println(changeTimeCloseForm.getIdWk()+"-"+ changeTimeCloseForm.getIdMedical());
 		boolean result = medicalServiceImpl.changTimeClose(changeTimeCloseForm);

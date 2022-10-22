@@ -22,6 +22,7 @@ import com.KMA.BookingCare.Service.InteractiveService;
 import com.KMA.BookingCare.Service.MessageService;
 import com.KMA.BookingCare.Service.UserService;
 
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -37,28 +38,29 @@ public class ChatController {
 	private UserService userServiceImpl;
 	
 	@GetMapping(value = {"/admin/managerChat","/doctor/managerChat"})
-	public  String chatPage(Model model) {
-		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
+	public  String chatPage(Model model, HttpSession httpSession) {
+		MyUser userDetails= (MyUser) httpSession.getAttribute("userDetails");
+		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll(userDetails);
 		model.addAttribute("lstInteractive", lstInteractive);
 		return "admin/views/managerChat2";
 	}
-	  @RequestMapping(path = "/selectUser", method = RequestMethod.POST)
-	    public ResponseEntity<?> searchMessageUser(Model model, @RequestBody Long id) {
-	    	List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
-	    	User userDto= userServiceImpl.findOneById(id);
-	    	Object[] mang = new Object[2];
-	    	mang[0]=userDto;
-	    	mang[1]=lstMessageDto;
-	    	System.out.println("oke");
-	        return new ResponseEntity<Object>(mang, HttpStatus.OK);
-	    }
+
+	@RequestMapping(path = "/selectUser", method = RequestMethod.POST)
+	public ResponseEntity<?> searchMessageUser(Model model, @RequestBody Long id) {
+		List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
+		User userDto= userServiceImpl.findOneById(id);
+		Object[] mang = new Object[2];
+		mang[0]=userDto;
+		mang[1]=lstMessageDto;
+		System.out.println("oke");
+		return new ResponseEntity<Object>(mang, HttpStatus.OK);
+	}
 	  
 	  @RequestMapping(path = "/mesageUser", method = RequestMethod.POST)
 	    public ResponseEntity<?> mesageUser(Model model, @RequestBody Long id) {
 		  UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
 				  .getPrincipal();
 		  MyUser userDetails = UserMapper.convertToMyUser(user);
-//	    	List<MessageDto> lstMessageDto= messageServiceImpl.findBySenderOrReceiver(userDetails.getId(),userDetails.getId());
 			List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
 	    	Object[] mang = new Object[2];
 	    	mang[0]=userDetails;
@@ -68,7 +70,6 @@ public class ChatController {
 	    }
 	  @RequestMapping(path = "/showLstUser", method = RequestMethod.POST)
 	    public ResponseEntity<?> showLstUser(Model model, @RequestBody Long id) {
-//	    	List<UserEntity> lstEntity= userServiceImpl.findLstUser();
 	    	User dto = userServiceImpl.findOneById(id);
 	        return new ResponseEntity<User>(dto, HttpStatus.OK);
 	    }

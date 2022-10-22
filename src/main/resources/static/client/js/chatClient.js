@@ -169,7 +169,6 @@ function sendMessage(event) {
 
       today = mm + '/' + dd + '/' + yyyy;
       var  insertElement='<div class="container ">'+'<img src="https://res.cloudinary.com/dtvkhopoe/image/upload/v1645000335/benh_nhan_ti17om.jpg" alt="Avatar" style="width: 100%;"  class="right"> <p>'+messageContent+'</p> <span class="time-right"> '+today+'</span> </div>';
-//        var insertElement='<div class="container darker">'+'<img th:src="@{'+'client/img/img4.jpg'+'}" alt="Avatar" class="right" style="width: 100%;"><p>'+messageContent+'</p><span class="time-left">'+'11:05'+'</span></div>';
         showMessgae.innerHTML=showMessgae.innerHTML+insertElement;
         messageInput.value = '';
     }
@@ -198,8 +197,4 @@ function onMessageReceived(payload) {
     scroll.scrollTop = scroll.scrollHeight;
 }
  
-
-
-
-
 messageFormServer.addEventListener('submit', sendMessage, true);

@@ -4,11 +4,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
+import com.KMA.BookingCare.Dto.NotificationScheduleDTO;
+import com.KMA.BookingCare.common.Constant;
 import com.cloudinary.api.exceptions.BadRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -32,10 +39,13 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	private UserRepository userRepository;
 
 	@Autowired
-	public JavaMailSender emailSender;
+	private JavaMailSender emailSender;
+
+	@Autowired
+	private KafkaTemplate<String, String> kafkaTemplate;
 	
 	@Override
-	public void  save(BookingForm form) {
+	public void  save(BookingForm form) throws JsonProcessingException {
 		// TODO Auto-generated method stub
 		MedicalExaminationScheduleEntity entity= new MedicalExaminationScheduleEntity();
 		entity.setDate(form.getDate());
@@ -57,7 +67,8 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			UserEntity userEntity2= userRepository.findOneById(form.getUserId());
 			entity.setUser(userEntity2);
 		}
-		medicalRepository.save(entity);
+		entity = medicalRepository.save(entity);
+		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);
 	}
 
 	@Override
@@ -99,12 +110,10 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	}
 
 	@Override
-	public boolean changTimeClose(ChangeTimeCloseForm changeTimeCloseForm) {
+	public boolean changTimeClose(ChangeTimeCloseForm changeTimeCloseForm) throws JsonProcessingException {
 		Long idWk = changeTimeCloseForm.getIdWk();
 		MedicalExaminationScheduleEntity itemUpdate = medicalRepository.findById(changeTimeCloseForm.getIdMedical()).get();
-		if(!validateChangTimeClose(changeTimeCloseForm, itemUpdate)){
-			return false;
-		};
+		if(!validateChangTimeClose(changeTimeCloseForm, itemUpdate)) return false;
 		String date = "";
 		Long count = medicalRepository.countMedicalWhenChangeWk(
 				itemUpdate.getDate(),itemUpdate.getDoctor().getId(), itemUpdate.getWorkTimeID(), idWk
@@ -115,6 +124,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			//update
 			itemUpdate.setWorkTimeID(idWk);
 			medicalRepository.save(itemUpdate);
+			sendKafkaNotification(itemUpdate, Constant.NOTIFICATION_TYPE_CHANGE_SCHEDULE);
 		} else {
 			// lst medical, id > changTimeClose.idMedical
 			do {
@@ -160,8 +170,8 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 				}
 			} while (Strings.isEmpty(date) || Strings.isBlank(date));
 			medicalRepository.saveAll(lstUpdate);
+			sendKafkaNotification(lstUpdate, Constant.NOTIFICATION_TYPE_CHANGE_SCHEDULE);
 //			sendMail(lstUpdate);
-
 		}
 		return  true;
 	}
@@ -175,12 +185,8 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	}
 
 	public boolean validateChangTimeClose(ChangeTimeCloseForm changeTimeCloseForm, MedicalExaminationScheduleEntity entity) {
-		if(changeTimeCloseForm.getIdWk() == null || changeTimeCloseForm.getIdWk().equals("") ) {
-			return false;
-		}
-		if (changeTimeCloseForm.getIdWk() <= entity.getWorkTimeID()) {
-			return false;
-		}
+		if(changeTimeCloseForm.getIdWk() == null || changeTimeCloseForm.getIdWk().equals("") ) return false;
+		if (changeTimeCloseForm.getIdWk() <= entity.getWorkTimeID()) return false;
 		return  true;
 	}
 
@@ -206,6 +212,25 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 				emailSender.send(message);
 			});
 		}
+	}
+
+	private void sendKafkaNotification(MedicalExaminationScheduleEntity entity, String typeNotification) throws JsonProcessingException {
+		NotificationScheduleDTO notificationSchedule = new NotificationScheduleDTO();
+		notificationSchedule.setIds(List.of(entity.getId()));
+		notificationSchedule.setTypeNotification(typeNotification);
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(notificationSchedule);
+		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);
+	}
+
+	private void sendKafkaNotification(List<MedicalExaminationScheduleEntity> entities, String typeNotification) throws JsonProcessingException {
+		NotificationScheduleDTO notificationSchedule = new NotificationScheduleDTO();
+		List<Long> ids = entities.stream().map(item ->item.getId()).collect(Collectors.toList());
+		notificationSchedule.setIds(ids);
+		notificationSchedule.setTypeNotification(typeNotification);
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(notificationSchedule);
+		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);
 	}
 
 }

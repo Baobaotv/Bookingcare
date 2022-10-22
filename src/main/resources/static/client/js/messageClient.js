@@ -1,9 +1,6 @@
 'use strict';
 
-
 var messageFormServer = document.querySelector('#messageFormServer');
-//var lstShowMessage = document.querySelectorAll('#showMessage');
-
 var messageInputServer = document.querySelector('#messageInputServer');
 var elementChat = document.querySelector('#elementChat');
 var connectingElement = document.querySelector('#connecting');
@@ -13,11 +10,10 @@ var myId = document.querySelector('#idUser');
 var btnCallServer = document.querySelector('#btnCallServer');
 var btnCloseServer = document.querySelector('#btnCloseServer');
 let modalclose = document.querySelector('.modal-close');
-var stompClient = null;
+var scroll = document.querySelector('.chat-history');
 var username = null;
 var peer = new Peer();
 var peers={};
-	
 var peerId=null;
 
 function openStream(){
@@ -93,8 +89,6 @@ modalclose.addEventListener('click', () => {
 });
 
 
-
-
 peer.on('call',call=>{
 	peers['server']=call;
 	 $('.modal-overlay').addClass( 'openn');
@@ -114,23 +108,20 @@ peer.on('call',call=>{
     })
 })
 
-
-
-function connect(e) {
-
-    
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, onConnected, onError);
-}
-
+// Socket is creted in file 'createSockJs'
 // Connect to WebSocket Server.
-connect();
+// connect();
+
+// function connect(e) {
+// 	if (!stompClient) {
+// 		var socket = new SockJS('/ws');
+// 		var stompClient = Stomp.over(socket);
+// 		stompClient.connect({}, onConnected, onError);
+// 	}
+// }
 
 function onConnected() {
     // Subscribe to the Public Topic
-	
-//		stompClient.subscribe('/topic/publicChatRoom', onMessageReceived);
 	var url ="/topic/"+myId.defaultValue;
 	stompClient.subscribe(url, onMessageReceived);
 		peer.on('open',id=> {peerId=id+"";
@@ -140,18 +131,15 @@ function onConnected() {
 		  	   data: peerId,
 		  	   contentType: "application/json",
 		  	   success: function(data,response) {
-		  	alert('save success');
 		  	   },
 		  	   type: 'POST'
 		  	});
 		});
 }
 
-
 function onError(error) {
 	alert('loi')
 }
-
 
 function sendMessage(event) {
     var messageContent = messageInputServer.value.trim();
@@ -173,6 +161,8 @@ function sendMessage(event) {
         messageInputServer.value = '';
     }
     event.preventDefault();
+
+	scroll.scrollTop = scroll.scrollHeight;
 }
 
 
@@ -230,10 +220,7 @@ function onMessageReceived(payload) {
     	    	   type: 'POST'
     	    	});
     }
-    
-    
-   
-   
+	scroll.scrollTop = scroll.scrollHeight;
 }
  
 
@@ -248,7 +235,6 @@ function messageUser(event) {
     	   error: function() {
     	      $('#info').html('<p>An error has occurred</p>');
     	   },
-    	  
     	   contentType: "application/json",
     	   success: function(data,response) {
     		   var lstShowMessage = document.querySelectorAll('#showMessage');
@@ -256,7 +242,6 @@ function messageUser(event) {
     			   element.remove();
     		   })
     		 
-
     		   document.querySelector('#userName').textContent=data[0].name;
     		   document.getElementById('avatar').src = data[0].img;
     		   data[1].forEach(element => {
@@ -264,9 +249,7 @@ function messageUser(event) {
     			   if(element.senderId!=myId.defaultValue){
     				   insertElement='<li class="clearfix" id="showMessage">'+'<div class="message-data">'+'<img src="'+data[0].img+'" alt="avatar">'+'<span class="message-data-time">'+element.createdDate+'</span>'+'</div> <div class="message my-message">'+element.content +' </div>'+'</li>'     
     			   }else{
-//    				   insertElement='<li class="clearfix" id="showMessage">'+'<div class="message-data text-right">'+'<span class="message-data-time">'+element.createdDate+'</span>'+'<img src="https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-hand-drawn-cartoon-male-doctor-elements-element-png-image_602590.jpg" alt="avatar">'+'</div> <div class="message other-message float-right">'+element.content +' </div>'+'</li>'
     				   insertElement='<li class="clearfix" id="showMessage">'+'<div class="message-data text-right">'+'<span class="message-data-time">'+element.createdDate+'</span>'+'</div> <div class="message other-message float-right">'+element.content +' </div>'+'</li>'
-    				   
     			   }
     			   elementChat.innerHTML=elementChat.innerHTML+insertElement;
     			   
@@ -275,12 +258,10 @@ function messageUser(event) {
     	   },
     	   type: 'POST'
     	});
+	scroll.scrollTop = scroll.scrollHeight;
 }
 
-
-
 messageFormServer.addEventListener('submit', sendMessage, true);
-//searchMesssage.addEventListener('click', messageUser, true);
 
 function selectUser() {
 	var searchMesssage = document.querySelectorAll('.searchMesssage ');
@@ -289,9 +270,7 @@ function selectUser() {
          
            idUser = this.childNodes[4].defaultValue;
            messageUser()
-           
         }
-        
     });
 }
 selectUser();

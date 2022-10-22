@@ -2,25 +2,18 @@
 
 
 var messageFormServer = document.querySelector('#messageFormServer');
-//var lstShowMessage = document.querySelectorAll('#showMessage');
-
 var messageInputServer = document.querySelector('#messageInputServer');
 var elementChat = document.querySelector('#elementChat');
 var connectingElement = document.querySelector('#connecting');
 var showLstUser = document.querySelector('#showLstUser');
-
 var idUser;
-
 var btnCallServer = document.querySelector('#btnCallServer');
 let modalclose = document.querySelector('.modal-close')
 var myId = document.querySelector('#myId');
-
 var stompClient = null;
 var username = null;
 var peer = new Peer();
 var peers={};
-//peer.on('open',id=> {console.log(id)});
-	
 var peerId=null;
 
 function openStream(){
@@ -39,14 +32,6 @@ function playstream(idVideo, stream){
 }
 
 
-
-//btnCloseServer.onclick = function() {
-//	peer.close();
-//
-//	   
-//};
-
-
 btnCallServer.onclick = function() {
 	 var urlpath=window.location.origin+"/call";
 	 var a= $('.modal-overlay');
@@ -62,9 +47,6 @@ btnCallServer.onclick = function() {
 	 	    .then(stream=>{
 	 	        playstream('localStreamServer',stream);
 	 	        var call = peer.call(peerId,stream);
-//	 	        call.on('close',()=>{
-//	 	        	 alert('server tao close');
-//	 	        })
 	 	        call.on('stream',remoteStream=>playstream('remoteStreamServer',remoteStream));
 	 	       peers['server']=call;
 	 	      call.on('close', () => {
@@ -127,8 +109,6 @@ peer.on('call',call=>{
 
 
 function connect(e) {
-
-    
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, onConnected, onError);
@@ -138,29 +118,23 @@ function connect(e) {
 connect();
 
 function onConnected() {
-    // Subscribe to the Public Topic
-	
-//		stompClient.subscribe('/topic/publicChatRoom', onMessageReceived);
-	
+	if (window.location.href.endsWith('/doctor/managerChat')) {
+		stompClient.subscribe('/topic/' + myId.defaultValue, onMessageReceived);
+	} else {
 		stompClient.subscribe('/topic/server', onMessageReceived);
-		peer.on('open',id=> {peerId=id+"";
-//		stompClient.send("/app/savePeerId",
-//		      {},
-//		     JSON.stringify({ peerId: peerId})
-//		  )
-		var urlpath=window.location.origin+"/savePeerId";
-		 $.ajax({
-		  	   url: urlpath,
-		  	   data: peerId,
-		  	   contentType: "application/json",
-		  	   success: function(data,response) {
-		  	alert('save success');
-		  	   },
-		  	   type: 'POST'
-		  	});
+	}
+	peer.on('open',id=> {peerId=id+"";
+	var urlpath=window.location.origin+"/savePeerId";
+	 $.ajax({
+		   url: urlpath,
+		   data: peerId,
+		   contentType: "application/json",
+		   success: function(data,response) {
+		alert('save success');
+		   },
+		   type: 'POST'
 		});
-		 
-
+	});
 }
 
 
@@ -203,8 +177,8 @@ function onMessageReceived(payload) {
    	}
     	if( peers['user']!=null){
    		 peers['user'].close();
-   	}
-    }else{
+   		}
+    } else {
     if(message.senderId==idUser){
     	 var insertElement='<li class="clearfix">'+'<div class="message-data">'+'<img src="https://res.cloudinary.com/dtvkhopoe/image/upload/v1645000335/benh_nhan_ti17om.jpg" alt="avatar">'+'<span class="message-data-time">'+message.createdDate+'</span>'+'</div> <div class="message my-message">'+message.content +' </div>'+'</li>' ;
     	    elementChat.innerHTML=elementChat.innerHTML+insertElement;
@@ -246,11 +220,8 @@ function onMessageReceived(payload) {
     	    	   type: 'POST'
     	    	});
     }
-    
     var scroll = document.querySelector('.chat-history');
     scroll.scrollTop = scroll.scrollHeight;
-   
-   
 }
  
 

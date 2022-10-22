@@ -68,11 +68,8 @@ public class InteractiveServiceImpl implements InteractiveService{
 
 
 	@Override
-	public List<InteractiveDto> findAll() {
-		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		MyUser userDetails = UserMapper.convertToMyUser(user);
-		List<InteractiveEntity> lstEntity= new ArrayList<InteractiveEntity>();
+	public List<InteractiveDto> findAll(MyUser userDetails) {
+		List<InteractiveEntity> lstEntity = new ArrayList<>();
 		if(userDetails.getRoles().contains("ROLE_ADMIN")) {
 			lstEntity= interactiveRepository.findAllByYouId((long) 0);
 		}else {

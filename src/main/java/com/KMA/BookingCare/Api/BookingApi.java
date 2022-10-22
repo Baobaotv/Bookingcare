@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class BookingApi {
 	private WorkTimeService workTimeserviceImpl;
 	
 	@PostMapping(value = "/booking")
-	public ResponseEntity<?>  booking(@RequestBody BookingForm form, HttpSession session) {
+	public ResponseEntity<?>  booking(@RequestBody BookingForm form, HttpSession session) throws JsonProcessingException {
 		try {
 			if(session.getAttribute("userDetails")!=null) {
 				MyUser user =(MyUser) session.getAttribute("userDetails");

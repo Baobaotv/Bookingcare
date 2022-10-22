@@ -45,9 +45,6 @@ import com.KMA.BookingCare.ServiceImpl.InteractiveServiceImpl;
 @Controller
 public class HomeClientController {
 	
-//	@Autowired
-//	private SpecializedService specializedDerviceImpl;
-
 	private final Logger log = LoggerFactory.getLogger(HomeClientController.class);
 	
 	@Autowired
@@ -268,13 +265,11 @@ public class HomeClientController {
 	    return "client/views/showMedical";
 	}
 	
-	 
-	 
-		@GetMapping(value="/myMessage")
-		public String  myMessage(Model model,HttpSession session){
-			MyUser userDetails= (MyUser) session.getAttribute("userDetails");
-			List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll();
-			model.addAttribute("lstInteractive", lstInteractive);
-		    return "client/views/message";
-		}
+	@GetMapping(value="/myMessage")
+	public String  myMessage(Model model,HttpSession session){
+		MyUser userDetails= (MyUser) session.getAttribute("userDetails");
+		List<InteractiveDto> lstInteractive= interactiveServiceImpl.findAll(userDetails);
+		model.addAttribute("lstInteractive", lstInteractive);
+		return "client/views/message";
+	}
 }
