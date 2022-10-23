@@ -11,6 +11,7 @@ import com.KMA.BookingCare.Dto.WorkTimeDto;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.document.UserDocument;
 
 public class UserMapper {
 	public static User convertToDto(UserEntity entity) {
@@ -61,6 +62,23 @@ public class UserMapper {
 		});
 		myUser.setRoles(lstRole);
 		return myUser;
+	}
+
+	public static UserDocument convertToDocument(UserEntity entity) {
+		UserDocument document = new UserDocument();
+		document.setId(entity.getId());
+		document.setEmail(entity.getEmail());
+		document.setImg(entity.getImg());
+		document.setDescription(entity.getDescription());
+		document.setFullName(entity.getFullName());
+		document.setStatus(entity.getStatus());
+		document.setLocation(entity.getLocation());
+		document.setSex(entity.getSex());
+		document.setShortDescription(entity.getShortDescription());
+		document.setPhoneNumber(entity.getPhoneNumber());
+		document.setYearOfBirth(entity.getYearOfBirth());
+		document.setUsername(entity.getUsername());
+		return document;
 	}
 
 }

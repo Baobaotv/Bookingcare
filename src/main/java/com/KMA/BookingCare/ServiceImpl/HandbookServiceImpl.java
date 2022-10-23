@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.KMA.BookingCare.document.HandbookDocument;
+import com.KMA.BookingCare.search.HandbookingSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,10 +46,12 @@ public class HandbookServiceImpl implements HandbookService{
 	
 	@Autowired
 	private Cloudinary cloudinary;
-	
+
+	@Autowired
+	private HandbookingSearchRepository handbookingSearchRepository;
+
 	@Override
 	public void saveHandbook(HandbookForm form) throws ParseException {
-//		UserDetails userDetails= (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
 				.getPrincipal();
 		MyUser userDetails = UserMapper.convertToMyUser(user);
@@ -79,7 +83,9 @@ public class HandbookServiceImpl implements HandbookService{
 		entity.setTitle(form.getTitle());
 		entity.setModifiedBy(userDetails.getUsername());
 		entity.setModifiedDate(new Date());
-		handbookRepository.save(entity);
+		entity = handbookRepository.save(entity);
+		HandbookDocument document = convertToDocument(entity);
+		handbookingSearchRepository.save(document);
 		
 	}
 
@@ -192,6 +198,31 @@ public class HandbookServiceImpl implements HandbookService{
 		return page;
 	}
 
-	
+	@Override
+	public List<HandbookEntity> getAll() {
+		List<HandbookEntity> handbookEntities = handbookRepository.findAll();
+		List<HandbookDocument> documentList = new ArrayList<>();
+		for(HandbookEntity entity : handbookEntities) {
+			HandbookDocument document = this.convertToDocument(entity);
+			documentList.add(document);
+		}
+		handbookingSearchRepository.saveAll(documentList);
+		return handbookEntities;
+	}
+
+	private HandbookDocument convertToDocument(HandbookEntity entity) {
+		HandbookDocument document = new HandbookDocument();
+		document.setId(entity.getId());
+		document.setContent(entity.getContent());
+		document.setImg(entity.getImg());
+		document.setDescription(entity.getDescription());
+		document.setCreatedBy(entity.getCreatedBy());
+		document.setStatus(entity.getStatus());
+		document.setTitle(entity.getTitle());
+		document.setModifiedBy(entity.getModifiedBy());
+		return document;
+	}
+
+
 
 }

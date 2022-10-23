@@ -87,8 +87,6 @@ public class HandbookEntity {
 		this.createdBy = createdBy;
 	}
 
-	
-
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -154,13 +152,5 @@ public class HandbookEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
-
-	
-	
-	
-	
-	
 
 }
