@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.document.SpecializedDocument;
+import com.KMA.BookingCare.search.SpecializedSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,33 +31,36 @@ import com.cloudinary.utils.ObjectUtils;
 @Service
 public class SpecializedServiceImpl implements SpecializedService{
 	
-		@Autowired
-		private SpecializedRepository specializedRepository;
-		
-		@Autowired
-		private Cloudinary cloudinary;
+	@Autowired
+	private SpecializedRepository specializedRepository;
 
-		@Override
-		public List<SpecializedDto> findAll() {
-			List<SpecializedEntity> lstentity = specializedRepository.findAll();
-			List<SpecializedDto> lstDto = new ArrayList<SpecializedDto>();
-			for(SpecializedEntity entity : lstentity) {
-				SpecializedDto dto = SpecializedMapper.convertToDto(entity);
-				lstDto.add(dto);
-			}
-			return lstDto;
-		}
+	@Autowired
+	private Cloudinary cloudinary;
 
-		@Override
-		public List<SpecializedDto> findAllByStatus(Integer status, Pageable pageable) {
-			List<SpecializedEntity> lstEntity = specializedRepository.findAllByStatus(1,pageable);
-			List<SpecializedDto> lstDto = new ArrayList<SpecializedDto>();
-			for(SpecializedEntity entity: lstEntity) {
-				SpecializedDto dto = SpecializedMapper.convertToDto(entity);
-				lstDto.add(dto);
-			}
-			return lstDto;
+	@Autowired
+	private SpecializedSearchRepository specializedSearchRepository;
+
+	@Override
+	public List<SpecializedDto> findAll() {
+		List<SpecializedEntity> lstentity = specializedRepository.findAll();
+		List<SpecializedDto> lstDto = new ArrayList<SpecializedDto>();
+		for(SpecializedEntity entity : lstentity) {
+			SpecializedDto dto = SpecializedMapper.convertToDto(entity);
+			lstDto.add(dto);
 		}
+		return lstDto;
+	}
+
+	@Override
+	public List<SpecializedDto> findAllByStatus(Integer status, Pageable pageable) {
+		List<SpecializedEntity> lstEntity = specializedRepository.findAllByStatus(1,pageable);
+		List<SpecializedDto> lstDto = new ArrayList<SpecializedDto>();
+		for(SpecializedEntity entity: lstEntity) {
+			SpecializedDto dto = SpecializedMapper.convertToDto(entity);
+			lstDto.add(dto);
+		}
+		return lstDto;
+	}
 
 	@Override
 	public Page<SpecializedDto> findAllByStatusApi(Integer status, Pageable pageable) {
@@ -64,25 +69,15 @@ public class SpecializedServiceImpl implements SpecializedService{
 	}
 
 	@Override
-		public void saveOrUpdateSpecialized(SpecializedForm form) throws ParseException {
-		UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		MyUser userDetails = UserMapper.convertToMyUser(user);
-			SpecializedEntity entity= new SpecializedEntity();
-			if(form.getId()!=null) {
-				entity.setId(form.getId());
-				if(form.getImg().getOriginalFilename()==null||form.getImg().getOriginalFilename().equals("")) {
-					entity.setImg(form.getImgOld());
-				}else {
-					try {
-						Map result= cloudinary.uploader().upload(form.getImg().getBytes(),
-								ObjectUtils.asMap("resource_type","auto"));
-						String urlImg=(String) result.get("secure_url");
-						entity.setImg(urlImg);
-					} catch (Exception e) {
-						System.out.println("ERROR:upload img specialized fail!!!");
-					}
-				}
+	public void saveOrUpdateSpecialized(SpecializedForm form) throws ParseException {
+	UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+			.getPrincipal();
+	MyUser userDetails = UserMapper.convertToMyUser(user);
+		SpecializedEntity entity= new SpecializedEntity();
+		if(form.getId()!=null) {
+			entity.setId(form.getId());
+			if(form.getImg().getOriginalFilename()==null||form.getImg().getOriginalFilename().equals("")) {
+				entity.setImg(form.getImgOld());
 			}else {
 				try {
 					Map result= cloudinary.uploader().upload(form.getImg().getBytes(),
@@ -93,14 +88,25 @@ public class SpecializedServiceImpl implements SpecializedService{
 					System.out.println("ERROR:upload img specialized fail!!!");
 				}
 			}
-			
-			entity.setName(form.getName());
-			entity.setCode(form.getCode());
-			entity.setDescription(form.getDescription());
-			entity.setStatus(1);
-			specializedRepository.save(entity);
-			
+		}else {
+			try {
+				Map result= cloudinary.uploader().upload(form.getImg().getBytes(),
+						ObjectUtils.asMap("resource_type","auto"));
+				String urlImg=(String) result.get("secure_url");
+				entity.setImg(urlImg);
+			} catch (Exception e) {
+				System.out.println("ERROR:upload img specialized fail!!!");
+			}
 		}
+
+		entity.setName(form.getName());
+		entity.setCode(form.getCode());
+		entity.setDescription(form.getDescription());
+		entity.setStatus(1);
+		entity = specializedRepository.save(entity);
+		SpecializedDocument document = SpecializedMapper.convertToDocument(entity);
+		specializedSearchRepository.save(document);
+	}
 
 	@Override
 	public List<SpecializedDto> findRandomSpecicalized() {

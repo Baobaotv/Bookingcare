@@ -14,18 +14,28 @@ import com.KMA.BookingCare.Entity.HandbookEntity;
 
 public interface HandbookService {
 	void saveHandbook(HandbookForm form) throws ParseException;
+
 	Page<HandbookDto> findAllByStatusPageable(Integer status, Pageable pageable);
+
 	List<HandbookDto> findAllByStatus(Integer status);
+
 	List<HandbookDto> findAllByStatusAndUserId(Integer status, Long id,Pageable pageable);
-	public void updateHandbookByStatus(List<String> ids);
-	public void update(HandbookForm form);
+
+	void updateHandbookByStatus(List<String> ids);
+
+	void update(HandbookForm form);
+
 	HandbookDto findOneById(Long id);
+
 	HandbookDto findOneByIdApi(Long id);
+
 	List<HandbookDto> searchHandbook(searchHandbookForm form);
 	
 	List<HandbookDto> findRandomHandbook();
-
 	
 	List<HandbookDto> searchHandbookAndPageable(searchHandbookForm form,Long userId, Pageable page);
+
 	Page<HandbookDto> searchHandbookAndPageableapi(String title,Long specialzed,String userId, Pageable page);
+
+	List<HandbookEntity> getAll();
 }

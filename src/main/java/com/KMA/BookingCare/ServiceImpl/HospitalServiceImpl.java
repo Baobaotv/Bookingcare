@@ -10,6 +10,8 @@ import java.util.Map;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
 import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.document.HospitalDocument;
+import com.KMA.BookingCare.search.HospitalSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,10 +33,14 @@ import com.cloudinary.utils.ObjectUtils;
 @Service
 public class HospitalServiceImpl implements HospitalService{
 	
-		@Autowired
-		private HospitalRepository hospitalRepository;
-		@Autowired
-		private Cloudinary cloudinary;
+	@Autowired
+	private HospitalRepository hospitalRepository;
+
+	@Autowired
+	private Cloudinary cloudinary;
+
+	@Autowired
+	private HospitalSearchRepository hospitalSearchRepository;
 
 	@Override
 	public List<HospitalDto> findAll() {
@@ -86,7 +92,9 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setLocation(form.getLocation());
 		entity.setDescription(form.getDescription());
 		entity.setStatus(1);
-		hospitalRepository.save(entity);
+		entity = hospitalRepository.save(entity);
+		HospitalDocument document = HospitalMapper.convertToDocument(entity);
+		hospitalSearchRepository.save(document);
 		
 	}
 

@@ -49,4 +49,6 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long> 
 			+ "AND ((:specializedId is not null and h.specialized.id =:specializedId) or :specializedId is null) "
 			+ "AND ((:userId IS NOT NULL AND h.user.username =:userId) or :userId is null)")
 	Page<HandbookDto> searchHandbookAndPageableApi(@Param("title") String title,@Param("specializedId") Long specializedId,@Param("userId") String userId,Pageable page);
+
+//	List<HandbookEntity> finAll();
 }

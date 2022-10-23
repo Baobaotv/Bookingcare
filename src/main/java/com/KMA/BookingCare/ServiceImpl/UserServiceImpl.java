@@ -6,6 +6,8 @@ import java.nio.file.attribute.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.KMA.BookingCare.document.UserDocument;
+import com.KMA.BookingCare.search.UserSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,6 +79,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private WorkTimeRepository wkRepository;
+
+	@Autowired
+	private UserSearchRepository userSearchRepository;
 	
 	@Override
 	public void add(User user,String nameRole) {
@@ -103,7 +108,9 @@ public class UserServiceImpl implements UserService{
 	    	Set<RoleEntity> role= new HashSet<RoleEntity>(roleRepository.findByName("ROLE_DOCTOR"));
 	    	userEntity.setRoles(role);
 		}
-		userRepository.save(userEntity);
+		userEntity = userRepository.save(userEntity);
+		UserDocument document = UserMapper.convertToDocument(userEntity);
+		userSearchRepository.save(document);
 	}
 
 	@Override
