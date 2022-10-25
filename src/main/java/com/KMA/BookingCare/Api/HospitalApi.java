@@ -4,6 +4,7 @@ import com.KMA.BookingCare.Dto.HospitalDto;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Repository.HospitalRepository;
+import com.KMA.BookingCare.ServiceImpl.HospitalServiceImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ import com.KMA.BookingCare.Service.HospitalService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("")
 public class HospitalApi {
 
 	private final Logger log = LoggerFactory.getLogger(HospitalApi.class);
@@ -36,7 +37,7 @@ public class HospitalApi {
 
 
 	@Hidden
-	@PostMapping(value = "/hospital")
+	@PostMapping(value = "/api/hospital")
 	public ResponseEntity<?> addHospital(@RequestBody HospitalForm form) {
 		log.info("Request to save hospital {}");
 		try {
@@ -48,7 +49,7 @@ public class HospitalApi {
 	}
 
 	@Hidden
-	@PutMapping(value = "/hospital/{id}")
+	@PutMapping(value = "/api/hospital/{id}")
 	public ResponseEntity<?> editHospital(@RequestBody HospitalForm form, @PathVariable long id) {
 		log.info("Request to update hospital {}", id);
 		try {
@@ -60,24 +61,23 @@ public class HospitalApi {
 		return ResponseEntity.ok("true");
 	}
 
-	@GetMapping(value = "/hospital/{id}")
+	@GetMapping(value = "/api/hospital/{id}")
 	public ResponseEntity<HospitalEntity> findOne(@PathVariable Long id){
 		log.info("Request to get one by Id {}", id);
 		HospitalEntity hospitalEntity = hospitalRepository.findOneById(id);
 		return  ResponseEntity.ok(hospitalEntity);
 	}
 
-	@GetMapping(value = "/hospital")
+	@GetMapping(value = "/api/hospital")
 	public ResponseEntity<Page<HospitalDto>> findAll(@PageableDefault(page = 0, size = 10) Pageable pageable){
 		log.info("Request to find all {}");
-//		Page<HospitalEntity> page = hospitalRepository.findAll(pageable);
 		Page<HospitalDto> page = hospitalServiceImpl.findAllByStatusApi(1,pageable);
 		return  ResponseEntity.ok(page);
 
 	}
 
 	
-	@GetMapping(value = "/hospital/get-all-by-status")
+	@GetMapping(value = "/api/hospital/get-all-by-status")
 	public ResponseEntity<Page<HospitalDto>> getAllByStatus(@PageableDefault(page = 0, size = 10) Pageable pageable){
 		log.info("Request to get All By Status {}");
 		Page<HospitalDto> page = hospitalServiceImpl.findAllByStatusApi(1,pageable);
@@ -85,7 +85,7 @@ public class HospitalApi {
 	}
 
 	@Hidden
-	@DeleteMapping("/hospital/deletes")
+	@DeleteMapping("/api/hospital/deletes")
 	public ResponseEntity<?> deleteAll(@RequestBody List<Long> ids){
 		log.info("Request to delete all by ids {}", ids);
 		hospitalRepository.deleteAllById(ids);
@@ -93,7 +93,7 @@ public class HospitalApi {
 	}
 
 	@Hidden
-	@DeleteMapping("/hospital/{id}")
+	@DeleteMapping("/api/hospital/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		hospitalRepository.deleteById(id);
@@ -103,10 +103,49 @@ public class HospitalApi {
 	/*
 	 * hien thi len trang chu
 	 *  */
-	@GetMapping(value = "/hospital/get-random")
+	@GetMapping(value = "/api/hospital/get-random")
 	public ResponseEntity<List<HospitalDto>> getRandom(){
 		log.info("Request to get Random specicalized");
 		List<HospitalDto> lstBenhVien = hospitalServiceImpl.findRandomSpecicalized();
 		return ResponseEntity.ok(lstBenhVien);
+	}
+
+	//old
+
+	@PostMapping(value = "/admin/api/managerHospital/add")
+	public ResponseEntity<?> addHospitalOld(@ModelAttribute HospitalForm form) {
+		try {
+			hospitalServiceImpl.saveHospital(form);
+		} catch (Exception e ) {
+			e.printStackTrace();
+			System.out.println("looxi");
+		}
+		return ResponseEntity.ok("true");
+	}
+
+	@PostMapping(value = "/admin/api/managerHospital/delete")
+	public ResponseEntity<?> deleteHospital(@RequestBody formDelete form) {
+		try {
+//			HospitalServiceImpl.updateHospitalByStatus(form.getIds());
+			System.out.println("oke");
+
+		} catch (Exception e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("looxi");
+		}
+		return ResponseEntity.ok("true");
+	}
+
+	@PostMapping(value = "/admin/api/managerHospital/edit")
+	public ResponseEntity<?> editHospital(@ModelAttribute HospitalForm form) {
+		try {
+			hospitalServiceImpl.saveHospital(form);
+		} catch (Exception e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("looxi");
+		}
+		return ResponseEntity.ok("true");
 	}
 }

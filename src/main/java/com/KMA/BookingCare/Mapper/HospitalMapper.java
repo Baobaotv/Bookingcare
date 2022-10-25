@@ -14,6 +14,8 @@ public class HospitalMapper {
 		dto.setId(entity.getId());
 		dto.setImg(entity.getImg());
 		dto.setDescription(entity.getDescription());
+		dto.setLatitude(entity.getLatitude());
+		dto.setLongitude(entity.getLongitude());
 		return dto;
 	}
 

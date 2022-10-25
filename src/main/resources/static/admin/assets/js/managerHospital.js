@@ -84,7 +84,6 @@ $(document)
 											var descriptionHTML= descriptionEdittor.html.get();
 											var stringDesctiption=$.trim(jQuery(descriptionHTML).text());
 											if(stringDesctiption){
-												alert("done");
 												event.preventDefault();
 												var form = $('#uploadHospital')[0];
 												var urlpath=window.location.origin;
@@ -156,6 +155,7 @@ $(document)
 						if (count < 1) {
 							$("#btnDeleteHospital").prop("disabled", true);
 							$("#btnEditHospital").prop("disabled", true);
+							$("#btnAddHospital").prop("disabled", false);
 						} else {
 							$("#btnAddHospital").prop("disabled", true);
 							$("#btnDeleteHospital").prop("disabled", false);
@@ -199,9 +199,14 @@ $(document)
 								descriptionEdittor.html.set (values2[0]);
 								$('#description').val(values2[0])
 								$('#imgOld').val(values[4]);
+								$('#longitude').val(values[5]);
+								$('#latitude').val(values[6]);
 								$("#addHospital").css("display", "none");
 								$("#editHospital").css("display", "block");
-								
+								valueKinhDo = Number(values[5]);
+								valueViDo = Number(values[6]);
+								initMap();
+
 							});
 					
 					$("#btnAddHospital").click(

@@ -1,9 +1,5 @@
 $(document)
 		.ready(
-				
-				
-
-
 				function() {
 					let descriptionEdittor= null;
 					let contentEditor= null;
@@ -92,7 +88,6 @@ $(document)
 											if(stringDesctiption){
 												if(stringContent){
 													event.preventDefault();
-//													alert('Quá poke r');
 													var form = $('#uploadHandbook')[0];
 													var urlpath=window.location.href;
 													var data = new FormData(form);
