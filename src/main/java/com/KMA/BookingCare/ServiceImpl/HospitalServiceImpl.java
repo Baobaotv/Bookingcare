@@ -91,6 +91,8 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setName(form.getName());
 		entity.setLocation(form.getLocation());
 		entity.setDescription(form.getDescription());
+		entity.setLatitude(form.getLatitude());
+		entity.setLongitude(form.getLongitude());
 		entity.setStatus(1);
 		entity = hospitalRepository.save(entity);
 		HospitalDocument document = HospitalMapper.convertToDocument(entity);
