@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface HospitalRepository extends JpaRepository<HospitalEntity, Long> {
 	HospitalEntity findOneById(Long id);
-	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img) FROM HospitalEntity h WHERE h.status=:status")
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img, h.longitude, h.latitude) FROM HospitalEntity h WHERE h.status=:status")
 	Page<HospitalDto> findAllByStatusApi(Integer status, Pageable pageable);
 	List<HospitalEntity> findAllByStatus(Integer status);
 	List<HospitalEntity> findAllByStatus(Integer status,Pageable pageable);
