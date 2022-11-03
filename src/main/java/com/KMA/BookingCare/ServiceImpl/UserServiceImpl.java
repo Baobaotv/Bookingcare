@@ -195,13 +195,10 @@ public class UserServiceImpl implements UserService{
 		entity.setLocation(form.getLocation());
 		entity.setPhoneNumber(form.getPhoneNumber());
 		entity.setYearOfBirth(form.getYearOfBirth());
-//		File file = new File("D:/files/"+entity.getImg());
-//		form.getImg().transferTo(file);
 		entity.setSex(form.getSex());
 		HospitalEntity hospital =hospitalRepository.findOneById(form.getHospitalId());
 		entity.setHospital(hospital);
 		SpecializedEntity specialized= specializedRepository.findOneById(form.getSpecializedId());
-//		if(entity.getRoles().con)
 		entity.setSpecialized(specialized);
 		if(form.getWorkTimeId()!=null) {
 			Set<WorkTimeEntity> lstWorkTimeEntities=new HashSet<WorkTimeEntity>(workTimeServiceImpl.findByListId(form.getWorkTimeId())) ;
@@ -209,7 +206,9 @@ public class UserServiceImpl implements UserService{
 				entity.setWorkTimeEntity(lstWorkTimeEntities);
 			}
 		}
-		entity= userRepository.save(entity);
+		entity = userRepository.save(entity);
+		UserDocument document = UserMapper.convertToDocument(entity);
+		userSearchRepository.save(document);
 	}
 
 	@Override

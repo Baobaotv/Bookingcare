@@ -1,6 +1,8 @@
 package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
+import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
+import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
@@ -30,7 +32,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class MedicalApi {
 
 	private final Logger log = LoggerFactory.getLogger(MedicalApi.class);
@@ -42,7 +44,7 @@ public class MedicalApi {
 	private MedicalExaminationScheduleRepository medicalExaminationScheduleRepository;
 
 	@Hidden
-	@PutMapping(value = {"/medical/update-status"})
+	@PutMapping(value = {"/api/medical/update-status"})
 	public ResponseEntity<?> updateStatusMedical(@RequestBody List<String> ids) {
 		log.info("Request to update status");
 		try {
@@ -54,7 +56,7 @@ public class MedicalApi {
 	}
 
 	@Hidden
-	@PostMapping(value ="/medical/complete")
+	@PostMapping(value ="/api/medical/complete")
 	public ResponseEntity<?> completeMedical(@RequestBody List<String> ids) {
 		log.info("Request to update medical complete {}", ids);
 		try {
@@ -66,7 +68,7 @@ public class MedicalApi {
 	}
 
 	@Operation(description = "get lịch khám của user đang login")
-	@GetMapping(value = "/media/get-by-current-login")
+	@GetMapping(value = "/api/media/get-by-current-login")
 	public ResponseEntity<List<MedicalExaminationScheduleDto>> getAllByCurrentLogin(HttpSession session){
 		log.info("Request to get all by current login {}");
 		AtomicReference<String> checkUser= new AtomicReference<>("");
@@ -103,7 +105,7 @@ public class MedicalApi {
 	}
 
 	@Hidden
-	@GetMapping(value = "/media/get-all-complete")
+	@GetMapping(value = "/api/media/get-all-complete")
 	public List<MedicalExaminationScheduleDto> getAllComplete(HttpSession session){
 		MyUser user = (MyUser) session.getAttribute("userDetails");
 
@@ -118,7 +120,7 @@ public class MedicalApi {
 	}
 
 	@Hidden
-	@DeleteMapping("/media/{id}")
+	@DeleteMapping("/api/media/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		medicalExaminationScheduleRepository.deleteById(id);
@@ -127,7 +129,7 @@ public class MedicalApi {
 
 
 	@Hidden
-	@DeleteMapping("/media/deletes")
+	@DeleteMapping("/api/media/deletes")
 	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){
 		log.info("Request to delete multi by ids {}", ids);
 		medicalExaminationScheduleRepository.deleteAllById(ids);
@@ -141,7 +143,7 @@ public class MedicalApi {
 			),
 			@ApiResponse(responseCode = "401", description = "Unauthorized"),
 	})
-	@GetMapping(value="/media/check/{idDoctor}/{idWorktime}/{date}")
+	@GetMapping(value="/api/media/check/{idDoctor}/{idWorktime}/{date}")
 	public ResponseEntity<?>  book(Model model, @PathVariable("idDoctor") Long idDoctor, @PathVariable("idWorktime") Long idWorktime,
 								   @PathVariable("date") String date){
 
@@ -151,7 +153,7 @@ public class MedicalApi {
 		return ResponseEntity.ok(check);
 	}
 
-	@PostMapping(value = "/media/change-time-close")
+	@PostMapping(value = "/api/media/change-time-close")
 	public ResponseEntity<?> changTimeClose(@RequestBody ChangeTimeCloseForm changeTimeCloseForm) throws JsonProcessingException {
 		log.info("Request to changTimeClose {}");
 		System.out.println(changeTimeCloseForm.getIdWk()+"-"+ changeTimeCloseForm.getIdMedical());
@@ -162,6 +164,30 @@ public class MedicalApi {
 			return  ResponseEntity.badRequest().build();
 		}
 
+	}
+
+	@PostMapping(value = "/admin/managerMedicalComplete/uploadMedicalRecords")
+	public ResponseEntity<?> uploadMedicalRecords(@ModelAttribute UploadMedicalRecordsForm form) {
+		return ResponseEntity.ok(HttpStatus.OK);
+	}
+
+	@PostMapping(value = {"/admin/managerMedical/delete","/doctor/managerMedical/delete"})
+	public ResponseEntity<?> deleteMedical(@RequestBody formDelete form) {
+		try {
+			medicalServiceImpl.updateMedicalByStatus(0, form.getIds());
+		} catch (Exception e ) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok("true");
+	}
+	@PostMapping(value = {"/admin/managerMedical/complete","/doctor/managerMedical/complete"})
+	public ResponseEntity<?> completeMedical(@RequestBody formDelete form) {
+		try {
+			medicalServiceImpl.updateMedicalByStatus(2, form.getIds());
+		} catch (Exception e ) {
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok("true");
 	}
 
 

@@ -5,6 +5,7 @@ import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Repository.HospitalRepository;
 import com.KMA.BookingCare.ServiceImpl.HospitalServiceImpl;
+import com.KMA.BookingCare.search.HospitalSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Service.HospitalService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 //@RequestMapping("")
@@ -34,6 +36,9 @@ public class HospitalApi {
 
 	@Autowired
 	private HospitalRepository hospitalRepository;
+
+	@Autowired
+	private HospitalSearchRepository hospitalSearchRepository;
 
 
 	@Hidden
@@ -89,6 +94,7 @@ public class HospitalApi {
 	public ResponseEntity<?> deleteAll(@RequestBody List<Long> ids){
 		log.info("Request to delete all by ids {}", ids);
 		hospitalRepository.deleteAllById(ids);
+		hospitalSearchRepository.deleteAllById(ids);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -97,6 +103,7 @@ public class HospitalApi {
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		hospitalRepository.deleteById(id);
+		hospitalSearchRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -126,13 +133,11 @@ public class HospitalApi {
 	@PostMapping(value = "/admin/api/managerHospital/delete")
 	public ResponseEntity<?> deleteHospital(@RequestBody formDelete form) {
 		try {
-//			HospitalServiceImpl.updateHospitalByStatus(form.getIds());
-			System.out.println("oke");
-
+			hospitalRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
+			hospitalSearchRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
 		} catch (Exception e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("looxi");
 		}
 		return ResponseEntity.ok("true");
 	}
@@ -144,7 +149,6 @@ public class HospitalApi {
 		} catch (Exception e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.out.println("looxi");
 		}
 		return ResponseEntity.ok("true");
 	}

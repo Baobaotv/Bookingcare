@@ -2,7 +2,9 @@ package com.KMA.BookingCare.Api;
 
 import java.util.List;
 
+import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Repository.HandbookRepository;
+import com.KMA.BookingCare.search.HandbookingSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,11 +38,11 @@ public class HandbookApi {
 	private HandbookRepository handbookRepository;
 	
 	@Autowired
-	private SpecializedService specializeServiceImpl;
+	private HandbookingSearchRepository handbookingSearchRepository;
 
 	@Hidden
 	@PostMapping(value = "/handbook")
-	public ResponseEntity<?> addHandbook(@RequestBody HandbookForm form) {
+	public ResponseEntity<?> addHandbookApi(@RequestBody HandbookForm form) {
 		log.info("Request to add handbook {}");
 		try {
 			handbookServiceImpl.saveHandbook(form);
@@ -55,7 +57,7 @@ public class HandbookApi {
 
 	@Hidden
 	@PutMapping(value = "/handbok")
-	public ResponseEntity<?> editHandbook(@RequestBody HandbookForm form) {
+	public ResponseEntity<?> editHandbookApi(@RequestBody HandbookForm form) {
 		log.info("Request to edit handbook {}");
 		try {
 			handbookServiceImpl.saveHandbook(form);
@@ -132,5 +134,41 @@ public class HandbookApi {
 		return ResponseEntity
 				.noContent()
 				.build();
+	}
+
+	@PostMapping(value = {"/admin/managerHandbook/add","/doctor/managerHandbook/add"})
+	public ResponseEntity<?> addHandbook(@ModelAttribute HandbookForm form) {
+		try {
+			handbookServiceImpl.saveHandbook(form);
+		} catch (Exception e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("looxi");
+		}
+		return ResponseEntity.ok("true");
+	}
+
+	@PostMapping(value = {"/admin/managerHandbok/delete","/doctor/managerHandbook/delete"})
+	public ResponseEntity<?> deleteHandbook(@RequestBody formDelete form) {
+		try {
+			handbookServiceImpl.updateHandbookByStatus(form.getIds());
+
+		} catch (Exception e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok("true");
+	}
+
+	@PostMapping(value = {"/admin/managerHandbok/edit","/doctor/managerHandbook/edit"})
+	public ResponseEntity<?> editHandbook(@ModelAttribute HandbookForm form) {
+		try {
+			handbookServiceImpl.saveHandbook(form);
+		} catch (Exception e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("looxi");
+		}
+		return ResponseEntity.ok("true");
 	}
 }

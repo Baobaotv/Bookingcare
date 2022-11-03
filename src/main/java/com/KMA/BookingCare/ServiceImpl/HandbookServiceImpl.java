@@ -109,7 +109,7 @@ public class HandbookServiceImpl implements HandbookService{
 	@Override
 	public void updateHandbookByStatus(List<String> ids) {
 		handbookRepository.updateByStatus(ids);
-		
+		handbookingSearchRepository.deleteAllById(ids);
 	}
 
 	@Override

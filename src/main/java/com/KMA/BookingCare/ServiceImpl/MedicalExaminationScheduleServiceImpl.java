@@ -3,13 +3,17 @@ package com.KMA.BookingCare.ServiceImpl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
+import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
 import com.KMA.BookingCare.Dto.NotificationScheduleDTO;
 import com.KMA.BookingCare.common.Constant;
+import com.cloudinary.Cloudinary;
 import com.cloudinary.api.exceptions.BadRequest;
+import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -43,6 +47,9 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 
 	@Autowired
 	private KafkaTemplate<String, String> kafkaTemplate;
+
+	@Autowired
+	private Cloudinary cloudinary;
 	
 	@Override
 	public void  save(BookingForm form) throws JsonProcessingException {
@@ -176,6 +183,22 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		return  true;
 	}
 
+	@Override
+	public void handleSendMedicalRecords(UploadMedicalRecordsForm form) {
+		try {
+			Map result= cloudinary.uploader().upload(form.getMedicalRecords().getBytes(),
+					ObjectUtils.asMap("resource_type","auto"));
+			String url = (String) result.get("secure_url");
+			NotificationScheduleDTO notificationSchedule = new NotificationScheduleDTO();
+			notificationSchedule.setIds(List.of(form.getMedicalId()));
+			notificationSchedule.setTypeNotification(Constant.NOTIFICATION_TYPE_SEND_MEDICAL_RECORDS);
+			notificationSchedule.setFile(url);
+			sendKafkaNotification(notificationSchedule);
+		} catch (Exception e) {
+			System.out.println("upload img fail");
+		}
+	}
+
 	public String plusDate(String date) {
 		String[] arr = date.split("-");
 		LocalDate l = LocalDate.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
@@ -230,6 +253,12 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		notificationSchedule.setTypeNotification(typeNotification);
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		String json = ow.writeValueAsString(notificationSchedule);
+		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);
+	}
+
+	private void sendKafkaNotification(NotificationScheduleDTO dto) throws JsonProcessingException {
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(dto);
 		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);
 	}
 

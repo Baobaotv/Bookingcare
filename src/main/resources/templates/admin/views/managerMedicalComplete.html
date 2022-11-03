@@ -13,9 +13,8 @@
 			<div class="card shadow mb-4">
 				<div class="card-header py-4 d-flex flex-row-reverse">
 					<form method="POST" action="" enctype="multipart/form-data"
-						id="uploadMedical">
+						id="uploadMedicalRecords">
 						
-					
 						<button style="width: 60px;"type="button"
 							class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
 							data-toggle="modal" data-target="#exampleModal"
@@ -24,12 +23,15 @@
 							</span>
 						</button>
 
-					
+						<button style="width: 60px;"type="button"
+								class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
+								data-toggle="modal" data-target="#sendMedicalRecordsModal"
+								title='Gửi kết quả khám'  id="btnSendMedicalRecords">
+							<span>  <i class="bi bi-file-earmark-medical"></i>
+							</span>
+						</button>
 
-
-
-						<!-- Modal -->
-
+						<!-- Modal Infomation -->
 						<div class="modal fade" id="exampleModal" tabindex="-1"
 							aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog modal-xl" role="document">
@@ -154,13 +156,65 @@
 										<button type="button" class="btn btn-secondary"
 											data-dismiss="modal">Close</button>
 
-
-									<!-- 	<button type="button" id="addMedical" class="btn btn-primary">Thêm
-											bài viết</button>
-										<button type="button" id="editMedical" class="btn btn-primary">Cập
-											nhập thông tin</button> -->
 									</div>
 
+								</div>
+							</div>
+						</div>
+
+						<!-- Modal send Medical Records -->
+						<div class="modal fade" id="sendMedicalRecordsModal" tabindex="-1"
+							 aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog modal-xl" role="document">
+								<div class="modal-content">
+<!--									<form method="POST" action="" enctype="multipart/form-data"-->
+<!--										  id="uploadMedicalRecords">-->
+									<div class="modal-body">
+										<div class="row match-height">
+											<div class="col-12">
+												<div class="card">
+													<div class="card-header">
+														<h4 class="card-title">Gửi kết quả khám bệnh</h4>
+													</div>
+													<div class="card-content">
+														<div class="card-body">
+
+															<div class="row">
+																</br>
+																<div class="col-md-6 col-12">
+																	<div class="form-group">
+																		<label for="medicalRecords">File đính kèm: </label>
+
+																	</div>
+																</div>
+																<div class="col-md-6 col-12">
+																	<div class="form-group">
+																		<input
+																				type="file" class="form-control"
+																				id="medicalRecords"
+																				name="medicalRecords">
+
+																	</div>
+																</div>
+																<input type="hidden" name = "medicalId" id = "medicalId">
+																<br>
+
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+												data-dismiss="modal">Close</button>
+                                            <button type="button" id="sendMedical" class="btn btn-primary">Gửi kết quả</button>
+									</div>
+
+<!--									</form>-->
 								</div>
 							</div>
 						</div>

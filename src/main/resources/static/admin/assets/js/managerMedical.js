@@ -54,6 +54,7 @@ $(document)
 						if (count < 1) {
 							$("#btnDeleteMedical").prop("disabled", true);
 							$("#btnInforMedia").prop("disabled", true);
+							$("#btnSendMedicalRecords").prop("disabled", true);
 							$("#btnComplete").prop("disabled", true);
 							$("#btnUpdateTimeClose").prop("disabled", true);
 						} else {
@@ -62,10 +63,12 @@ $(document)
 							$("#btnDeleteMedical").prop("disabled", false);
 							if (count == 1) {
 								$("#btnInforMedia").prop("disabled", false);
+								$("#btnSendMedicalRecords").prop("disabled", false);
 								$("#btnUpdateTimeClose").prop("disabled", false);
 
 							} else {
 								$("#btnInforMedia").prop("disabled", true);
+								$("#btnSendMedicalRecords").prop("disabled", true);
 								$("#btnUpdateTimeClose").prop("disabled", true);
 							}
 						}
@@ -107,6 +110,48 @@ $(document)
 								 $("#hospitalName").text(values[12])
 								 
 							});
+					// btnSendMedicalRecords
+					$("#btnSendMedicalRecords").click(
+						function(event) {
+							event.preventDefault();
+							// var values = new Array();
+							//
+							// $.each($("input[name='checkOne']:checked")
+							// 		.closest("td").siblings("td"),
+							// 	function() {
+							// 		values.push($(this).text());
+							// 	});
+							$('#medicalId').val($("input[name='checkOne']:checked").val());
+						});
+					//submit sendRecords
+
+					$("#sendMedical").click(
+						function(event) {
+							event.preventDefault();
+							var form = $('#uploadMedicalRecords')[0];
+							var urlpath = window.location.href;
+							var data = new FormData(form);
+							$.ajax({
+								url : urlpath+"/uploadMedicalRecords",
+								type : "POST",
+								enctype : 'multipart/form-data',
+								data : data,
+								processData : false,
+								contentType : false,
+								cache : false,
+								success : function(result) {
+									alert("Gửi thành công");
+									window.location
+										.replace(urlpath+"/admin/managerMedicalComplete");
+
+								},
+								error : function(e) {
+									alert('Đã có lỗi xảy ra !');
+									window.location
+										.replace(urlpath+"/admin/managerMedicalComplete");
+								}
+							});
+						});
 
 					// show changeTimeCloseMedical
 					$("#btnUpdateTimeClose").click(

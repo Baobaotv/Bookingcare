@@ -8,6 +8,8 @@ public class NotificationScheduleDTO {
 
     private String typeNotification;
 
+    private String file;
+
     public List<Long> getIds() {
         return ids;
     }
@@ -30,5 +32,19 @@ public class NotificationScheduleDTO {
     public NotificationScheduleDTO(List<Long> ids, String typeNotification) {
         this.ids = ids;
         this.typeNotification = typeNotification;
+    }
+
+    public NotificationScheduleDTO(List<Long> ids, String typeNotification, String file) {
+        this.ids = ids;
+        this.typeNotification = typeNotification;
+        this.file = file;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 }

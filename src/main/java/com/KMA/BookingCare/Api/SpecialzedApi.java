@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Dto.HandbookDto;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Repository.SpecializedRepository;
+import com.KMA.BookingCare.search.SpecializedSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,9 @@ public class SpecialzedApi {
 
 	@Autowired
 	private SpecializedRepository specializedRepository;
+
+	@Autowired
+	private SpecializedSearchRepository specializedSearchRepository;
 
 	@Hidden
 	@PostMapping(value = "/api/specialized")
@@ -82,6 +86,7 @@ public class SpecialzedApi {
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		specializedRepository.deleteById(id);
+		specializedSearchRepository.deleteById(String.valueOf(id));
 		return  ResponseEntity.noContent().build();
 	}
 
@@ -89,6 +94,7 @@ public class SpecialzedApi {
 	@DeleteMapping(value = "/specicalized/delete")
 	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){
 		log.info("Request to deletes by ids {}", ids);
+		specializedRepository.deleteAllById(ids);
 		specializedRepository.deleteAllById(ids);
 		return ResponseEntity.noContent().build();
 	}
