@@ -2,10 +2,7 @@ package com.KMA.BookingCare.ServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
@@ -91,8 +88,8 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setName(form.getName());
 		entity.setLocation(form.getLocation());
 		entity.setDescription(form.getDescription());
-		entity.setLatitude(form.getLatitude());
-		entity.setLongitude(form.getLongitude());
+		entity.setLatitude(form.getLongitude());
+		entity.setLongitude(form.getLatitude());
 		entity.setStatus(1);
 		entity = hospitalRepository.save(entity);
 		HospitalDocument document = HospitalMapper.convertToDocument(entity);
@@ -120,6 +117,13 @@ public class HospitalServiceImpl implements HospitalService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public HospitalEntity findOneById(Long id) {
+		HospitalEntity hospitalEntity = hospitalRepository.findOneById(id);
+		hospitalEntity.setLstuser(Collections.emptyList());
+		return hospitalEntity;
 	}
 
 	@Override

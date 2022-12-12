@@ -26,7 +26,7 @@ import com.KMA.BookingCare.Service.SpecializedService;
 import javax.servlet.http.HttpSession;
 
 @RestController()
-@RequestMapping("/api")
+//@RequestMapping("")
 public class HandbookApi {
 
 	private final Logger log = LoggerFactory.getLogger(HandbookApi.class);
@@ -41,7 +41,7 @@ public class HandbookApi {
 	private HandbookingSearchRepository handbookingSearchRepository;
 
 	@Hidden
-	@PostMapping(value = "/handbook")
+	@PostMapping(value = "/api/handbook")
 	public ResponseEntity<?> addHandbookApi(@RequestBody HandbookForm form) {
 		log.info("Request to add handbook {}");
 		try {
@@ -56,7 +56,7 @@ public class HandbookApi {
 	}
 
 	@Hidden
-	@PutMapping(value = "/handbok")
+	@PutMapping(value = "/api/handbok")
 	public ResponseEntity<?> editHandbookApi(@RequestBody HandbookForm form) {
 		log.info("Request to edit handbook {}");
 		try {
@@ -69,7 +69,7 @@ public class HandbookApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/handbook")
+	@GetMapping(value = "/api/handbook")
 	public ResponseEntity<Page<HandbookDto>> getAll(@PageableDefault(page = 0, size = 10) Pageable pageable){
 		log.info("Request to getAll {}");
 		Page<HandbookDto> page = handbookServiceImpl.findAllByStatusPageable(1, pageable);
@@ -79,14 +79,14 @@ public class HandbookApi {
 	/*
 	* hien thi len trang chu
 	*  */
-	@GetMapping(value = "/handbook/get-random")
+	@GetMapping(value = "/api/handbook/get-random")
 	public ResponseEntity<List<HandbookDto>> getRandom(){
 		log.info("Request to get Random");
 		List<HandbookDto> lstCamNangRandom = handbookServiceImpl.findRandomHandbook();
 		return ResponseEntity.ok(lstCamNangRandom);
 	}
 
-	@GetMapping(value = "/handbook/search")
+	@GetMapping(value = "/api/handbook/search")
 	public ResponseEntity<Page<HandbookDto>> search(@PageableDefault(page = 0, size = 10) Pageable pageable
 											, @RequestParam(required = false) String title,
 													@RequestParam(required = false) Long specialzedId,
@@ -118,7 +118,7 @@ public class HandbookApi {
 	}
 
 	@Hidden
-	@DeleteMapping("/handbook/{id}")
+	@DeleteMapping("/api/handbook/{id}")
 	public ResponseEntity<?> delete(@PathVariable long id){
 		log.info("Request to delete {}", id);
 		handbookRepository.deleteById(id);
@@ -127,7 +127,7 @@ public class HandbookApi {
 				.build();
 	}
 	@Hidden
-	@DeleteMapping("/handbook/deletes")
+	@DeleteMapping("/api/handbook/deletes")
 	public ResponseEntity<?> deleteALl(@RequestBody List<Long> ids){
 		log.info("Request to delete multi {}", ids);
 		handbookRepository.deleteAllById(ids);
@@ -148,7 +148,7 @@ public class HandbookApi {
 		return ResponseEntity.ok("true");
 	}
 
-	@PostMapping(value = {"/admin/managerHandbok/delete","/doctor/managerHandbook/delete"})
+	@PostMapping(value = {"/admin/managerHandbook/delete","/doctor/managerHandbook/delete"})
 	public ResponseEntity<?> deleteHandbook(@RequestBody formDelete form) {
 		try {
 			handbookServiceImpl.updateHandbookByStatus(form.getIds());
@@ -160,7 +160,7 @@ public class HandbookApi {
 		return ResponseEntity.ok("true");
 	}
 
-	@PostMapping(value = {"/admin/managerHandbok/edit","/doctor/managerHandbook/edit"})
+	@PostMapping(value = {"/admin/managerHandbook/edit","/doctor/managerHandbook/edit"})
 	public ResponseEntity<?> editHandbook(@ModelAttribute HandbookForm form) {
 		try {
 			handbookServiceImpl.saveHandbook(form);

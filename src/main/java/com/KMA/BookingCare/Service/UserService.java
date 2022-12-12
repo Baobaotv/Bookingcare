@@ -35,7 +35,8 @@ public interface UserService {
 	void updateClient(UpdateCientForm form);
 	List<User> findAllDoctor();
 	List<User> searchDoctor( searchDoctorForm form);
-	List<User> searchDoctorAndPageable( searchDoctorForm form, Pageable page);
+
+	List<User> searchDoctorAndPageable( searchDoctorForm form, String roleUser, Pageable page);
 
 	Page<User> findAllDoctor(Pageable pageable);
 	

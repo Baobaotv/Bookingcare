@@ -480,12 +480,16 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> searchDoctorAndPageable(searchDoctorForm form, Pageable page) {
+	public List<User> searchDoctorAndPageable(searchDoctorForm form, String roleUser, Pageable page) {
 
 		if(form.getName()==null||form.getName().equals("")) {
 			form.setName("");
 		}
-		List<UserEntity> lstEntities= userRepository.searchHandbookAndPageable(form.getName(),form.getSpecializedId(),form.getHospitalId(),page);
+
+		List<Integer> roleIds;
+		if ("ADMIN".equals(roleUser)) roleIds = List.of(1, 2);
+		else roleIds = List.of(2);
+		List<UserEntity> lstEntities= userRepository.searchHandbookAndPageable(form.getName(),form.getSpecializedId(),form.getHospitalId(),page, roleIds);
 		List<User> lstDto = new ArrayList<User>();
 		for(UserEntity entity: lstEntities) {
 			User dto = UserMapper.convertToDto(entity);

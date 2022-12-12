@@ -104,15 +104,15 @@ $(document).ready(function() {
 					sex:{
 						required : true
 					},
-					specializedId:{
-						required : true
-					},
+//					specializedId:{
+//						required : true
+//					},
 					yearOfBirth:{
 						required : true
 					},
-					hospitalId:{
-						required : true
-					},
+//					hospitalId:{
+//						required : true
+//					},
 					email:{
 						required : true,
 						email : true

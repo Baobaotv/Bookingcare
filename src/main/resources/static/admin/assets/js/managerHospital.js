@@ -199,12 +199,12 @@ $(document)
 								descriptionEdittor.html.set (values2[0]);
 								$('#description').val(values2[0])
 								$('#imgOld').val(values[4]);
-								$('#longitude').val(values[5]);
-								$('#latitude').val(values[6]);
+								$('#longitude').val(values[6]);
+								$('#latitude').val(values[5]);
 								$("#addHospital").css("display", "none");
 								$("#editHospital").css("display", "block");
-								valueKinhDo = Number(values[5]);
-								valueViDo = Number(values[6]);
+								valueViDo = Number(values[5]);
+								valueKinhDo = Number(values[6]);
 								initMap();
 
 							});

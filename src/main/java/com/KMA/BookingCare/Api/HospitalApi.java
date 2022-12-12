@@ -69,7 +69,7 @@ public class HospitalApi {
 	@GetMapping(value = "/api/hospital/{id}")
 	public ResponseEntity<HospitalEntity> findOne(@PathVariable Long id){
 		log.info("Request to get one by Id {}", id);
-		HospitalEntity hospitalEntity = hospitalRepository.findOneById(id);
+		HospitalEntity hospitalEntity = hospitalServiceImpl.findOneById(id);
 		return  ResponseEntity.ok(hospitalEntity);
 	}
 

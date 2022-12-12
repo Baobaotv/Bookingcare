@@ -169,7 +169,7 @@ public class HomeClientController {
 	public String doctor(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page
 			,@ModelAttribute searchDoctorForm form){
 		Pageable pageable = PageRequest.of(page-1, 4);
-		List<User> lstDto = UserviceImpl.searchDoctorAndPageable(form,pageable);
+		List<User> lstDto = UserviceImpl.searchDoctorAndPageable(form, "USER", pageable);
 		List<SpecializedDto> lstChuyenKhoa = specializedServiceImpl.findAll();
 		List<HospitalDto> lstBenhvien= hospitalServiceImpl.findAllByStatus(1);
 		model.addAttribute("lstBenhvien", lstBenhvien);

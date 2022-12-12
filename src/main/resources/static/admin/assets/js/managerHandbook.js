@@ -89,7 +89,8 @@ $(document)
 												if(stringContent){
 													event.preventDefault();
 													var form = $('#uploadHandbook')[0];
-													var urlpath=window.location.href;
+													var urlLocation = window.location.href;
+													var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
 													var data = new FormData(form);
 													$
 															.ajax({
@@ -226,7 +227,8 @@ $(document)
 							function(event) {
 								event.preventDefault();
 								var data = {};
-								var urlpath=window.location.href;
+								var urlLocation = window.location.href;
+                                var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
 								var ids = $('tbody input[name="checkOne"]:checked').map(function () {
 		           				return $(this).val();
 		        				}).get();
@@ -267,7 +269,8 @@ $(document)
 												if(stringContent){
 													event.preventDefault();
 													var form = $('#uploadHandbook')[0];
-													var urlpath=window.location.href;
+													var urlLocation = window.location.href;
+                                                    var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
 													var data = new FormData(form);
 													$
 															.ajax({

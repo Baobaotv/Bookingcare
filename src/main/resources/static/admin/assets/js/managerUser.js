@@ -91,7 +91,8 @@ $(document)
 
 											// Get form
 											var form = $('#uploadUser')[0];
-											var urlpath = window.location.origin;
+											var urlLocation = window.location.origin;
+											var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
 											var data = new FormData(form);
 											$
 													.ajax({
@@ -385,6 +386,7 @@ $(document)
 								event.preventDefault();
 								var data = {};
 								var urlpath = window.location.origin;
+								var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
 								var ids = $(
 										'tbody input[name="checkOne"]:checked')
 										.map(function() {
