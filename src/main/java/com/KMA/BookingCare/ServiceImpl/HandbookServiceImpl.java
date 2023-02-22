@@ -47,8 +47,8 @@ public class HandbookServiceImpl implements HandbookService{
 	@Autowired
 	private Cloudinary cloudinary;
 
-	@Autowired
-	private HandbookingSearchRepository handbookingSearchRepository;
+//	@Autowired
+//	private HandbookingSearchRepository handbookingSearchRepository;
 
 	@Override
 	public void saveHandbook(HandbookForm form) throws ParseException {
@@ -85,7 +85,7 @@ public class HandbookServiceImpl implements HandbookService{
 		entity.setModifiedDate(new Date());
 		entity = handbookRepository.save(entity);
 		HandbookDocument document = convertToDocument(entity);
-		handbookingSearchRepository.save(document);
+//		handbookingSearchRepository.save(document);
 		
 	}
 
@@ -109,7 +109,7 @@ public class HandbookServiceImpl implements HandbookService{
 	@Override
 	public void updateHandbookByStatus(List<String> ids) {
 		handbookRepository.updateByStatus(ids);
-		handbookingSearchRepository.deleteAllById(ids);
+//		handbookingSearchRepository.deleteAllById(ids);
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class HandbookServiceImpl implements HandbookService{
 			HandbookDocument document = this.convertToDocument(entity);
 			documentList.add(document);
 		}
-		handbookingSearchRepository.saveAll(documentList);
+//		handbookingSearchRepository.saveAll(documentList);
 		return handbookEntities;
 	}
 

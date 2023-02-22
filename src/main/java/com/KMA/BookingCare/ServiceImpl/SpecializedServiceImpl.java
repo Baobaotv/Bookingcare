@@ -37,8 +37,8 @@ public class SpecializedServiceImpl implements SpecializedService{
 	@Autowired
 	private Cloudinary cloudinary;
 
-	@Autowired
-	private SpecializedSearchRepository specializedSearchRepository;
+//	@Autowired
+//	private SpecializedSearchRepository specializedSearchRepository;
 
 	@Override
 	public List<SpecializedDto> findAll() {
@@ -105,7 +105,7 @@ public class SpecializedServiceImpl implements SpecializedService{
 		entity.setStatus(1);
 		entity = specializedRepository.save(entity);
 		SpecializedDocument document = SpecializedMapper.convertToDocument(entity);
-		specializedSearchRepository.save(document);
+//		specializedSearchRepository.save(document);
 	}
 
 	@Override

@@ -36,8 +36,8 @@ public class HospitalServiceImpl implements HospitalService{
 	@Autowired
 	private Cloudinary cloudinary;
 
-	@Autowired
-	private HospitalSearchRepository hospitalSearchRepository;
+//	@Autowired
+//	private HospitalSearchRepository hospitalSearchRepository;
 
 	@Override
 	public List<HospitalDto> findAll() {
@@ -93,7 +93,7 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setStatus(1);
 		entity = hospitalRepository.save(entity);
 		HospitalDocument document = HospitalMapper.convertToDocument(entity);
-		hospitalSearchRepository.save(document);
+//		hospitalSearchRepository.save(document);
 		
 	}
 

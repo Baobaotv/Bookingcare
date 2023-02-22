@@ -37,8 +37,8 @@ public class HospitalApi {
 	@Autowired
 	private HospitalRepository hospitalRepository;
 
-	@Autowired
-	private HospitalSearchRepository hospitalSearchRepository;
+//	@Autowired
+//	private HospitalSearchRepository hospitalSearchRepository;
 
 
 	@Hidden
@@ -94,7 +94,7 @@ public class HospitalApi {
 	public ResponseEntity<?> deleteAll(@RequestBody List<Long> ids){
 		log.info("Request to delete all by ids {}", ids);
 		hospitalRepository.deleteAllById(ids);
-		hospitalSearchRepository.deleteAllById(ids);
+//		hospitalSearchRepository.deleteAllById(ids);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -103,7 +103,7 @@ public class HospitalApi {
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		hospitalRepository.deleteById(id);
-		hospitalSearchRepository.deleteById(id);
+//		hospitalSearchRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -134,7 +134,7 @@ public class HospitalApi {
 	public ResponseEntity<?> deleteHospital(@RequestBody formDelete form) {
 		try {
 			hospitalRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
-			hospitalSearchRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
+//			hospitalSearchRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
 		} catch (Exception e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

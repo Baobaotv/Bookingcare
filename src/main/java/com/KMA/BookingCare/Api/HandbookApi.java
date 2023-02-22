@@ -37,8 +37,8 @@ public class HandbookApi {
 	@Autowired
 	private HandbookRepository handbookRepository;
 	
-	@Autowired
-	private HandbookingSearchRepository handbookingSearchRepository;
+//	@Autowired
+//	private HandbookingSearchRepository handbookingSearchRepository;
 
 	@Hidden
 	@PostMapping(value = "/api/handbook")

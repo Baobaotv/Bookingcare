@@ -80,8 +80,8 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private WorkTimeRepository wkRepository;
 
-	@Autowired
-	private UserSearchRepository userSearchRepository;
+//	@Autowired
+//	private UserSearchRepository userSearchRepository;
 	
 	@Override
 	public void add(User user,String nameRole) {
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService{
 		}
 		userEntity = userRepository.save(userEntity);
 		UserDocument document = UserMapper.convertToDocument(userEntity);
-		userSearchRepository.save(document);
+//		userSearchRepository.save(document);
 	}
 
 	@Override
@@ -208,7 +208,7 @@ public class UserServiceImpl implements UserService{
 		}
 		entity = userRepository.save(entity);
 		UserDocument document = UserMapper.convertToDocument(entity);
-		userSearchRepository.save(document);
+//		userSearchRepository.save(document);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import java.text.ParseException;
 import java.util.List;
 
 public interface ElasticSearchService {
-    void syncData() throws ParseException;
-
-    List<SearchAllDto> searchAll(String query) throws IOException;
+//    void syncData() throws ParseException;
+//
+//    List<SearchAllDto> searchAll(String query) throws IOException;
 }

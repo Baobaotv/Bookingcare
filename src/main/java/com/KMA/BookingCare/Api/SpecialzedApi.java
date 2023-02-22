@@ -36,8 +36,8 @@ public class SpecialzedApi {
 	@Autowired
 	private SpecializedRepository specializedRepository;
 
-	@Autowired
-	private SpecializedSearchRepository specializedSearchRepository;
+//	@Autowired
+//	private SpecializedSearchRepository specializedSearchRepository;
 
 	@Hidden
 	@PostMapping(value = "/api/specialized")
@@ -86,7 +86,7 @@ public class SpecialzedApi {
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		specializedRepository.deleteById(id);
-		specializedSearchRepository.deleteById(String.valueOf(id));
+//		specializedSearchRepository.deleteById(String.valueOf(id));
 		return  ResponseEntity.noContent().build();
 	}
 

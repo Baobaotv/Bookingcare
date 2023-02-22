@@ -53,166 +53,166 @@ import java.util.stream.Collectors;
 @Service
 public class ElasticSearchServiceImpl implements ElasticSearchService {
 
-    @Autowired
-    private HandbookRepository handbookRepository;
-
-    @Autowired
-    private SpecializedRepository specializedRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private HospitalRepository hospitalRepository;
-
-    @Autowired
-    private HandbookingSearchRepository handbookingSearchRepository;
-
-    @Autowired
-    private SpecializedSearchRepository specializedSearchRepository;
-
-    @Autowired
-    private UserSearchRepository userSearchRepository;
-
-    @Autowired
-    private HospitalSearchRepository hospitalSearchRepository;
-
-    @Value("${spring.elasticsearch.uris}")
-    private String elasticsearchUrl;
-
-
-    @Override
-    public void syncData() {
-        deleteDataSearch();
-        syncDataHandbook();
-        syncDataUser();
-        syncDataSpecialized();
-        syncDataHospital();
-    }
-
-    @Override
-    public List<SearchAllDto> searchAll(String param) throws IOException {
-        String url= "http://" + elasticsearchUrl + "/_search";
-
-        File fileSearch = ResourceUtils.getFile("classpath:static/querySearchAll.json");
-        String query = new String(Files.readAllBytes(fileSearch.toPath()));
-        String body = query.replace("__PARAM__", param);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        //yeu cau tra ve dinh dang json
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-
-        // HttpEntity<String>: To get result as String.
-        HttpEntity<String> entity = new HttpEntity<String>(body,httpHeaders);
-
-        // RestTemplate
-        RestTemplate restTemplate = new RestTemplate();
-
-        // Gửi yêu cầu với phương thức GET, và các thông tin Headers.
-        ResponseEntity<String> response = restTemplate.exchange(url, //
-                HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        Gson gson = new Gson();
-        SearchHitDto searchHit = gson.fromJson(result, SearchHitDto.class);
-        return searchHit.getHits().getHits().stream().map(item -> item.get_source()).collect(Collectors.toList());
-    }
-
-    private void deleteDataSearch() {
-        handbookingSearchRepository.deleteAll();
-        userSearchRepository.deleteAll();
-        specializedSearchRepository.deleteAll();
-        hospitalSearchRepository.deleteAll();
-    }
-
-    private void syncDataUser() {
-        List<UserEntity> userEntities = userRepository.findAll();
-        List<UserDocument> documentList = new ArrayList<>();
-        for(UserEntity entity : userEntities) {
-            UserDocument document = this.convertToDocument(entity);
-            documentList.add(document);
-        }
-        userSearchRepository.saveAll(documentList);
-    }
-
-    private UserDocument convertToDocument(UserEntity entity) {
-        UserDocument document = new UserDocument();
-        document.setId(entity.getId());
-        document.setEmail(entity.getEmail());
-        document.setImg(entity.getImg());
-        document.setDescription(entity.getDescription());
-        document.setFullName(entity.getFullName());
-        document.setStatus(entity.getStatus());
-        document.setLocation(entity.getLocation());
-        document.setSex(entity.getSex());
-        document.setShortDescription(entity.getShortDescription());
-        document.setPhoneNumber(entity.getPhoneNumber());
-        document.setYearOfBirth(entity.getYearOfBirth());
-        document.setUsername(entity.getUsername());
-        return document;
-    }
-
-    private void syncDataHospital() {
-        List<HospitalEntity> hospitalEntities = hospitalRepository.findAll();
-        List<HospitalDocument> documentList = new ArrayList<>();
-        for(HospitalEntity entity : hospitalEntities) {
-            HospitalDocument document = this.convertToDocument(entity);
-            documentList.add(document);
-        }
-        hospitalSearchRepository.saveAll(documentList);
-    }
-
-    private HospitalDocument convertToDocument(HospitalEntity entity) {
-        HospitalDocument document = new HospitalDocument();
-        document.setId(entity.getId());
-        document.setImg(entity.getImg());
-        document.setDescription(entity.getDescription());
-        document.setStatus(entity.getStatus());
-        document.setLocation(entity.getLocation());
-        document.setName(entity.getName());
-        return document;
-    }
-
-    private void syncDataSpecialized() {
-        List<SpecializedEntity> specializedEntities = specializedRepository.findAll();
-        List<SpecializedDocument> documentList = new ArrayList<>();
-        for(SpecializedEntity entity : specializedEntities) {
-            SpecializedDocument document = this.convertToDocument(entity);
-            documentList.add(document);
-        }
-        specializedSearchRepository.saveAll(documentList);
-    }
-
-    private SpecializedDocument convertToDocument(SpecializedEntity entity) {
-        SpecializedDocument document = new SpecializedDocument();
-        document.setId(entity.getId());
-        document.setCode(entity.getCode());
-        document.setImg(entity.getImg());
-        document.setDescription(entity.getDescription());
-        document.setStatus(entity.getStatus());
-        document.setName(entity.getName());
-        return document;
-    }
-
-    private void syncDataHandbook() {
-        List<HandbookEntity> handbookEntities = handbookRepository.findAll();
-        List<HandbookDocument> documentList = new ArrayList<>();
-        for(HandbookEntity entity : handbookEntities) {
-            HandbookDocument document = this.convertToDocument(entity);
-            documentList.add(document);
-        }
-        handbookingSearchRepository.saveAll(documentList);
-    }
-
-    private HandbookDocument convertToDocument(HandbookEntity entity) {
-        HandbookDocument document = new HandbookDocument();
-        document.setId(entity.getId());
-        document.setContent(entity.getContent());
-        document.setImg(entity.getImg());
-        document.setDescription(entity.getDescription());
-        document.setCreatedBy(entity.getCreatedBy());
-        document.setStatus(entity.getStatus());
-        document.setTitle(entity.getTitle());
-        document.setModifiedBy(entity.getModifiedBy());
-        return document;
-    }
+//    @Autowired
+//    private HandbookRepository handbookRepository;
+//
+//    @Autowired
+//    private SpecializedRepository specializedRepository;
+//
+//    @Autowired
+//    private UserRepository userRepository;
+//
+//    @Autowired
+//    private HospitalRepository hospitalRepository;
+//
+//    @Autowired
+//    private HandbookingSearchRepository handbookingSearchRepository;
+//
+//    @Autowired
+//    private SpecializedSearchRepository specializedSearchRepository;
+//
+//    @Autowired
+//    private UserSearchRepository userSearchRepository;
+//
+//    @Autowired
+//    private HospitalSearchRepository hospitalSearchRepository;
+//
+//    @Value("${spring.elasticsearch.uris}")
+//    private String elasticsearchUrl;
+//
+//
+//    @Override
+//    public void syncData() {
+//        deleteDataSearch();
+//        syncDataHandbook();
+//        syncDataUser();
+//        syncDataSpecialized();
+//        syncDataHospital();
+//    }
+//
+//    @Override
+//    public List<SearchAllDto> searchAll(String param) throws IOException {
+//        String url= "http://" + elasticsearchUrl + "/_search";
+//
+//        File fileSearch = ResourceUtils.getFile("classpath:static/querySearchAll.json");
+//        String query = new String(Files.readAllBytes(fileSearch.toPath()));
+//        String body = query.replace("__PARAM__", param);
+//
+//        HttpHeaders httpHeaders = new HttpHeaders();
+//        //yeu cau tra ve dinh dang json
+//        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+//
+//        // HttpEntity<String>: To get result as String.
+//        HttpEntity<String> entity = new HttpEntity<String>(body,httpHeaders);
+//
+//        // RestTemplate
+//        RestTemplate restTemplate = new RestTemplate();
+//
+//        // Gửi yêu cầu với phương thức GET, và các thông tin Headers.
+//        ResponseEntity<String> response = restTemplate.exchange(url, //
+//                HttpMethod.POST, entity, String.class);
+//        String result = response.getBody();
+//        Gson gson = new Gson();
+//        SearchHitDto searchHit = gson.fromJson(result, SearchHitDto.class);
+//        return searchHit.getHits().getHits().stream().map(item -> item.get_source()).collect(Collectors.toList());
+//    }
+//
+//    private void deleteDataSearch() {
+//        handbookingSearchRepository.deleteAll();
+//        userSearchRepository.deleteAll();
+//        specializedSearchRepository.deleteAll();
+//        hospitalSearchRepository.deleteAll();
+//    }
+//
+//    private void syncDataUser() {
+//        List<UserEntity> userEntities = userRepository.findAll();
+//        List<UserDocument> documentList = new ArrayList<>();
+//        for(UserEntity entity : userEntities) {
+//            UserDocument document = this.convertToDocument(entity);
+//            documentList.add(document);
+//        }
+//        userSearchRepository.saveAll(documentList);
+//    }
+//
+//    private UserDocument convertToDocument(UserEntity entity) {
+//        UserDocument document = new UserDocument();
+//        document.setId(entity.getId());
+//        document.setEmail(entity.getEmail());
+//        document.setImg(entity.getImg());
+//        document.setDescription(entity.getDescription());
+//        document.setFullName(entity.getFullName());
+//        document.setStatus(entity.getStatus());
+//        document.setLocation(entity.getLocation());
+//        document.setSex(entity.getSex());
+//        document.setShortDescription(entity.getShortDescription());
+//        document.setPhoneNumber(entity.getPhoneNumber());
+//        document.setYearOfBirth(entity.getYearOfBirth());
+//        document.setUsername(entity.getUsername());
+//        return document;
+//    }
+//
+//    private void syncDataHospital() {
+//        List<HospitalEntity> hospitalEntities = hospitalRepository.findAll();
+//        List<HospitalDocument> documentList = new ArrayList<>();
+//        for(HospitalEntity entity : hospitalEntities) {
+//            HospitalDocument document = this.convertToDocument(entity);
+//            documentList.add(document);
+//        }
+//        hospitalSearchRepository.saveAll(documentList);
+//    }
+//
+//    private HospitalDocument convertToDocument(HospitalEntity entity) {
+//        HospitalDocument document = new HospitalDocument();
+//        document.setId(entity.getId());
+//        document.setImg(entity.getImg());
+//        document.setDescription(entity.getDescription());
+//        document.setStatus(entity.getStatus());
+//        document.setLocation(entity.getLocation());
+//        document.setName(entity.getName());
+//        return document;
+//    }
+//
+//    private void syncDataSpecialized() {
+//        List<SpecializedEntity> specializedEntities = specializedRepository.findAll();
+//        List<SpecializedDocument> documentList = new ArrayList<>();
+//        for(SpecializedEntity entity : specializedEntities) {
+//            SpecializedDocument document = this.convertToDocument(entity);
+//            documentList.add(document);
+//        }
+//        specializedSearchRepository.saveAll(documentList);
+//    }
+//
+//    private SpecializedDocument convertToDocument(SpecializedEntity entity) {
+//        SpecializedDocument document = new SpecializedDocument();
+//        document.setId(entity.getId());
+//        document.setCode(entity.getCode());
+//        document.setImg(entity.getImg());
+//        document.setDescription(entity.getDescription());
+//        document.setStatus(entity.getStatus());
+//        document.setName(entity.getName());
+//        return document;
+//    }
+//
+//    private void syncDataHandbook() {
+//        List<HandbookEntity> handbookEntities = handbookRepository.findAll();
+//        List<HandbookDocument> documentList = new ArrayList<>();
+//        for(HandbookEntity entity : handbookEntities) {
+//            HandbookDocument document = this.convertToDocument(entity);
+//            documentList.add(document);
+//        }
+//        handbookingSearchRepository.saveAll(documentList);
+//    }
+//
+//    private HandbookDocument convertToDocument(HandbookEntity entity) {
+//        HandbookDocument document = new HandbookDocument();
+//        document.setId(entity.getId());
+//        document.setContent(entity.getContent());
+//        document.setImg(entity.getImg());
+//        document.setDescription(entity.getDescription());
+//        document.setCreatedBy(entity.getCreatedBy());
+//        document.setStatus(entity.getStatus());
+//        document.setTitle(entity.getTitle());
+//        document.setModifiedBy(entity.getModifiedBy());
+//        return document;
+//    }
 }

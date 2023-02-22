@@ -17,26 +17,26 @@ import java.text.ParseException;
 @RequestMapping("/api/elasticsearch")
 public class ElasticSearchApi {
 
-    @Autowired
-    private HandbookService handbookService;
-
-    @Autowired
-    private ElasticSearchService elasticSearchService;
-
-    @GetMapping("/get-all-handbook")
-    public ResponseEntity<?> getAll() {
-        handbookService.getAll();
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @GetMapping("/sync-data")
-    public ResponseEntity<?> syncFormDbToElasticSearch() throws ParseException {
-        elasticSearchService.syncData();
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    @GetMapping("/search-all")
-    public ResponseEntity<?> searchAll(@Param("query") String query) throws IOException {
-        return ResponseEntity.ok(elasticSearchService.searchAll(query));
-    }
+//    @Autowired
+//    private HandbookService handbookService;
+//
+//    @Autowired
+//    private ElasticSearchService elasticSearchService;
+//
+//    @GetMapping("/get-all-handbook")
+//    public ResponseEntity<?> getAll() {
+//        handbookService.getAll();
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/sync-data")
+//    public ResponseEntity<?> syncFormDbToElasticSearch() throws ParseException {
+//        elasticSearchService.syncData();
+//        return ResponseEntity.ok(HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/search-all")
+//    public ResponseEntity<?> searchAll(@Param("query") String query) throws IOException {
+//        return ResponseEntity.ok(elasticSearchService.searchAll(query));
+//    }
 }
