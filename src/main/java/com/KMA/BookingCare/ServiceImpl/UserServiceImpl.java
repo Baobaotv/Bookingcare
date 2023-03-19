@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.nio.file.attribute.UserPrincipal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.document.UserDocument;
 import com.KMA.BookingCare.search.UserSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,10 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.KMA.BookingCare.Api.form.UpdateCientForm;
 import com.KMA.BookingCare.Api.form.UserForm;
 import com.KMA.BookingCare.Api.form.searchDoctorForm;
-import com.KMA.BookingCare.Dto.HandbookDto;
-import com.KMA.BookingCare.Dto.MyUser;
-import com.KMA.BookingCare.Dto.Role;
-import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Entity.RoleEntity;
@@ -51,8 +50,6 @@ import com.cloudinary.utils.ObjectUtils;
 @Transactional
 public class UserServiceImpl implements UserService{
 	
-	
-
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -477,6 +474,20 @@ public class UserServiceImpl implements UserService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public List<User> getDoctorOnline() {
+		Pageable pageable = PageRequest.of(0, 4);
+		List<User> userPage = userRepository.getDoctorOnline(pageable);
+		return userPage;
+	}
+
+	@Override
+	public List<User> getFeaturedDoctor() {
+		List<UserFeaturedDto> userFeaturedDtoList = userRepository.getFeaturedUser();
+		List<Long> ids = userFeaturedDtoList.stream().map(UserFeaturedDto::getId).collect(Collectors.toList());
+		return userRepository.findAllDoctorByIds(ids);
 	}
 
 	@Override

@@ -18,4 +18,9 @@ public class Constant {
     public static final String NOTIFICATION_TYPE_SEND_MEDICAL_RECORDS = "3";
 
     public static final String NOTIFICATION_TOPIC = "notification";
+
+    public static final Integer LIMIT_DEFAULT = 6;
+
+    public static final Integer OFFSET_DEFAULT = 0;
+
 }

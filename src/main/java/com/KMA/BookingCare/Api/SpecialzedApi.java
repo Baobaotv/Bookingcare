@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Dto.HandbookDto;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Repository.SpecializedRepository;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.search.SpecializedSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ public class SpecialzedApi {
 	}
 
 	@GetMapping(value = "/specicalized")
-	public ResponseEntity<Page<SpecializedDto>> getAll(@PageableDefault(page = 0, size = 20) Pageable pageable){
+	public ResponseEntity<Page<SpecializedDto>> getAll(@PageableDefault(page = 0, size = 6) Pageable pageable){
 		log.info("Request to getAll {}");
 		Page<SpecializedDto> lstChuyenKhoa = specializedServiceImpl.findAllByStatusApi(1, pageable);
 		return  ResponseEntity.ok(lstChuyenKhoa);
@@ -97,5 +98,16 @@ public class SpecialzedApi {
 		specializedRepository.deleteAllById(ids);
 		specializedRepository.deleteAllById(ids);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping(value = "/specicalized/get-featured-specialty")
+	public ResponseEntity<?> getFeaturedSpecialty() {
+		return ResponseEntity.ok(specializedServiceImpl.getFeaturedSpecialty());
+	}
+
+	@GetMapping(value = "/specicalized/{id}")
+	public ResponseEntity<?> getOne(@PathVariable Long id){
+		log.info("Request to get one Specialty by id {}", id);
+		return  ResponseEntity.ok(specializedServiceImpl.findOneById(id));
 	}
 }

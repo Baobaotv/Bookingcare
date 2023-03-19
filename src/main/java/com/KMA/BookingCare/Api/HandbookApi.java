@@ -171,4 +171,14 @@ public class HandbookApi {
 		}
 		return ResponseEntity.ok("true");
 	}
+
+	@GetMapping(value = "/api/handbook/get-list-of-recent")
+	public ResponseEntity<?> getListOfRecentHandbook() {
+		return ResponseEntity.ok(handbookServiceImpl.getListOfRecentHandbook());
+	}
+
+	@GetMapping(value = "/api/handbook/get-featured-handbook")
+	public ResponseEntity<?> getFeaturedHandbook() {
+		return ResponseEntity.ok(handbookServiceImpl.getFeaturedHandbook());
+	}
 }

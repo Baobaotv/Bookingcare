@@ -6,12 +6,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.Dto.HandbookFeaturedDto;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.document.HandbookDocument;
 import com.KMA.BookingCare.search.HandbookingSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -208,6 +213,21 @@ public class HandbookServiceImpl implements HandbookService{
 		}
 		handbookingSearchRepository.saveAll(documentList);
 		return handbookEntities;
+	}
+
+	@Override
+	public List<HandbookDto> getListOfRecentHandbook() {
+		Pageable pageable = PageRequest.of(0,
+				4,
+				Sort.sort(HandbookEntity.class).by(HandbookEntity::getCreatedDate).descending());
+		return handbookRepository.getListOfRecentHandbook(pageable);
+	}
+
+	@Override
+	public List<HandbookDto> getFeaturedHandbook() {
+		List<HandbookFeaturedDto> handbookFeaturedDtoList = handbookRepository.getFeaturedHandbook();
+		List<Long> ids = handbookFeaturedDtoList.stream().map(HandbookFeaturedDto::getId).collect(Collectors.toList());
+		return handbookRepository.getAllByIds(ids);
 	}
 
 	private HandbookDocument convertToDocument(HandbookEntity entity) {

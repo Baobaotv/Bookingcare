@@ -20,4 +20,6 @@ public interface HospitalService {
 	List<HospitalDto> findAllByStatus(Integer status, Pageable pageable);
 	List<HospitalDto>  findRandomSpecicalized();
 	HospitalEntity findOneById(Long id);
+
+	List<HospitalDto> getFeaturedHospital();
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.KMA.BookingCare.Dto.User;
+import com.KMA.BookingCare.Repository.CustomRepository.CustomUserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomUserRepository {
 	 UserEntity findByUsername(String username);
 	
 	 Optional<UserEntity> findById(Long id);
@@ -89,5 +90,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 			")", nativeQuery = true)
 	List<String> getEmailByIds(@Param("ids") Long[] ids);
 
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.User(u.id, u.fullName, u.img, u.shortDescription) FROM UserEntity  u inner join u.roles ur WHERE ur.id=2")
+	List<User> getDoctorOnline(Pageable pageable);
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.User(u.id, u.fullName, u.img, u.specialized.name, u.shortDescription) FROM UserEntity u INNER JOIN u.roles ur WHERE ur.id=2 AND u.id in (:ids)")
+	List<User> findAllDoctorByIds(@Param("ids") List<Long> ids);
 
 }

@@ -15,4 +15,8 @@ public interface SpecializedService {
 	Page<SpecializedDto> findAllByStatusApi(Integer status, Pageable pageable);
 	void saveOrUpdateSpecialized(SpecializedForm form) throws ParseException;
 	List<SpecializedDto> findRandomSpecicalized();
+
+	List<SpecializedDto> getFeaturedSpecialty();
+
+	SpecializedDto findOneById(Long id);
 }

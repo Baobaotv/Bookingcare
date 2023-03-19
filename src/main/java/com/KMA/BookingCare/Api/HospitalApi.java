@@ -152,4 +152,10 @@ public class HospitalApi {
 		}
 		return ResponseEntity.ok("true");
 	}
+
+	@GetMapping(value = "/api/hospital/get-featured-hospital")
+	public ResponseEntity<?> getFeaturedHospital() {
+		return ResponseEntity.ok(hospitalServiceImpl.getFeaturedHospital());
+	}
+
 }

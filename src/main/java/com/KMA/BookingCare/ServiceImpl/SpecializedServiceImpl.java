@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.Dto.SpecialtyFeaturedDto;
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.document.SpecializedDocument;
 import com.KMA.BookingCare.search.SpecializedSearchRepository;
@@ -117,6 +119,20 @@ public class SpecializedServiceImpl implements SpecializedService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public List<SpecializedDto> getFeaturedSpecialty() {
+		List<SpecialtyFeaturedDto> specialtyFeaturedDtos = specializedRepository.getFeaturedSpecialty();
+		List<Long> ids = specialtyFeaturedDtos.stream().map(SpecialtyFeaturedDto::getId).collect(Collectors.toList());
+		return specializedRepository.findAllByIds(ids);
+	}
+
+	@Override
+	public SpecializedDto findOneById(Long id) {
+		SpecializedEntity specializedEntity = specializedRepository.findOneById(id);
+		SpecializedDto specializedDto = SpecializedMapper.convertToDto(specializedEntity);
+		return specializedDto;
 	}
 
 

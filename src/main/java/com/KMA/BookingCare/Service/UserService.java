@@ -49,4 +49,8 @@ public interface UserService {
 	
 	//findRandomDOctor
 	List<User> findRandomDoctor();
+
+	List<User> getDoctorOnline();
+
+	List<User> getFeaturedDoctor();
 }
