@@ -38,4 +38,8 @@ public interface HandbookService {
 	Page<HandbookDto> searchHandbookAndPageableapi(String title,Long specialzed,String userId, Pageable page);
 
 	List<HandbookEntity> getAll();
+
+	List<HandbookDto> getListOfRecentHandbook();
+
+	List<HandbookDto> getFeaturedHandbook();
 }

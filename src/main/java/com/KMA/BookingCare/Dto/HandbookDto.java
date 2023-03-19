@@ -202,4 +202,11 @@ public class HandbookDto {
 		this.title = title;
 		this.img = img;
 	}
+
+	public HandbookDto(Long id, String title, String description, String img) {
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.img = img;
+	}
 }

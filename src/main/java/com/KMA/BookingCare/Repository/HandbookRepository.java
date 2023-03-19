@@ -1,8 +1,8 @@
 package com.KMA.BookingCare.Repository;
 
-import java.util.List;
-
 import com.KMA.BookingCare.Dto.HandbookDto;
+import com.KMA.BookingCare.Entity.HandbookEntity;
+import com.KMA.BookingCare.Repository.CustomRepository.CustomHandbookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,10 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.KMA.BookingCare.Entity.HandbookEntity;
-import com.KMA.BookingCare.Entity.UserEntity;
+import java.util.List;
 
-public interface HandbookRepository extends JpaRepository<HandbookEntity, Long> {
+public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>, CustomHandbookRepository {
 	List<HandbookEntity> findAllByStatus(Integer status);
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.img) FROM HandbookEntity h where  h.status =:status")
 	Page<HandbookDto> findAllByStatus(Integer status, Pageable pageable);
@@ -23,7 +22,7 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long> 
 	@Modifying
 	@Query(value = "UPDATE handbook  SET status = 0 WHERE id in :ids", nativeQuery = true)
 	Integer updateByStatus(@Param("ids") List<String> ids);
-	
+
 	HandbookEntity findOneById(Long id);
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.content, h.createdBy, h.createdDate, h.modifiedDate, h.modifiedBy, h.specialized.name,h.specialized.id,h.img,h.createdBy,h.user.id) FROM HandbookEntity h WHERE h.id =:id")
@@ -50,5 +49,10 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long> 
 			+ "AND ((:userId IS NOT NULL AND h.user.username =:userId) or :userId is null)")
 	Page<HandbookDto> searchHandbookAndPageableApi(@Param("title") String title,@Param("specializedId") Long specializedId,@Param("userId") String userId,Pageable page);
 
-//	List<HandbookEntity> finAll();
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity h where h.status = 1")
+	List<HandbookDto> getListOfRecentHandbook(Pageable pageable);
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity h where h.status = 1 and h.id in (:ids)")
+	List<HandbookDto> getAllByIds(@Param("ids") List<Long> ids);
 }

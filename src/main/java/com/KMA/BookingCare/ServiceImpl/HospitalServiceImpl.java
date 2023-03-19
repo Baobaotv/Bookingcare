@@ -3,13 +3,17 @@ package com.KMA.BookingCare.ServiceImpl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.Dto.HospitalFeaturedDto;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
 import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.Repository.CustomRepository.CustomHospitalRepository;
 import com.KMA.BookingCare.document.HospitalDocument;
 import com.KMA.BookingCare.search.HospitalSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,6 +31,10 @@ import com.KMA.BookingCare.Repository.HospitalRepository;
 import com.KMA.BookingCare.Service.HospitalService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 @Service
 public class HospitalServiceImpl implements HospitalService{
 	
@@ -124,6 +132,14 @@ public class HospitalServiceImpl implements HospitalService{
 		HospitalEntity hospitalEntity = hospitalRepository.findOneById(id);
 		hospitalEntity.setLstuser(Collections.emptyList());
 		return hospitalEntity;
+	}
+
+	@Override
+	public List<HospitalDto> getFeaturedHospital() {
+		List<HospitalFeaturedDto> hospitalFeaturedDtos = hospitalRepository.getFeaturedHospital();
+		List<Long> hospitalIds = hospitalFeaturedDtos.stream().map(HospitalFeaturedDto::getId).collect(Collectors.toList());
+		List<HospitalDto> results = hospitalRepository.findAllByIds(hospitalIds);
+		return results;
 	}
 
 	@Override

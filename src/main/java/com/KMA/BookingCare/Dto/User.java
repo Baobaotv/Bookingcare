@@ -3,6 +3,8 @@ package com.KMA.BookingCare.Dto;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.Mapper.WorkTimeMapper;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +15,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-
+@Data
 public class User {
 	
 	private Long id;
@@ -224,5 +226,20 @@ public class User {
 			List<WorkTimeDto> targetList = new ArrayList<>(wkDtoLst);
 			this.setLstWorkTime( targetList);
 		}
+	}
+
+	public User(Long id, String name, String img, String shortDescription) {
+		this.id = id;
+		this.name = name;
+		this.img = img;
+		this.shortDescription = shortDescription;
+	}
+
+	public User(Long id, String name, String img, String specializedName, String shortDescription) {
+		this.id = id;
+		this.name = name;
+		this.img = img;
+		this.specializedName = specializedName;
+		this.shortDescription = shortDescription;
 	}
 }

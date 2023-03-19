@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Repository;
 import java.util.List;
 
 import com.KMA.BookingCare.Dto.SpecializedDto;
+import com.KMA.BookingCare.Repository.CustomRepository.CustomSpecialtyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,7 @@ import com.KMA.BookingCare.Entity.SpecializedEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface SpecializedRepository extends JpaRepository<SpecializedEntity, Long> {
+public interface SpecializedRepository extends JpaRepository<SpecializedEntity, Long>, CustomSpecialtyRepository {
 	SpecializedEntity findOneById(Long Id);
 	List<SpecializedEntity> findAllByStatus(Integer status,Pageable pageable);
 
@@ -21,4 +22,7 @@ public interface SpecializedRepository extends JpaRepository<SpecializedEntity, 
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.SpecializedDto(s.id, s.name,s.code, s.description, s.img) FROM SpecializedEntity s WHERE s.status = :status ")
 	Page<SpecializedDto> findAllByStatusApi(Integer status, Pageable pageable);
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.SpecializedDto(s.id, s.name,s.code, s.description, s.img) FROM SpecializedEntity s WHERE s.status = 1 and s.id in (:ids) ")
+	List<SpecializedDto> findAllByIds(@Param("ids") List<Long> ids);
 }

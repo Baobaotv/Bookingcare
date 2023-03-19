@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -152,6 +153,14 @@ public class UserApi {
 		return ResponseEntity.ok(page);
 	}
 
+	@GetMapping(value = "/api/user/get-doctor-online")
+	public ResponseEntity<?> getDoctorOnline() {
+		log.debug("Request to get doctor online");
+		return ResponseEntity.ok(userServiceImpl.getDoctorOnline());
+	}
 
-	   
+	@GetMapping(value = "/api/user/get-featured-doctor")
+	public ResponseEntity<?> getFeaturedDoctor() {
+		return ResponseEntity.ok(userServiceImpl.getFeaturedDoctor());
+	}
 }
