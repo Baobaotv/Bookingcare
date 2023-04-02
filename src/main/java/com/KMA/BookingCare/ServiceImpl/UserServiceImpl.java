@@ -1,49 +1,33 @@
 package com.KMA.BookingCare.ServiceImpl;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.attribute.UserPrincipal;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.KMA.BookingCare.Api.form.UpdateCientForm;
+import com.KMA.BookingCare.Api.form.UserForm;
+import com.KMA.BookingCare.Api.form.searchDoctorForm;
 import com.KMA.BookingCare.Dto.*;
+import com.KMA.BookingCare.Entity.*;
+import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.Repository.*;
+import com.KMA.BookingCare.Service.UserService;
+import com.KMA.BookingCare.Service.WorkTimeService;
 import com.KMA.BookingCare.document.UserDocument;
 import com.KMA.BookingCare.search.UserSearchRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.KMA.BookingCare.Api.form.UpdateCientForm;
-import com.KMA.BookingCare.Api.form.UserForm;
-import com.KMA.BookingCare.Api.form.searchDoctorForm;
-import com.KMA.BookingCare.Entity.HandbookEntity;
-import com.KMA.BookingCare.Entity.HospitalEntity;
-import com.KMA.BookingCare.Entity.RoleEntity;
-import com.KMA.BookingCare.Entity.SpecializedEntity;
-import com.KMA.BookingCare.Entity.UserEntity;
-import com.KMA.BookingCare.Entity.WorkTimeEntity;
-import com.KMA.BookingCare.Mapper.HandbookMapper;
-import com.KMA.BookingCare.Mapper.UserMapper;
-import com.KMA.BookingCare.Repository.HospitalRepository;
-import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
-import com.KMA.BookingCare.Repository.RoleRepository;
-import com.KMA.BookingCare.Repository.SpecializedRepository;
-import com.KMA.BookingCare.Repository.UserRepository;
-import com.KMA.BookingCare.Repository.WorkTimeRepository;
-import com.KMA.BookingCare.Service.UserService;
-import com.KMA.BookingCare.Service.WorkTimeService;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -306,7 +290,7 @@ public class UserServiceImpl implements UserService{
 		List<UserEntity> lstEntity= userRepository.findAllByMedical(date,specialized, status,1); //lấy tất cả bác sĩ có lịch khám theo date, chuyên khoa specialized
 		for(UserEntity entity: lstEntity) {
 			List<Long> lstWktId= medicalRepository.findAllWorkTimeIdByDateAndDoctorIdAndStatus(entity.getId(), date); //lấy danh sách lịch khám từng bác sĩ
-			Set<WorkTimeEntity> lstWk = new HashSet<WorkTimeEntity>(entity.getWorkTimeEntity());
+			Set<WorkTimeEntity> lstWk = new HashSet<>(entity.getWorkTimeEntity());
 			for(WorkTimeEntity wk: entity.getWorkTimeEntity()) {
 				if(lstWktId.contains(wk.getId())) {
 					lstWk.remove(wk);
@@ -314,7 +298,7 @@ public class UserServiceImpl implements UserService{
 			}
 			entity.setWorkTimeEntity(lstWk);
 		}
-		List<User> lstDto= new ArrayList<User>();
+		List<User> lstDto= new ArrayList<>();
 		for(UserEntity entity: lstEntity) {
 			User dto = UserMapper.convertToDto(entity);
 			lstDto.add(dto);
@@ -325,7 +309,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<User>  findAllBySpecialized(String date, Long specialized, Integer status) {
 		List<UserEntity> lstEntity= userRepository.findAllBySpecialized(date, specialized, status,1);
-		List<User> lstDto= new ArrayList<User>();
+		List<User> lstDto= new ArrayList<>();
 		for(UserEntity entity: lstEntity) {
 			User dto = UserMapper.convertToDto(entity);
 			lstDto.add(dto);
@@ -346,7 +330,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Page<User> findAllDoctorOfSpecializedApi(Long specialized, Integer status, Pageable pageable) {
-		return  userRepository.findAllBySpecializedApi(specialized, status, pageable);
+		Page<User> userPage = userRepository.findAllBySpecializedApi(specialized, status, pageable);
+		SimpleDateFormat sf = new SimpleDateFormat();
+		getWorkTimesOfDoctor(userPage);
+		return userPage;
 	}
 
 	@Override
@@ -376,7 +363,22 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Page<User> findAllDoctorOfHospitalApi(Long hospitalId, Integer status, Pageable pageable) {
-		return userRepository.findAllDoctorByHospitalAndStatus(hospitalId, status, pageable);
+		Page<User> userPage = userRepository.findAllDoctorByHospitalAndStatus(hospitalId, status, pageable);
+		getWorkTimesOfDoctor(userPage);
+		return userPage;
+	}
+
+	private void getWorkTimesOfDoctor(Page<User> userPage) {
+		for(User doctor : userPage.getContent()) {
+			List<Long> workTimeScheduled= medicalRepository.findAllWorkTimeIdByDateAndDoctorIdAndStatus(doctor.getId(), String.valueOf(new Date()));
+			List<WorkTimeDto> lstWk = new ArrayList<>(doctor.getLstWorkTime());
+			for(WorkTimeDto wk: doctor.getLstWorkTime()) {
+				if(workTimeScheduled.contains(wk.getId())) {
+					lstWk.remove(wk);
+				}
+			}
+			doctor.setLstWorkTime(lstWk);
+		}
 	}
 
 	@Override
@@ -447,7 +449,7 @@ public class UserServiceImpl implements UserService{
 		String date = formatter.format(new Date());
 		UserEntity entity = userRepository.findOneById(id);
 		List<WorkTimeEntity> lstWkEntity= wkRepository.findByDateAndDoctorId(date, id);
-		Set<WorkTimeEntity> setWkEntity= new HashSet<WorkTimeEntity>(lstWkEntity);
+		Set<WorkTimeEntity> setWkEntity= new HashSet<>(lstWkEntity);
 		entity.setWorkTimeEntity(setWkEntity);
 		User dto = UserMapper.convertToDto(entity);
 		return dto;

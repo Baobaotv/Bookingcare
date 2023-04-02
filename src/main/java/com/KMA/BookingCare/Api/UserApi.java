@@ -1,38 +1,31 @@
 package com.KMA.BookingCare.Api;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import com.KMA.BookingCare.Dto.*;
-import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.Api.form.UpdateCientForm;
+import com.KMA.BookingCare.Api.form.UserForm;
+import com.KMA.BookingCare.Api.form.formDelete;
+import com.KMA.BookingCare.Api.form.searchDoctorForm;
+import com.KMA.BookingCare.Dto.User;
+import com.KMA.BookingCare.Dto.UserInput;
+import com.KMA.BookingCare.Service.HospitalService;
+import com.KMA.BookingCare.Service.SpecializedService;
+import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.KMA.BookingCare.Api.form.UpdateCientForm;
-import com.KMA.BookingCare.Api.form.UserForm;
-import com.KMA.BookingCare.Api.form.formDelete;
-import com.KMA.BookingCare.Api.form.searchDoctorForm;
-import com.KMA.BookingCare.Service.HospitalService;
-import com.KMA.BookingCare.Service.SpecializedService;
-import com.KMA.BookingCare.Service.UserService;
-
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class UserApi {
@@ -101,21 +94,21 @@ public class UserApi {
 
 	 @GetMapping(value = "/api/user/specialzed/{id}")
 	public ResponseEntity<Page<User>> getALlBySpecialzedId(@PathVariable long id,
-																 @PageableDefault(page = 0, size = 10) Pageable pageable){
+																 @PageableDefault(page = 0, size = 6) Pageable pageable){
 		log.info("Request to getAllBySpecialzedId {}");
 		 Page<User> page = userServiceImpl.findAllDoctorOfSpecializedApi(id, 1,pageable );
 		 return  ResponseEntity.ok(page);
 	 }
 
 	 @GetMapping(value = "/api/user/hospital/{id}")
-	public ResponseEntity<Page<User>> getAllByHospitalId(@PathVariable long id, @PageableDefault(page = 0, size = 10) Pageable pageable){
+	public ResponseEntity<Page<User>> getAllByHospitalId(@PathVariable long id, @PageableDefault(page = 0, size = 6) Pageable pageable){
 		log.info("Request to getAllByHospitalId {} ");
 		 Page<User> page = userServiceImpl.findAllDoctorOfHospitalApi(id,1, pageable);
 		 return  ResponseEntity.ok(page);
 	 }
 
 	 //get thong tin bac si
-	@GetMapping(value="/api/user/docter/{id}")
+	@GetMapping(value="/api/user/doctor/{id}")
 	public ResponseEntity<User>  infoDoctor(Model model,@PathVariable("id") Long id){
 		log.info("Request to infoDocter");
 		User user = userServiceImpl.findOneDoctorAndWorktime(id);
@@ -146,7 +139,7 @@ public class UserApi {
 		return  ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/api/user/docter")
+	@GetMapping(value = "/api/user/doctor")
 	public ResponseEntity<Page<User>> findAllDoctor(@PageableDefault(page = 0, size = 10) Pageable pageable) {
 		 log.debug("Request to get all doctor");
 		 Page<User> page = userServiceImpl.findAllDoctor(pageable);

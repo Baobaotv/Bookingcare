@@ -40,8 +40,6 @@ public class HospitalApi {
 	@Autowired
 	private HospitalSearchRepository hospitalSearchRepository;
 
-
-	@Hidden
 	@PostMapping(value = "/api/hospital")
 	public ResponseEntity<?> addHospital(@RequestBody HospitalForm form) {
 		log.info("Request to save hospital {}");
@@ -53,7 +51,6 @@ public class HospitalApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	@Hidden
 	@PutMapping(value = "/api/hospital/{id}")
 	public ResponseEntity<?> editHospital(@RequestBody HospitalForm form, @PathVariable long id) {
 		log.info("Request to update hospital {}", id);
