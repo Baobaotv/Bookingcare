@@ -44,7 +44,7 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 			+ "AND ( (:userId IS NOT NULL AND user_id =:userId) || :userId IS NULL)",nativeQuery = true)
 	List<HandbookEntity> searchHandbookAndPageable(@Param("title") String title,@Param("specializedId") Long specializedId,@Param("userId") Long userId,Pageable page);
 
-	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.img) FROM HandbookEntity h  where h.status =1 AND h.title like CONCAT('%',:title,'%') "
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity h  where h.status =1 AND h.title like CONCAT('%',:title,'%') "
 			+ "AND ((:specializedId is not null and h.specialized.id =:specializedId) or :specializedId is null) "
 			+ "AND ((:userId IS NOT NULL AND h.user.username =:userId) or :userId is null)")
 	Page<HandbookDto> searchHandbookAndPageableApi(@Param("title") String title,@Param("specializedId") Long specializedId,@Param("userId") String userId,Pageable page);

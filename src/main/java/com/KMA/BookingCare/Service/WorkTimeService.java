@@ -9,4 +9,6 @@ public interface WorkTimeService {
 	List<WorkTimeDto> findAll();
 	List<WorkTimeEntity> findByListId(List<Long> id);
 	List<WorkTimeDto> findByDateAndDoctorId(String date, Long id);
+
+	WorkTimeDto findOneById(Long id);
 }
