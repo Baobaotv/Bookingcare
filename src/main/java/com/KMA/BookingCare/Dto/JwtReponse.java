@@ -10,7 +10,7 @@ public class JwtReponse {
 
     private Long id;
 
-    private String usernamee;
+    private String username;
 
     private String password;
 
@@ -20,19 +20,19 @@ public class JwtReponse {
     public JwtReponse() {
     }
 
-    public JwtReponse(String token, String type, Long id, String usernamee, String password, List<String> roles) {
+    public JwtReponse(String token, String type, Long id, String username, String password, List<String> roles) {
         this.token = token;
         this.type = type;
         this.id = id;
-        this.usernamee = usernamee;
+        this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
-    public JwtReponse(String token, Long id, String usernamee, List<String> roles) {
+    public JwtReponse(String token, Long id, String username, List<String> roles) {
         this.token = token;
         this.id = id;
-        this.usernamee = usernamee;
+        this.username = username;
         this.roles = roles;
     }
 
@@ -60,12 +60,12 @@ public class JwtReponse {
         this.id = id;
     }
 
-    public String getUsernamee() {
-        return usernamee;
+    public String getusername() {
+        return username;
     }
 
-    public void setUsernamee(String usernamee) {
-        this.usernamee = usernamee;
+    public void setusername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

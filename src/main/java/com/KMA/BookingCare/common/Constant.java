@@ -23,4 +23,18 @@ public class Constant {
 
     public static final Integer OFFSET_DEFAULT = 0;
 
+    public static final String vnp_TmnCode = "ZF7UBU1W";
+
+    public static final String vnp_HashSecret = "UJNHGYEOIOIJYVMVFNHFHAAZZDBNBDIR";
+
+    public static final String vnp_Version = "2.1.0";
+
+    public static final String vnp_Command = "pay";
+
+    public static final String vnp_Locale = "vn";
+
+    public static final String vnp_ReturnUrl = "http://localhost:8080/api/payment/returnUrl";
+
+    public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+
 }
