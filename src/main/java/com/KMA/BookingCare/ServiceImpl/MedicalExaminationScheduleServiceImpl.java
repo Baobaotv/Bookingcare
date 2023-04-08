@@ -1,10 +1,7 @@
 package com.KMA.BookingCare.ServiceImpl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
@@ -52,8 +49,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	private Cloudinary cloudinary;
 	
 	@Override
-	public void  save(BookingForm form) throws JsonProcessingException {
-		// TODO Auto-generated method stub
+	public Long  save(BookingForm form) throws JsonProcessingException {
 		MedicalExaminationScheduleEntity entity= new MedicalExaminationScheduleEntity();
 		entity.setDate(form.getDate());
 		entity.setLocation(form.getLocation());
@@ -70,12 +66,14 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		entity.setYearOfBirth(form.getYearOfBirth());
 		entity.setStatus(1);
 		entity.setType(form.getType());
-		if(form.getUserId()!=null&&!form.getUserId().equals("")) {
+		if(form.getUserId() != null) {
 			UserEntity userEntity2= userRepository.findOneById(form.getUserId());
 			entity.setUser(userEntity2);
 		}
+		entity.setStatusPayment(form.getStatusPayment());
 		entity = medicalRepository.save(entity);
-		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);
+//		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);
+		return entity.getId();
 	}
 
 	@Override
@@ -197,6 +195,16 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		} catch (Exception e) {
 			System.out.println("upload img fail");
 		}
+	}
+
+	@Override
+	public Optional<MedicalExaminationScheduleEntity> findOneById(Long id) {
+		return medicalRepository.findById(id);
+	}
+
+	@Override
+	public void update(MedicalExaminationScheduleEntity entity) {
+		medicalRepository.save(entity);
 	}
 
 	public String plusDate(String date) {

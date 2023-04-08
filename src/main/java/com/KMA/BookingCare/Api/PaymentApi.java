@@ -3,9 +3,11 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Api.form.PaymentForm;
 import com.KMA.BookingCare.Api.form.PaymentSaveForm;
 import com.KMA.BookingCare.Dto.PaymentResultDto;
+import com.KMA.BookingCare.Service.PaymentService;
 import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.common.PaymentUtils;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import java.util.*;
 
 @RestController
 public class PaymentApi {
+
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping("api/payment")
     public ResponseEntity<?> createPayment(@RequestBody PaymentForm form) throws UnsupportedEncodingException {
@@ -95,9 +100,7 @@ public class PaymentApi {
 
     @PostMapping("api/payment/save")
     public ResponseEntity<?> returnUrl(@RequestBody PaymentSaveForm form) {
-
-        System.out.println("return url");
-        return null;
+        return ResponseEntity.ok(paymentService.save(form));
     }
 
 

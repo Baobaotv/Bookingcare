@@ -139,7 +139,7 @@ public class HomeClientController {
 	public String  infoDoctor(Model model,@PathVariable("id") Long id){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String strDate = formatter.format(new Date());
-		User user=UserviceImpl.findOneDoctorAndWorktime(id);
+		User user=UserviceImpl.findOneDoctorAndWorktime(id, strDate);
 		model.addAttribute("user", user);
 	
 	  System.out.println("test");

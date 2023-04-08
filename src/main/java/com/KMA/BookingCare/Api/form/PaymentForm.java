@@ -10,4 +10,6 @@ public class PaymentForm {
     private Integer amount;
 
     private String bankCode;
+
+    private Long medicalId;
 }

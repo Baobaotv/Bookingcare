@@ -1,8 +1,11 @@
 package com.KMA.BookingCare.ServiceImpl;
 
+import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,5 +22,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
         return UserDetailsImpl.build(user);
+    }
+
+    public UserDetailsImpl getUserDetailsImplFromContext() {
+        Object result = SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        UserDetailsImpl user = (UserDetailsImpl) result;
+        return user;
     }
 }
