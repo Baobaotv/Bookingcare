@@ -45,7 +45,7 @@ public class ChatController {
 		return "admin/views/managerChat2";
 	}
 
-	@RequestMapping(path = "/selectUser", method = RequestMethod.POST)
+	@RequestMapping(path = "/api/selectUser", method = RequestMethod.POST)
 	public ResponseEntity<?> searchMessageUser(Model model, @RequestBody Long id) {
 		List<MessageDto> lstMessageDto= messageServiceImpl.findAllMessageBySelectUser(id);
 		User userDto= userServiceImpl.findOneById(id);

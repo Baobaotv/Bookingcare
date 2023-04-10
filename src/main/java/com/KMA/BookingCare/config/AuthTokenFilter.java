@@ -42,6 +42,7 @@ public class AuthTokenFilter  extends OncePerRequestFilter {
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         filterChain.doFilter(request, response);
     }
     private String parseJwt(HttpServletRequest request) {

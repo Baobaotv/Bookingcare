@@ -228,7 +228,7 @@ function onMessageReceived(payload) {
 function messageUser(event) {
     var idValue= idUser;
     
-    var urlpath=window.location.origin+"/selectUser";
+    var urlpath=window.location.origin+"/api/selectUser";
 
     $.ajax({
     	   url: urlpath,
