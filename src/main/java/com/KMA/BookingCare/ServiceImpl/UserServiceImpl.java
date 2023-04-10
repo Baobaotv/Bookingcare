@@ -13,6 +13,7 @@ import com.KMA.BookingCare.document.UserDocument;
 import com.KMA.BookingCare.search.UserSearchRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -444,9 +445,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findOneDoctorAndWorktime(Long id) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		String date = formatter.format(new Date());
+	public User findOneDoctorAndWorktime(Long id, String date) {
+		if (Strings.isBlank(date)) {
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			date = formatter.format(new Date());
+		}
 		UserEntity entity = userRepository.findOneById(id);
 		List<WorkTimeEntity> lstWkEntity= wkRepository.findByDateAndDoctorId(date, id);
 		Set<WorkTimeEntity> setWkEntity= new HashSet<>(lstWkEntity);

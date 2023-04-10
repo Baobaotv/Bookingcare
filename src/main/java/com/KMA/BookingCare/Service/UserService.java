@@ -42,7 +42,7 @@ public interface UserService {
 	
 	
 	//tìm bác sĩ và lịch khám trống của nó
-	User findOneDoctorAndWorktime(Long id);
+	User findOneDoctorAndWorktime(Long id, String date);
 	
 	String findPeerIdById(Long id);
 	Integer updatePeerId(String peerId, Long id);

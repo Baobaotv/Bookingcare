@@ -75,7 +75,7 @@ public class InteractiveServiceImpl implements InteractiveService{
 		}else {
 			lstEntity= interactiveRepository.findAllByYouId(userDetails.getId());
 		}
-		List<InteractiveDto> lstDto = new ArrayList<InteractiveDto>();
+		List<InteractiveDto> lstDto = new ArrayList<>();
 		for(InteractiveEntity entity: lstEntity) {
 			UserEntity userEntity=userRepository.findOneById(entity.getUserId());
 			InteractiveDto dto = InteractiveMapper.convertToDto(entity,userEntity);

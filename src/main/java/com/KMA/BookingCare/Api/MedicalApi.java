@@ -119,7 +119,6 @@ public class MedicalApi {
 		return  lstMedical;
 	}
 
-	@Hidden
 	@DeleteMapping("/api/media/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);

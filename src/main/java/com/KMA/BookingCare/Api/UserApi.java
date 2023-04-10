@@ -109,9 +109,9 @@ public class UserApi {
 
 	 //get thong tin bac si
 	@GetMapping(value="/api/user/doctor/{id}")
-	public ResponseEntity<User>  infoDoctor(Model model,@PathVariable("id") Long id){
+	public ResponseEntity<User>  infoDoctor(Model model,@PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date){
 		log.info("Request to infoDocter");
-		User user = userServiceImpl.findOneDoctorAndWorktime(id);
+		User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
 		return ResponseEntity.ok(user);
 	}
 

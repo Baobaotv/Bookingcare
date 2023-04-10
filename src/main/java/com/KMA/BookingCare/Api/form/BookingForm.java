@@ -1,5 +1,10 @@
 package com.KMA.BookingCare.Api.form;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingForm {
 	private String nameScheduler;
 	private String phoneScheduer;
@@ -14,6 +19,8 @@ public class BookingForm {
 	private String yearOfBirth;
 	private String type;
 	private Long userId;
+
+	private Integer statusPayment;
 	
 	
 	public Long getUserId() {

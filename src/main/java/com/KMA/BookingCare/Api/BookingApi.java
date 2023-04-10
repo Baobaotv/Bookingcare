@@ -48,7 +48,7 @@ public class BookingApi {
 				MyUser user =(MyUser) session.getAttribute("userDetails");
 				form.setUserId(user.getId());
 			} else {
-				log.error("login by app");
+				log.info("login by app");
 				Object result = SecurityContextHolder.getContext().getAuthentication()
 						.getPrincipal();
 				UserDetailsImpl user = (UserDetailsImpl) result;
@@ -58,9 +58,8 @@ public class BookingApi {
 		}catch (Exception e){
 			log.error(e.getMessage());
 		}
-
-		medicalServiceImpl.save(form);
-		return ResponseEntity.ok("true");
+		return ResponseEntity.ok(medicalServiceImpl.save(form));
+//		return ResponseEntity.ok(1);
 	}
 	
 	@PostMapping(value = "/changedate")
