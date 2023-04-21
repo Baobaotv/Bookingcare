@@ -9,6 +9,7 @@ import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.common.JwtUtils;
+import com.KMA.BookingCare.config.SessionUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,9 @@ public class AuthApi {
     @Autowired
     private  JwtUtils jwtUtils;
 
+    @Autowired
+    private SessionUserDetail sessionUserDetail;
+
     @PostMapping(value = "/signin")
     public ResponseEntity<?> singin(@RequestBody LoginDto loginDto, HttpSession session){
         Authentication authentication = authenticationManager.authenticate(
@@ -57,9 +61,13 @@ public class AuthApi {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         MyUser myUser = UserMapper.convertToMyUser(userDetails);
         session.setAttribute("userDetails", myUser);
+        sessionUserDetail.setImg(myUser.getImg());
+        sessionUserDetail.setFullName(myUser.getFullName());
+        sessionUserDetail.setId(myUser.getId());
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+        sessionUserDetail.setRoles(roles);
         return ResponseEntity.ok(new JwtReponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),

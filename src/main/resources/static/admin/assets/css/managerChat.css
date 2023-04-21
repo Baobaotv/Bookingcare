@@ -281,6 +281,7 @@ body{
   border-radius: 10px;
   left: 0;
 }
+
 .video-minh{
   position: absolute;
   height: 100%;
@@ -290,10 +291,159 @@ body{
   border-radius: 10px;
 
 }
+
 .closes{
   position: absolute;
   right: 30px;
   top: 30px;
   z-index: 3000;
+}
 
+/*Start Css for modal video*/
+.modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    z-index: 10000;
+    justify-content: center;
+}
+
+.modal-notification {
+    position: absolute;
+    right: 50%;
+    bottom: 50%;
+    transform: translate(50%, 50%);
+    min-width: 200px;
+    min-height: 200px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.modal-notification-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.modal-notification-icon {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.wrapper-icon-cancel {
+    padding: 8px 14px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 18px;
+}
+
+.wrapper-icon-cancel:hover {
+    cursor: pointer;
+}
+
+.wrapper-icon-accept {
+    padding: 8px 10px;
+    background-color: rgb(4, 255, 0);
+    color: white;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper-icon-accept:hover {
+    cursor: pointer;
+}
+
+.modal-video {
+    display: none;
+}
+
+.modal-remote-video {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.modal-action {
+    position: absolute;
+    bottom: 30px;
+    right: 50%;
+    display: flex;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 30px;
+    font-size: 1.8rem;
+    transform: translateX(50%);
+}
+
+.modal-action-icon {
+    margin: 0 16px;
+    color: white;
+    display: none;
+}
+
+.modal-action-icon:hover {
+    color: rgb(0, 140, 255);
+    cursor: pointer;
+}
+
+.modal-action-icon.disable {
+    display: block;
+}
+
+.modal-action-icon.disable:hover {
+     color: red;
+     cursor: pointer;
+}
+
+.wrapper-self-video {
+    width: 400px;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #222;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 10001;
+}
+
+.modal-self-video {
+    width: inherit;
+    height: inherit;
+    padding: 0 50px;
+}
+
+/*End Css for modal video*/
+.wrapper-btn-call {
+    display: flex;
+    justify-content: end;
+}
+
+.btn-call {
+    color: transparent;
+    border: 1px solid #3993f3;
+    background-color: transparent;
+    font-size: 1rem;
+    border-radius: 50%;
+    padding: 0px 8px;
 }

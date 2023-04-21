@@ -8,7 +8,6 @@ var showLstUser = document.querySelector('#showLstUser');
 var idUser;
 var myId = document.querySelector('#idUser');
 var btnCallServer = document.querySelector('#btnCallServer');
-var btnCloseServer = document.querySelector('#btnCloseServer');
 let modalclose = document.querySelector('.modal-close');
 var scroll = document.querySelector('.chat-history');
 var username = null;

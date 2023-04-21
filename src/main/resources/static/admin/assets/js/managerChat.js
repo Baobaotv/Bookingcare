@@ -8,106 +8,31 @@ var connectingElement = document.querySelector('#connecting');
 var showLstUser = document.querySelector('#showLstUser');
 var idUser;
 var btnCallServer = document.querySelector('#btnCallServer');
-let modalclose = document.querySelector('.modal-close')
 var myId = document.querySelector('#myId');
 var stompClient = null;
 var username = null;
-var peer = new Peer();
-var peers={};
-var peerId=null;
 
-function openStream(){
-    const config={
-        audio: true,
-        video: true
-    };
-   
-    return navigator.mediaDevices.getUserMedia(config);
-}
-
-function playstream(idVideo, stream){
-    const video = document.getElementById(idVideo);
-    video.srcObject= stream;
-    video.play();
-}
-
-
-btnCallServer.onclick = function() {
-	 var urlpath=window.location.origin+"/call";
-	 var a= $('.modal-overlay');
-	
-	 $.ajax({
-	  	   url: urlpath,
-	  	   data: '4',
-	  	   contentType: "application/json",
-	  	   success: function(data,response) {
-	  		  var peerId=data;
-	  		 $('.modal-overlay').addClass( 'openn');
-	  		 openStream()
-	 	    .then(stream=>{
-	 	        playstream('localStreamServer',stream);
-	 	        var call = peer.call(peerId,stream);
-	 	        call.on('stream',remoteStream=>playstream('remoteStreamServer',remoteStream));
-	 	       peers['server']=call;
-	 	      call.on('close', () => {
-		 	    	
-		 	    	  alert('server tao close')
-		 	    	  });
-	 	    })
-	  	   },
-	  	   type: 'POST'
-	  	});
-		
-	   
+// Variable call video
+const PORT = 8443;
+const MAPPING = "/room";
+const peerConnectionConfig = {
+	'iceServers': [
+		{'urls': 'stun:stun.l.google.com:19302'}
+	]
 };
-modalclose.addEventListener('click', () => {
-	 var video = document.getElementById('localStreamServer');
-  	const mediaStream = video.srcObject;
-  	const tracks = mediaStream.getTracks();
-  	tracks.forEach(track => track.stop());
-  	$('.modal-overlay').removeClass( 'openn');
-	if( peers['server']!=null){
-		 peers['server'].close();
-		 alert('oke');
-	}if( peers['user']!=null){
-		 peers['user'].close();
-	}
-	username = document.querySelector('#userName').innerText.trim();
-	 var chatMessage = {
-	            receiver: username,
-	            senderId: myId.defaultValue,
-	            receiverId: '4',
-	            content: "close",
-	            type:"CALL"
-	        };
-    stompClient.send("/app/close", {}, JSON.stringify(chatMessage));
-	
-});
-
-
-
-
-peer.on('call',call=>{
-	peers['user']=call;
-	 $('.modal-overlay').addClass( 'openn');
-    openStream()
-    .then(stream=>{
-        call.answer(stream);
-        playstream('localStreamServer',stream);
-        call.on('stream',remoteStream=>playstream('remoteStreamServer',remoteStream));
-        call.on('close', () => {
-        	var video = document.getElementById('localStreamServer');
-        	const mediaStream = video.srcObject;
-        	const tracks = mediaStream.getTracks();
-        	tracks.forEach(track => track.stop());
-        	$('.modal-overlay').removeClass( 'openn');
-            alert('server nhan close')
-          });
-    })
-})
-
-
-
+let ws = null;
+let peerIdRTC = null;
+let localStream = null;
+let connections = {};
+let modal = document.getElementById('modal-wrapper');
+let selfVideo = document.getElementById('self')
+let remoteVideo = document.getElementById('remote');
+let btnCancel = document.getElementById('btnCancel');
+let btnAccept = document.getElementById('btnAccept');
+let userLoginId = document.getElementById('userLoginId').value;
+let showCam = true;
+let turnOnMic = true;
+// Variable call video
 function connect(e) {
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
@@ -123,27 +48,13 @@ function onConnected() {
 	} else {
 		stompClient.subscribe('/topic/server', onMessageReceived);
 	}
-	peer.on('open',id=> {peerId=id+"";
-	var urlpath=window.location.origin+"/savePeerId";
-	 $.ajax({
-		   url: urlpath,
-		   data: peerId,
-		   contentType: "application/json",
-		   success: function(data,response) {
-		alert('save success');
-		   },
-		   type: 'POST'
-		});
-	});
 }
-
 
 function onError(error) {
-	alert('loi')
+	alert('connect fail' + error);
 }
 
-
-function sendMessage(event) {
+function  sendMessage(event) {
     var messageContent = messageInputServer.value.trim();
     if(messageContent && stompClient) {
     	username = document.querySelector('#userName').innerText.trim();
@@ -172,12 +83,7 @@ function onMessageReceived(payload) {
       	const tracks = mediaStream.getTracks();
       	tracks.forEach(track => track.stop());
       	$('.modal-overlay').removeClass( 'openn');
-    	if( peers['server']!=null){
-   		 peers['server'].close();
-   	}
-    	if( peers['user']!=null){
-   		 peers['user'].close();
-   		}
+
     } else {
     if(message.senderId==idUser){
     	 var insertElement='<li class="clearfix">'+'<div class="message-data">'+'<img src="https://res.cloudinary.com/dtvkhopoe/image/upload/v1645000335/benh_nhan_ti17om.jpg" alt="avatar">'+'<span class="message-data-time">'+message.createdDate+'</span>'+'</div> <div class="message my-message">'+message.content +' </div>'+'</li>' ;
@@ -203,7 +109,6 @@ function onMessageReceived(payload) {
     	    				   }
     	    				  
     	    			   }
-    	    			
         	    			   var insertElement;
         	    				   insertElement='<li class="clearfix searchMesssage" ><img '+
         	    				   'src="https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-hand-drawn-cartoon-male-doctor-elements-element-png-image_602590.jpg" alt="avatar">' +
@@ -223,11 +128,9 @@ function onMessageReceived(payload) {
     var scroll = document.querySelector('.chat-history');
     scroll.scrollTop = scroll.scrollHeight;
 }
- 
 
 function messageUser(event) {
     var idValue= idUser;
-    
     var urlpath=window.location.origin+"/api/selectUser";
 
     $.ajax({
@@ -265,21 +168,303 @@ function messageUser(event) {
     scroll.scrollTop = scroll.scrollHeight;
 }
 
-
-
 messageFormServer.addEventListener('submit', sendMessage, true);
-//searchMesssage.addEventListener('click', messageUser, true);
-
 function selectUser() {
 	var searchMesssage = document.querySelectorAll('.searchMesssage ');
 	searchMesssage.forEach((element) => {
         element.onclick= function(){
-         
            idUser = this.childNodes[4].defaultValue;
            messageUser()
-           
         }
         
     });
 }
 selectUser();
+
+//Start handle call video
+connectToWss();
+function connectToWss() {
+	ws = new WebSocket('wss://' + window.location.hostname + ':' + PORT + MAPPING);
+	ws.onmessage = processWsMessage;
+	ws.onopen = handleWhenOpenWs;
+	ws.onclose = logMessage;
+	ws.onerror = logMessage;
+}
+
+function processWsMessage(message) {
+	var signal = JSON.parse(message.data);
+	logMessage(signal);
+	// you have logged in
+	switch (signal.type) {
+		case 'init':
+			handleInit(signal);
+			break;
+		case 'logout':
+			handleLogout(signal);
+			break;
+		case 'offer':
+			handleOffer(signal);
+			break;
+		case 'answer':
+			handleAnswer(signal);
+			break;
+		case 'ice':
+			handleIce(signal);
+			break;
+		case 'exit':
+			handleExit(signal);
+			break;
+		case 'callToUser':
+			handleCallToUser(signal);
+			break;
+		case 'cancel-caller':
+			handleCancel(signal);
+			break;
+		default: {
+			break;
+		}
+	}
+}
+
+const handleInit = async (signal) => {
+	peerIdRTC = signal.sender;
+	let connection = await getRTCPeerConnectionObject(peerIdRTC);
+
+	// make an offer, and send the SDP to sender.
+	connection
+		.createOffer()
+		.then(function (sdp) {
+			connection.setLocalDescription(sdp);
+			console.log('Creating an offer for', peerIdRTC);
+			sendMessageRTC({
+				type: 'offer',
+				receiver: peerIdRTC,
+				sender: userLoginId,
+				data: sdp,
+			});
+		})
+		.catch(function (e) {
+			console.log('Error in offer creation.', e);
+		});
+}
+
+function handleLogout(signal) {
+	peerIdRTC = signal.sender;
+	if (peerIdRTC === uuidInBig) {
+		remoteVideo.srcObject = null;
+	}
+}
+
+const handleOffer = async (signal) => {
+	peerIdRTC = signal.sender;
+	let connection = await getRTCPeerConnectionObject(peerIdRTC);
+	connection
+		.setRemoteDescription(new RTCSessionDescription(signal.data))
+		.then(function () {
+			console.log('Setting remote description by offer from ' + peerIdRTC);
+			// create an answer for the peedId.
+			connection
+				.createAnswer()
+				.then(function (sdp) {
+					// and after callback set it locally and send to peer
+					connection.setLocalDescription(sdp);
+					sendMessageRTC({
+						type: 'answer',
+						receiver: peerIdRTC,
+						sender: userLoginId,
+						data: sdp,
+					});
+
+				})
+				.catch(function (e) {
+					console.log('Error in offer handling.', e);
+				});
+		})
+		.catch(function (e) {
+			console.log('Error in offer handling.', e);
+		});
+}
+
+const handleAnswer = async (signal) => {
+	let connection = await getRTCPeerConnectionObject(signal.sender);
+	connection
+		.setRemoteDescription(new RTCSessionDescription(signal.data))
+		.then(function () {
+			console.log('Setting remote description by answer from' + signal.sender);
+		})
+		.catch(function (e) {
+			console.log('Error in answer acceptance.', e);
+		});
+}
+
+const handleIce = async (signal) => {
+	if (signal.data) {
+		console.log('Adding ice candidate');
+		var connection = await getRTCPeerConnectionObject(signal.sender);
+		connection.addIceCandidate(new RTCIceCandidate(signal.data));
+	}
+}
+
+function handleExit(signal) {
+	if (signal.data) {
+		console.log('Handle exit');
+		remoteVideo.srcObject = null;
+	}
+}
+
+const getRTCPeerConnectionObject = async (uuid) => {
+	if (connections[uuid]) {
+		return connections[uuid];
+	}
+
+	let connection = new RTCPeerConnection(peerConnectionConfig);
+
+	await navigator.mediaDevices
+		.getUserMedia({ video: true, audio: true })
+		.then(function (stream) {
+			console.log('Stream OK');
+			localStream = stream;
+			console.log(localStream);
+			selfVideo.srcObject = localStream;
+		})
+		.catch(function (error) {
+			console.log('Stream NOT OK: ' + error.name + ': ' + error.message);
+		});
+	console.log('========')
+	console.log(!!localStream)
+	console.log(connection);
+	connection.addStream(localStream);
+
+	// handle on ice candidate
+	connection.onicecandidate = function (event) {
+		console.log('candidate is: ' + event.candidate);
+		if (event.candidate) {
+			sendMessageRTC({
+				type: 'ice',
+				receiver: uuid,
+				sender: userLoginId,
+				data: event.candidate,
+			});
+		}
+	};
+
+	// handle on track / onaddstream
+	connection.onaddstream = function (event) {
+		console.log('Received new stream from ' + uuid);
+		remoteVideo.srcObject = event.stream;
+	};
+
+	connections[uuid] = connection;
+	return connection;
+}
+
+function sendMessageRTC(payload) {
+	ws.send(JSON.stringify(payload));
+}
+
+function logMessage(message) {
+	console.log(message);
+}
+
+function handleWhenOpenWs() {
+	console.log('conect success');
+	sendMessageRTC({
+		type: 'save',
+		sender: userLoginId,
+	});
+}
+
+function handleCancel(signal) {
+	alert('da bi huy');
+}
+
+function handleCallToUser(signal) {
+	modal.style.display = 'block';
+	btnCancel.addEventListener('click', function () {
+		sendMessageRTC({
+			type: 'cancel-caller',
+			receiver: signal.sender,
+			sender: signal.receiver,
+		});
+	});
+
+	btnAccept.addEventListener('click', function () {
+		document.getElementById('modal-notification').style.display = 'none';
+		document.getElementById('modal-video').style.display = 'block';
+
+		navigator.mediaDevices
+			.getUserMedia({ video: true, audio: true })
+			.then(function (stream) {
+				console.log('Stream OK');
+				localStream = stream;
+				console.log(localStream);
+				selfVideo.srcObject = localStream;
+			})
+			.catch(function (error) {
+				console.log('Stream NOT OK: ' + error.name + ': ' + error.message);
+			});
+		sendMessageRTC({
+			type: 'init',
+			receiver: signal.sender,
+			sender: signal.receiver,
+		});
+	});
+}
+
+function eventCallOff() {
+	sendMessageRTC({
+		type: 'exit',
+		receiver: peerIdRTC,
+		sender: userLoginId,
+		data: peerIdRTC + 'exit',
+	});
+	localStream.getTracks().forEach(function (track) {
+		track.stop();
+	});
+	modal.style.display = 'none';
+	document.getElementById('modal-notification').style.display = 'block';
+	document.getElementById('modal-video').style.display = 'none';
+	connections[peerIdRTC].close();
+	delete connections[peerIdRTC];
+}
+
+function changStatusCam() {
+	const videoTrack = localStream.getTracks().find((track) => track.kind === 'video');
+	videoTrack.enabled = !showCam;
+	showCam = !showCam;
+	if (showCam) {
+		document.getElementById('video-off').style.display = 'block';
+		document.getElementById('video-on').style.display = 'none';
+	} else {
+		document.getElementById('video-off').style.display = 'none';
+		document.getElementById('video-on').style.display = 'block';
+	}
+}
+
+function changeStatusMic() {
+	const audioTrack = localStream.getTracks().find((track) => track.kind === 'audio');
+	audioTrack.enabled = !turnOnMic;
+	turnOnMic = !turnOnMic;
+	if (turnOnMic) {
+		document.getElementById('mic-on').style.display ='none';
+		document.getElementById('mic-off').style.display ='block';
+	}
+	else {
+		document.getElementById('mic-on').style.display = 'block';
+		document.getElementById('mic-off').style.display = 'none';
+	}
+}
+
+btnCallServer.onclick = function() {
+
+	document.getElementById('modal-wrapper').style.display = 'block';
+	document.getElementById('modal-notification').style.display = 'none';
+	document.getElementById('modal-video').style.display = 'block';
+	sendMessageRTC({
+		type: "callToUser",
+		receiver: idUser,
+		sender: userLoginId
+	});
+};
+
+//End handle call video
