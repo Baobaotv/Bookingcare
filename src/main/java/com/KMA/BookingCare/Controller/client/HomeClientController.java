@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.config.SessionUserDetail;
 import io.jsonwebtoken.lang.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,10 +63,14 @@ public class HomeClientController {
 	@Autowired
 	private CommentService commentServiceimpl;
 
+	@Autowired
+	private SessionUserDetail sessionUserDetail;
+
 	//done
 	@GetMapping(value = "/home")
 	public String homeClientPage(Model model,@RequestParam(required = false) String message,HttpSession session){
 		log.info("Reuqest to home page");
+		sessionUserDetail.getId();
 		//
 		List<SpecializedDto> lstChuyenKhoa = specializedServiceImpl.findAll();
 		model.addAttribute("lstChuyenKhoa",lstChuyenKhoa);

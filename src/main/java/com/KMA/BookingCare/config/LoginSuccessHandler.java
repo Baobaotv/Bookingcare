@@ -1,5 +1,7 @@
 package com.KMA.BookingCare.config;
 
+import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,11 +16,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
 	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+
+	@Autowired
+	private SessionUserDetail sessionUserDetail;
 	@Override
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
@@ -26,6 +32,12 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		if (response.isCommitted()) {
 			return;
 		}
+		UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+		if (sessionUserDetail == null) sessionUserDetail = new SessionUserDetail();
+		sessionUserDetail.setImg(user.getImg());
+		sessionUserDetail.setFullName(user.getFullName());
+		sessionUserDetail.setId(user.getId());
+		sessionUserDetail.setRoles(user.getAuthorities().stream().map(e->e.getAuthority()).collect(Collectors.toList()));
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 	

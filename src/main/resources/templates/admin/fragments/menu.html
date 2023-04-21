@@ -23,6 +23,7 @@
 			<div class="sidebar-menu">
 				<ul class="menu">
 					<li class="sidebar-title" >Menu</li>
+					<input type="hidden" th:value="${#session.getAttribute('userDetails').id}" id= "userLoginId" />
 					<th:block th:unless="${#session.getAttribute('userDetails').roles.contains('ROLE_ADMIN')}">
 					<input type="hidden" th:value="${#session.getAttribute('userDetails').id}" id= "myId" />
 					</th:block>
