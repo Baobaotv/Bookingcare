@@ -32,58 +32,59 @@ import com.KMA.BookingCare.Service.WorkTimeService;
 @Controller
 public class HomeController {
 
-	Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	@Autowired
-	private HospitalService hospitalServiceImpl;
-	@Autowired
-	private UserService userServiceImpl;
+    Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	@Autowired
-	private SpecializedService specializedServiceImpl;
-	@Autowired
-	private WorkTimeService workTimeServiceImpl;
-		
-		@GetMapping(value = {"/admin/home","/doctor/home"})
-		public String homePage(HttpSession session) {
-			UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
-					.getPrincipal();
-			MyUser userDetails = UserMapper.convertToMyUser(user);
-			session.setAttribute("userDetails", userDetails);
-			return "admin/views/home";
-		}
-		@GetMapping(value = "/admin/managerHospital")
-		public String hospitalPage(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page) {
-			Pageable pageable = PageRequest.of(page-1, 3);
-			List<HospitalDto> lstHospital = hospitalServiceImpl.findAllByStatus(1, pageable);
-			model.addAttribute("lstHospital", lstHospital);
-			Integer curentPage=page;
-			model.addAttribute("curentPage", curentPage);
-			return "admin/views/managerHospital";
-		}
-		
-		@GetMapping(value = "/admin/managerSpecialized")
-		public String specializedPage(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page) {
-			Pageable pageable = PageRequest.of(page-1, 3);
-			List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAllByStatus(1, pageable);
-			model.addAttribute("lstSpecialized", lstSpecialized);
-			Integer curentPage=page;
-			model.addAttribute("curentPage", curentPage);
-			return "admin/views/managerSpecialized";
-		}
-		
-		
-		@GetMapping(value = {"/admin/editProfile","/doctor/editProfile"})
-		public String profilePage(Model model,HttpSession session) {
-			MyUser userDetails = (MyUser) session.getAttribute("userDetails");
-			User userDto = userServiceImpl.findOneById(userDetails.getId());
-			model.addAttribute("userDto", userDto);
-			List<HospitalDto> lstHospital= hospitalServiceImpl.findAll();
-			List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
-			List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
-			model.addAttribute("lstWorkTime", lstWorkTime);
-			model.addAttribute("lstHospital", lstHospital);
-			model.addAttribute("lstSpecialized", lstSpecialized);
-			return "admin/views/editProfile";
-		}
+    @Autowired
+    private HospitalService hospitalServiceImpl;
+    @Autowired
+    private UserService userServiceImpl;
+
+    @Autowired
+    private SpecializedService specializedServiceImpl;
+    @Autowired
+    private WorkTimeService workTimeServiceImpl;
+
+    @GetMapping(value = {"/admin/home", "/doctor/home"})
+    public String homePage(HttpSession session) {
+        UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        MyUser userDetails = UserMapper.convertToMyUser(user);
+        session.setAttribute("userDetails", userDetails);
+        return "admin/views/home";
+    }
+
+    @GetMapping(value = "/admin/managerHospital")
+    public String hospitalPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        List<HospitalDto> lstHospital = hospitalServiceImpl.findAllByStatus(1, pageable);
+        model.addAttribute("lstHospital", lstHospital);
+        Integer curentPage = page;
+        model.addAttribute("curentPage", curentPage);
+        return "admin/views/managerHospital";
+    }
+
+    @GetMapping(value = "/admin/managerSpecialized")
+    public String specializedPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAllByStatus(1, pageable);
+        model.addAttribute("lstSpecialized", lstSpecialized);
+        Integer curentPage = page;
+        model.addAttribute("curentPage", curentPage);
+        return "admin/views/managerSpecialized";
+    }
+
+
+    @GetMapping(value = {"/admin/editProfile", "/doctor/editProfile"})
+    public String profilePage(Model model, HttpSession session) {
+        MyUser userDetails = (MyUser) session.getAttribute("userDetails");
+        User userDto = userServiceImpl.findOneById(userDetails.getId());
+        model.addAttribute("userDto", userDto);
+        List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
+        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
+        List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
+        model.addAttribute("lstWorkTime", lstWorkTime);
+        model.addAttribute("lstHospital", lstHospital);
+        model.addAttribute("lstSpecialized", lstSpecialized);
+        return "admin/views/editProfile";
+    }
 }
