@@ -63,6 +63,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		UserEntity userEntity= userRepository.findOneById(form.getIdDoctor());
 		entity.setHospitalName(userEntity.getHospital().getName());
 		entity.setDoctor(userEntity);
+		entity.setExaminationPrice(userEntity.getExaminationPrice());
 		entity.setYearOfBirth(form.getYearOfBirth());
 		entity.setStatus(1);
 		entity.setType(form.getType());
@@ -71,6 +72,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			entity.setUser(userEntity2);
 		}
 		entity.setStatusPayment(form.getStatusPayment());
+		entity.setCreatedDate(new Date());
 		entity = medicalRepository.save(entity);
 //		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);
 		return entity.getId();

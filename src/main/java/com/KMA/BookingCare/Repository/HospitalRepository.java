@@ -28,4 +28,7 @@ public interface HospitalRepository extends JpaRepository<HospitalEntity, Long>,
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img, h.longitude, h.latitude) FROM HospitalEntity h WHERE h.status= 1 AND h.id in (:ids)")
 	List<HospitalDto> findAllByIds(@Param("ids") List<Long> ids);
 
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img, h.longitude, h.latitude) FROM HospitalEntity h WHERE h.status= 1 AND h.name not in (:hospitalNames)")
+	List<HospitalDto> findAllNotContainHospitalName(@Param("hospitalNames") List<String> hospitalNames);
+
 }

@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Entity;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -38,6 +39,10 @@ public class MedicalExaminationScheduleEntity {
 	private String hospitalName;
 
 	private Integer statusPayment;
+
+	private Date createdDate;
+
+	private Long examinationPrice;
 	
 	
 	public String getHospitalName() {
