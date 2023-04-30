@@ -18,7 +18,7 @@ import com.KMA.BookingCare.Entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomUserRepository {
 	 UserEntity findByUsername(String username);
-	
+
 	 Optional<UserEntity> findById(Long id);
 	
 	List<UserEntity> findAllByStatus(Integer status,Pageable pageable);
@@ -45,6 +45,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 	
 	@Query(value = "SELECT * FROM user u ,user_role r where u.id =r.user_id and u.status =1 and r.role_id=2 ;",nativeQuery = true)
 	List<UserEntity> findAllDoctor();
+
+	@Query(value = "SELECT * FROM user u ,user_role r where u.id =r.user_id and u.status =1 and r.role_id=2 AND u.id NOT IN (:ids)",nativeQuery = true)
+	List<UserEntity> findAllDoctorNotContainIds(@Param("ids") List<Long> ids);
 	
 	@Query(value = "SELECT * FROM user u ,user_role r where u.id =r.user_id and u.status =1 and r.role_id=2 AND 1=:sql",nativeQuery = true)
 	List<UserEntity> searchAllDoctor(@Param("sql") String sql);

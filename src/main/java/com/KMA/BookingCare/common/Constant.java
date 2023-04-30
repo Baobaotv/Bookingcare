@@ -7,9 +7,9 @@ public class Constant {
 
     public static final Integer MEDICAL_SCHEDULE_IS_COMPLETE = 2;
 
-    public static final Integer MEDICAL_SCHEDULE_IS_DELETE = 0;
+    public static final Integer MEDICAL_SCHEDULE_IS_WAITING = 0;
 
-    public static final Integer MEDICAL_SCHEDULE_IS_NOT_COMPLETE = 1;
+    public static final Integer MEDICAL_SCHEDULE_IS_CANCEL = 1;
 
     public static final String NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE = "1";
 
@@ -42,5 +42,20 @@ public class Constant {
     public static final Integer payment_unPaid = 0;
 
     public static final Integer payment_error = 2;
+
+    public static final Integer total_revenue_type_report = 1;
+    public static final Integer type_of_medical_examination_type_report = 2;
+    public static final Integer revenue_by_hospital_type_report = 3;
+    public static final Integer revenue_by_doctor_type_report = 4;
+    public static final Integer today_time_report = 1;
+    public static final Integer yesterday_time_report = 2;
+    public static final Integer last_week_time_report = 3;
+    public static final Integer this_month_time_report = 4;
+    public static final Integer last_month_time_report = 5;
+    public static final Integer time_option_time_report = 6;
+
+    public static final String group_by_day = "DAY";
+    public static final String group_by_month = "MONTH";
+    public static final String group_by_year = "YEAR";
 
 }

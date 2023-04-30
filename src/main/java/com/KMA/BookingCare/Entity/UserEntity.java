@@ -1,5 +1,7 @@
 package com.KMA.BookingCare.Entity;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +28,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
+@Data
 public class UserEntity {
 	
 	@Id
@@ -41,8 +44,6 @@ public class UserEntity {
 	private String phoneNumber;
 	
 	private String location;
-	
-//	private String birthYear;
 	
 	private String description;
 	
@@ -62,8 +63,8 @@ public class UserEntity {
 	private Integer status;
 	
 	private String peerId;
-	
-	
+
+	private Long examinationPrice;
 	
 	public String getShortDescription() {
 		return shortDescription;
