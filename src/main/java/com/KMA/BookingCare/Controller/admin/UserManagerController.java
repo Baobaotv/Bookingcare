@@ -36,52 +36,47 @@ import io.netty.handler.codec.http.HttpResponse;
 
 @Controller
 public class UserManagerController {
-	
-	@Autowired
-	private UserService userServiceImpl;
-	@Autowired
-	private HospitalService hospitalServiceImpl;
-	@Autowired
-	private SpecializedService specializedServiceImpl;
-	@Autowired
-	private WorkTimeService workTimeServiceImpl;
-	@Autowired
-	private RoleService roleSeviceImpl;
-	
-	@GetMapping(value = "/admin/managerUser")
-	public String managerUerPage( Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page,
-			@ModelAttribute searchDoctorForm form) {
-		Pageable pageable = PageRequest.of(page-1, 3);
-		List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable);
-		List<HospitalDto> lstHospital= hospitalServiceImpl.findAll();
-		List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
-		List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
-		List<Role> lstRole= roleSeviceImpl.findAll();
-		model.addAttribute("lstRole", lstRole);
-		model.addAttribute("lstWorkTime", lstWorkTime);
-		model.addAttribute("lstHospital", lstHospital);
-		model.addAttribute("lstSpecialized", lstSpecialized);
-		model.addAttribute("lstUser", lstUser);
+
+    @Autowired
+    private UserService userServiceImpl;
+    @Autowired
+    private HospitalService hospitalServiceImpl;
+    @Autowired
+    private SpecializedService specializedServiceImpl;
+    @Autowired
+    private WorkTimeService workTimeServiceImpl;
+    @Autowired
+    private RoleService roleSeviceImpl;
+
+    @GetMapping(value = "/admin/managerUser")
+    public String managerUerPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page,
+                                 @ModelAttribute searchDoctorForm form) {
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable);
+        List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
+        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
+        List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
+        List<Role> lstRole = roleSeviceImpl.findAll();
+        model.addAttribute("lstRole", lstRole);
+        model.addAttribute("lstWorkTime", lstWorkTime);
+        model.addAttribute("lstHospital", lstHospital);
+        model.addAttribute("lstSpecialized", lstSpecialized);
+        model.addAttribute("lstUser", lstUser);
 //		Integer curentPage=page;
 //		model.addAttribute("curentPage", curentPage);
-		model.addAttribute("formSearch",form);
-		Integer curentPage=page;
-		model.addAttribute("curentPage", curentPage);
-		return "admin/views/managerUser";
-	}
-	@PostMapping(value = {"/admin/editProfile","/doctor/editProfile"})
-	public ResponseEntity<?> editProfilePage( Model model, @ModelAttribute UserForm form) {
-		try {
-			userServiceImpl.saveDoctor(form);
-		} catch (IllegalStateException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return ResponseEntity.ok("true");
-		
-	}
-	
+        model.addAttribute("formSearch", form);
+        Integer curentPage = page;
+        model.addAttribute("curentPage", curentPage);
+        return "admin/views/managerUser";
+    }
 
-	
-
+    @PostMapping(value = {"/admin/editProfile", "/doctor/editProfile"})
+    public ResponseEntity<?> editProfilePage(Model model, @ModelAttribute UserForm form) {
+        try {
+            userServiceImpl.saveDoctor(form);
+        } catch (IllegalStateException | IOException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok("true");
+    }
 }

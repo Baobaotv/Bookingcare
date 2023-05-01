@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.Service.*;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.KMA.BookingCare.Dto.HospitalDto;
-import com.KMA.BookingCare.Dto.MyUser;
-import com.KMA.BookingCare.Dto.Role;
-import com.KMA.BookingCare.Dto.SpecializedDto;
-import com.KMA.BookingCare.Dto.User;
-import com.KMA.BookingCare.Dto.WorkTimeDto;
-import com.KMA.BookingCare.Service.HospitalService;
-import com.KMA.BookingCare.Service.SpecializedService;
-import com.KMA.BookingCare.Service.UserService;
-import com.KMA.BookingCare.Service.WorkTimeService;
 
 @Controller
 public class HomeController {
@@ -45,13 +36,20 @@ public class HomeController {
     @Autowired
     private WorkTimeService workTimeServiceImpl;
 
+    @Autowired
+    private HandbookService handbookService;
+
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_DOCTOR')")
     @GetMapping(value = {"/admin/home", "/doctor/home"})
-    public String homePage(HttpSession session) {
+    public String homePage(HttpSession session, Model model) {
         UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         MyUser userDetails = UserMapper.convertToMyUser(user);
         session.setAttribute("userDetails", userDetails);
+        List<HandbookDto> handbooks = handbookService.getFeaturedHandbook();
+        List<User> users = userServiceImpl.getFeaturedDoctor();
+        model.addAttribute("featureHandbooks", handbooks);
+        model.addAttribute("featureUsers", users);
         return "admin/views/home";
     }
 

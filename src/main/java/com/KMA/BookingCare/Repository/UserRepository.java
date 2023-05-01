@@ -72,7 +72,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 		List<UserEntity> findAllByMedicalAndHospital(@Param("date") String date,@Param("hospitalId") Long hospitalId,@Param("status") Integer status, @Param("statusMedical") Integer statusMedical);
 
 		@Query(value = "SELECT u.description,u.id,u.email,u.full_name,u.img,u.location,u.phone_number,u.sex,u.username,"
-				+ "u.password,u.status,u.year_of_birth,u.hospital_id,u.specialized_id,u.short_description,u.peer_id" + 
+				+ "u.password,u.status,u.year_of_birth,u.hospital_id,u.specialized_id,u.short_description,u.peer_id, u.examination_price " +
 				" FROM user u ,user_role ur WHERE u.id= ur.user_id AND ur.role_id in (:roleIds) AND u.status =1 AND u.full_name   LIKE CONCAT('%',:fullName,'%')" +
 				" AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)" + 
 				" AND  ( (:hospitalId IS NOT NULL AND hospital_id =:hospitalId) || :hospitalId IS NULL)",nativeQuery = true)

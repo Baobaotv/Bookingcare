@@ -76,6 +76,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/api/media/get-by-current-login").authenticated()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/book/**").authenticated()
+                .antMatchers("/admin/**").authenticated()
+                .antMatchers("/doctor/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -83,7 +85,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(loginSuccessHandler)
                 .failureUrl("/register")
                 .permitAll().and().logout().logoutSuccessUrl("/login")
-                .logoutUrl("/logout").permitAll().and().exceptionHandling().accessDeniedPage("/access-deny")
+                .logoutUrl("/logout")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll().and().exceptionHandling()
+                .accessDeniedPage("/access-deny")
         ;
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

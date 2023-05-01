@@ -1,6 +1,5 @@
 package com.KMA.BookingCare.Controller.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -18,41 +17,40 @@ import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 
 @Controller
 public class MedicalExaminationSheduleEntityController {
-	
-	@Autowired
-	private MedicalExaminationScheduleService medicalServiceImpl;
-	@Autowired
-	private WorkTimeService workTimeServiceImpl;
-	
-	@GetMapping(value = {"/admin/managerMedical","/doctor/managerMedical"})
-	public String medicalPage(Model model,HttpSession session) {
-		MyUser user = (MyUser) session.getAttribute("userDetails");
-		List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
-		List<MedicalExaminationScheduleDto> lstMedical= new ArrayList<MedicalExaminationScheduleDto>();
-		if(user.getRoles().contains("ROLE_DOCTOR")) {
-			lstMedical= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
-		}else {
-			lstMedical= medicalServiceImpl.findAllByStatus(1);
-		}
 
-		model.addAttribute("lstMedical", lstMedical);
-		model.addAttribute("lstWorkTime", lstWorkTime);
-		return "admin/views/managerMedical";
-	}
-	
-	@GetMapping(value = {"/admin/managerMedicalComplete","/doctor/managerMedicalComplete"})
-	public String medicalConpletePage(Model model,HttpSession session) {
-		MyUser user = (MyUser) session.getAttribute("userDetails");
+    @Autowired
+    private MedicalExaminationScheduleService medicalServiceImpl;
+    @Autowired
+    private WorkTimeService workTimeServiceImpl;
 
-		List<MedicalExaminationScheduleDto> lstMedical= new ArrayList<MedicalExaminationScheduleDto>();
-		if(user.getRoles().contains("ROLE_DOCTOR")) {
-//			 lstHandbook= handbookSeviceImpl.findAllByStatusAndUserId(1, user.getId());
-			lstMedical= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 2);
-		}else {
-			lstMedical= medicalServiceImpl.findAllByStatus(2);
-		}
+    @GetMapping(value = {"/admin/managerMedical", "/doctor/managerMedical"})
+    public String medicalPage(Model model, HttpSession session) {
+        MyUser user = (MyUser) session.getAttribute("userDetails");
+        List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
+        List<MedicalExaminationScheduleDto> lstMedical;
+        if (user.getRoles().contains("ROLE_DOCTOR")) {
+            lstMedical = medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
+        } else {
+            lstMedical = medicalServiceImpl.findAllByStatus(1);
+        }
 
-		model.addAttribute("lstMedical", lstMedical);
-		return "admin/views/managerMedicalComplete";
-	}
+        model.addAttribute("lstMedical", lstMedical);
+        model.addAttribute("lstWorkTime", lstWorkTime);
+        return "admin/views/managerMedical";
+    }
+
+    @GetMapping(value = {"/admin/managerMedicalComplete", "/doctor/managerMedicalComplete"})
+    public String medicalConpletePage(Model model, HttpSession session) {
+        MyUser user = (MyUser) session.getAttribute("userDetails");
+
+        List<MedicalExaminationScheduleDto> lstMedical;
+        if (user.getRoles().contains("ROLE_DOCTOR")) {
+            lstMedical = medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 2);
+        } else {
+            lstMedical = medicalServiceImpl.findAllByStatus(2);
+        }
+
+        model.addAttribute("lstMedical", lstMedical);
+        return "admin/views/managerMedicalComplete";
+    }
 }
