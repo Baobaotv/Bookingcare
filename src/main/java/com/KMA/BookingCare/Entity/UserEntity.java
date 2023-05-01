@@ -297,7 +297,4 @@ public class UserEntity {
 		this.hospital = hospital;
 	}
 	
-	
-
-	
 }
