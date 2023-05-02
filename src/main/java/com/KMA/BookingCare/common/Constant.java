@@ -7,9 +7,9 @@ public class Constant {
 
     public static final Integer MEDICAL_SCHEDULE_IS_COMPLETE = 2;
 
-    public static final Integer MEDICAL_SCHEDULE_IS_WAITING = 0;
+    public static final Integer MEDICAL_SCHEDULE_IS_WAITING = 1;
 
-    public static final Integer MEDICAL_SCHEDULE_IS_CANCEL = 1;
+    public static final Integer MEDICAL_SCHEDULE_IS_CANCEL = 0;
 
     public static final String NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE = "1";
 

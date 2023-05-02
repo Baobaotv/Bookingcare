@@ -394,8 +394,17 @@ public class UserServiceImpl implements UserService{
 		if(form.getPasswod() != null && !form.getPasswod().equals("")) {
 			entity.setPassword(passwordEncoder.encode(form.getPasswod()));
 		}
+		if (form.getImg() != null && !form.getImg().isEmpty()) {
+			try {
+				Map result= cloudinary.uploader().upload(form.getImg().getBytes(),
+						ObjectUtils.asMap("resource_type","auto"));
+				String urlImg=(String) result.get("secure_url");
+				entity.setImg(urlImg);
+			} catch (Exception e) {
+				System.out.println("upload img fail");
+			}
+		}
 		userRepository.save(entity);
-		
 	}
 
 	@Override

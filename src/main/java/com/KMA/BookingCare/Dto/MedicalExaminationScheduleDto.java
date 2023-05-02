@@ -1,6 +1,7 @@
 package com.KMA.BookingCare.Dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,8 +15,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.KMA.BookingCare.Entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
 
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MedicalExaminationScheduleDto {
 
 	private Long id;
@@ -34,9 +40,10 @@ public class MedicalExaminationScheduleDto {
 	private String wordTimeTime;
 	private String type;
 	private String hospitalName;
-	
-	
-	
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date createdDate;
+
 	public String getHospitalName() {
 		return hospitalName;
 	}

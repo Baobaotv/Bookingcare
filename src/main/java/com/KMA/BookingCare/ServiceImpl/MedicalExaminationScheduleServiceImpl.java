@@ -108,7 +108,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public List<MedicalExaminationScheduleDto> findAllByUserIdAndStatus(Long userId, Integer status) {
 		List<MedicalExaminationScheduleEntity> lstEntity = medicalRepository.findAllByUserIdAndStatus(userId, status);
-		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<MedicalExaminationScheduleDto>();
+		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<>();
 		for(MedicalExaminationScheduleEntity entity : lstEntity) {
 			MedicalExaminationScheduleDto dto = MedicalMapper.convertToDto(entity);
 			lstDto.add(dto);

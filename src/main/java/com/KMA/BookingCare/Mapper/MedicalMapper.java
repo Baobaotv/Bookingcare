@@ -34,6 +34,8 @@ public class MedicalMapper {
 			}
 		}
 		dto.setHospitalName(entity.getHospitalName());
+		dto.setCreatedDate(entity.getCreatedDate());
+
 		return dto;
 	}
 

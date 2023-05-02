@@ -8,6 +8,7 @@ import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.common.Constant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,31 +88,29 @@ public class MedicalApi {
 				checkUser.set("3");
 			}
 		});
-		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<>();
+		List<MedicalExaminationScheduleDto> lstDto;
 		if(checkUser.toString().equals("1")) {
 			// role_doctor
 			lstDto= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
-		}else {
-
-			if (checkUser.toString().equals("2")) {
-				//role _admin
-				lstDto= medicalServiceImpl.findAllByStatus(1);
-			} else {
-				//role user
-				 lstDto = medicalServiceImpl.findAllByUserIdAndStatus(user.getId(), 1);
-			}
+			return  ResponseEntity.ok(lstDto);
 		}
+
+		if (checkUser.toString().equals("2")) {
+			//role _admin
+			lstDto= medicalServiceImpl.findAllByStatus(1);
+			return  ResponseEntity.ok(lstDto);
+		}
+			//role user
+		lstDto = medicalServiceImpl.findAllByUserIdAndStatus(user.getId(), 1);
 		return  ResponseEntity.ok(lstDto);
 	}
 
-	@Hidden
 	@GetMapping(value = "/api/media/get-all-complete")
 	public List<MedicalExaminationScheduleDto> getAllComplete(HttpSession session){
 		MyUser user = (MyUser) session.getAttribute("userDetails");
 
-		List<MedicalExaminationScheduleDto> lstMedical= new ArrayList<MedicalExaminationScheduleDto>();
+		List<MedicalExaminationScheduleDto> lstMedical;
 		if(user.getRoles().contains("ROLE_DOCTOR")) {
-//			 lstHandbook= handbookSeviceImpl.findAllByStatusAndUserId(1, user.getId());
 			lstMedical= medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 2);
 		}else {
 			lstMedical= medicalServiceImpl.findAllByStatus(2);
@@ -126,8 +125,6 @@ public class MedicalApi {
 		return ResponseEntity.noContent().build();
 	}
 
-
-	@Hidden
 	@DeleteMapping("/api/media/deletes")
 	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){
 		log.info("Request to delete multi by ids {}", ids);
@@ -162,7 +159,6 @@ public class MedicalApi {
 		} else {
 			return  ResponseEntity.badRequest().build();
 		}
-
 	}
 
 	@PostMapping(value = "/admin/managerMedicalComplete/uploadMedicalRecords")
@@ -189,5 +185,24 @@ public class MedicalApi {
 		return ResponseEntity.ok("true");
 	}
 
+	@GetMapping(value = "/api/media/get-all-schedule-is-waiting-current-login")
+	public ResponseEntity<List<MedicalExaminationScheduleDto>> getAllSheduleIsWaitingByCurrentLogin(){
+		log.info("Request to getAllSheduleIsWaitingByCurrentLogin {}");
+		Object result = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) result;
+		List<MedicalExaminationScheduleDto> lstDto = medicalServiceImpl.findAllByUserIdAndStatus(user.getId(), Constant.MEDICAL_SCHEDULE_IS_WAITING);
+		return  ResponseEntity.ok(lstDto);
+	}
+
+	@GetMapping(value = "/api/media/get-all-schedule-is-complete-current-login")
+	public ResponseEntity<List<MedicalExaminationScheduleDto>> getAllSheduleIsCompleteByCurrentLogin(){
+		log.info("Request to getAllSheduleIsWaitingByCurrentLogin {}");
+		Object result = SecurityContextHolder.getContext().getAuthentication()
+				.getPrincipal();
+		UserDetailsImpl user = (UserDetailsImpl) result;
+		List<MedicalExaminationScheduleDto> lstDto = medicalServiceImpl.findAllByUserIdAndStatus(user.getId(), Constant.MEDICAL_SCHEDULE_IS_COMPLETE);
+		return  ResponseEntity.ok(lstDto);
+	}
 
 }

@@ -30,130 +30,131 @@ import java.util.List;
 @RestController
 public class UserApi {
 
-	private final Logger log = LoggerFactory.getLogger(UserApi.class);
-	
-	@Autowired
-	private UserService userServiceImpl;
+    private final Logger log = LoggerFactory.getLogger(UserApi.class);
 
-	@Autowired
-	private SpecializedService specializedServiceImpl;
+    @Autowired
+    private UserService userServiceImpl;
 
-	@Autowired
-	private HospitalService hospitalServiceImpl;
-	
-	
-	@PostMapping("/user")
-	public ResponseEntity<User> getByUsername(@RequestBody UserInput userInput){
-		User user=userServiceImpl.findByUsername(userInput.getUsername());
-		return new ResponseEntity<User>(user, HttpStatus.OK);
-}
-	@Hidden
-	@PostMapping(value = "/admin/api/managerUser/add")
-	public ResponseEntity<?> addOrUser(@ModelAttribute UserForm form) {
-		try {
-			userServiceImpl.saveDoctor(form);
-			System.out.println("oke");
-		} catch (IllegalStateException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("looxi");
-		}
-			return ResponseEntity.ok("true");
-		
-	}
-	
-	@Hidden
-	@PostMapping(value = "/admin/api/managerUser/delete")
-	public ResponseEntity<?> deleteUserOke(@RequestBody formDelete userDelete) {
-		try {
-			userServiceImpl.updateUserByStatus(userDelete.getIds());
-		} catch (Exception e ) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.out.println("looxi");
-		}
-			return ResponseEntity.ok("true");
-		
-	}
-	 @PutMapping (value = "/api/updateClient")
-	   public ResponseEntity<?> addUser(@RequestBody UpdateCientForm form) {
-		   userServiceImpl.updateClient(form);
-				return ResponseEntity.ok("true");
-			
-	 }
+    @Autowired
+    private SpecializedService specializedServiceImpl;
 
-	 /*
-	 * hien thi len trang chu
-	 * */
-	 @GetMapping(value = "/api/user/get-random-docter")
-	public List<User> getRandomDocter(){
-		log.info("Request to get random docter {}");
-		 List<User> lstBacsi = userServiceImpl.findRandomDoctor();
-		 return lstBacsi;
-	 }
+    @Autowired
+    private HospitalService hospitalServiceImpl;
 
-	 @GetMapping(value = "/api/user/specialzed/{id}")
-	public ResponseEntity<Page<User>> getALlBySpecialzedId(@PathVariable long id,
-																 @PageableDefault(page = 0, size = 6) Pageable pageable){
-		log.info("Request to getAllBySpecialzedId {}");
-		 Page<User> page = userServiceImpl.findAllDoctorOfSpecializedApi(id, 1,pageable );
-		 return  ResponseEntity.ok(page);
-	 }
 
-	 @GetMapping(value = "/api/user/hospital/{id}")
-	public ResponseEntity<Page<User>> getAllByHospitalId(@PathVariable long id, @PageableDefault(page = 0, size = 6) Pageable pageable){
-		log.info("Request to getAllByHospitalId {} ");
-		 Page<User> page = userServiceImpl.findAllDoctorOfHospitalApi(id,1, pageable);
-		 return  ResponseEntity.ok(page);
-	 }
+    @PostMapping("/user")
+    public ResponseEntity<User> getByUsername(@RequestBody UserInput userInput) {
+        User user = userServiceImpl.findByUsername(userInput.getUsername());
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
 
-	 //get thong tin bac si
-	@GetMapping(value="/api/user/doctor/{id}")
-	public ResponseEntity<User>  infoDoctor(Model model,@PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date){
-		log.info("Request to infoDocter");
-		User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
-		return ResponseEntity.ok(user);
-	}
+    @PostMapping(value = "/admin/api/managerUser/add")
+    public ResponseEntity<?> addOrUser(@ModelAttribute UserForm form) {
+        try {
+            userServiceImpl.saveDoctor(form);
+            System.out.println("oke");
+        } catch (IllegalStateException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("looxi");
+        }
+        return ResponseEntity.ok("true");
 
-	@PostMapping(value = "api/user/search-docter")
-	public List<User> searchDocter (@RequestBody searchDoctorForm form, @PageableDefault(page = 0, size = 10) Pageable pageable){
-		log.info("Request to search docter {}", form);
-		List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "USER", pageable);
-		return  lstUser;
-	}
+    }
 
-	@GetMapping(value = "/api/current-login")
-	public ResponseEntity<User> getCurrentLogin(HttpSession session){
-		log.info("Request to get current login {}");
-		Object result = SecurityContextHolder.getContext().getAuthentication()
-				.getPrincipal();
-		UserDetailsImpl userDetails = (UserDetailsImpl) result;
-				User userDto = userServiceImpl.findOneById(userDetails.getId());
-		return  ResponseEntity.ok(userDto);
-	}
+    @Hidden
+    @PostMapping(value = "/admin/api/managerUser/delete")
+    public ResponseEntity<?> deleteUserOke(@RequestBody formDelete userDelete) {
+        try {
+            userServiceImpl.updateUserByStatus(userDelete.getIds());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.out.println("looxi");
+        }
+        return ResponseEntity.ok("true");
 
-	@PutMapping(value = "/api/user/{id}")
-	public ResponseEntity<?> updateUser(@RequestBody UserForm form) throws IOException {
-		log.info("Request to update user");
-		userServiceImpl.saveDoctor(form);
-		return  ResponseEntity.ok(HttpStatus.OK);
-	}
+    }
 
-	@GetMapping(value = "/api/user/doctor")
-	public ResponseEntity<Page<User>> findAllDoctor(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-		 log.debug("Request to get all doctor");
-		 Page<User> page = userServiceImpl.findAllDoctor(pageable);
-		return ResponseEntity.ok(page);
-	}
+    @PostMapping(value = "/api/updateClient")
+    public ResponseEntity<?> addUser(@ModelAttribute UpdateCientForm form) {
+        userServiceImpl.updateClient(form);
+        return ResponseEntity.ok("true");
 
-	@GetMapping(value = "/api/user/get-doctor-online")
-	public ResponseEntity<?> getDoctorOnline() {
-		log.debug("Request to get doctor online");
-		return ResponseEntity.ok(userServiceImpl.getDoctorOnline());
-	}
+    }
 
-	@GetMapping(value = "/api/user/get-featured-doctor")
-	public ResponseEntity<?> getFeaturedDoctor() {
-		return ResponseEntity.ok(userServiceImpl.getFeaturedDoctor());
-	}
+    /*
+     * hien thi len trang chu
+     * */
+    @GetMapping(value = "/api/user/get-random-docter")
+    public List<User> getRandomDocter() {
+        log.info("Request to get random docter {}");
+        List<User> lstBacsi = userServiceImpl.findRandomDoctor();
+        return lstBacsi;
+    }
+
+    @GetMapping(value = "/api/user/specialzed/{id}")
+    public ResponseEntity<Page<User>> getALlBySpecialzedId(@PathVariable long id,
+                                                           @PageableDefault(page = 0, size = 6) Pageable pageable) {
+        log.info("Request to getAllBySpecialzedId {}");
+        Page<User> page = userServiceImpl.findAllDoctorOfSpecializedApi(id, 1, pageable);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping(value = "/api/user/hospital/{id}")
+    public ResponseEntity<Page<User>> getAllByHospitalId(@PathVariable long id, @PageableDefault(page = 0, size = 6) Pageable pageable) {
+        log.info("Request to getAllByHospitalId {} ");
+        Page<User> page = userServiceImpl.findAllDoctorOfHospitalApi(id, 1, pageable);
+        return ResponseEntity.ok(page);
+    }
+
+    //get thong tin bac si
+    @GetMapping(value = "/api/user/doctor/{id}")
+    public ResponseEntity<User> infoDoctor(Model model, @PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date) {
+        log.info("Request to infoDocter");
+        User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
+        return ResponseEntity.ok(user);
+    }
+
+    @PostMapping(value = "api/user/search-docter")
+    public List<User> searchDocter(@RequestBody searchDoctorForm form, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        log.info("Request to search docter {}", form);
+        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "USER", pageable);
+        return lstUser;
+    }
+
+    @GetMapping(value = "/api/current-login")
+    public ResponseEntity<User> getCurrentLogin(HttpSession session) {
+        log.info("Request to get current login {}");
+        Object result = SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) result;
+        User userDto = userServiceImpl.findOneById(userDetails.getId());
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PutMapping(value = "/api/user/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody UserForm form) throws IOException {
+        log.info("Request to update user");
+        userServiceImpl.saveDoctor(form);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/api/user/doctor")
+    public ResponseEntity<Page<User>> findAllDoctor(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        log.debug("Request to get all doctor");
+        Page<User> page = userServiceImpl.findAllDoctor(pageable);
+        return ResponseEntity.ok(page);
+    }
+
+    @GetMapping(value = "/api/user/get-doctor-online")
+    public ResponseEntity<?> getDoctorOnline() {
+        log.debug("Request to get doctor online");
+        return ResponseEntity.ok(userServiceImpl.getDoctorOnline());
+    }
+
+    @GetMapping(value = "/api/user/get-featured-doctor")
+    public ResponseEntity<?> getFeaturedDoctor() {
+        return ResponseEntity.ok(userServiceImpl.getFeaturedDoctor());
+    }
 }
