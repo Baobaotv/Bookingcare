@@ -23,4 +23,12 @@ public interface MedicalExaminationScheduleService {
 	Optional<MedicalExaminationScheduleEntity> findOneById(Long id);
 
 	void update(MedicalExaminationScheduleEntity entity);
+
+	void update(BookingForm form) throws JsonProcessingException;
+
+	void updateTime(BookingForm form) throws JsonProcessingException;
+
+	Optional<MedicalExaminationScheduleEntity> findOneByIdAndUserId(Long medicalId, Long userId);
+
+	void cancelMedical(Long medicalId);
 }

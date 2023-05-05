@@ -3,6 +3,7 @@ package com.KMA.BookingCare.ServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,12 @@ public class WorkTimeServiceImpl implements WorkTimeService {
         Optional<WorkTimeEntity> workTimeEntity = workTimeRepository.findById(id);
         if (!workTimeEntity.isPresent()) return new WorkTimeDto();
         return WorkTimeMapper.convertToDto(workTimeEntity.get());
+    }
+
+    @Override
+    public List<WorkTimeDto> findAllByDoctorId(Long id) {
+        List<WorkTimeEntity> entities = workTimeRepository.findAllByDoctorId(id);
+        return entities.stream().map(WorkTimeMapper::convertToDto).collect(Collectors.toList());
     }
 
 

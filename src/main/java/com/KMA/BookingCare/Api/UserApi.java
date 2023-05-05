@@ -6,26 +6,30 @@ import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Api.form.searchDoctorForm;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Dto.UserInput;
+import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
 import com.KMA.BookingCare.Service.HospitalService;
 import com.KMA.BookingCare.Service.SpecializedService;
 import com.KMA.BookingCare.Service.UserService;
+import com.KMA.BookingCare.ServiceImpl.MedicalExaminationScheduleServiceImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.ServiceImpl.UserDetailsServiceImpl;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserApi {
@@ -40,6 +44,12 @@ public class UserApi {
 
     @Autowired
     private HospitalService hospitalServiceImpl;
+
+    @Autowired
+    private MedicalExaminationScheduleServiceImpl medicalService;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
 
     @PostMapping("/user")
@@ -110,10 +120,22 @@ public class UserApi {
 
     //get thong tin bac si
     @GetMapping(value = "/api/user/doctor/{id}")
-    public ResponseEntity<User> infoDoctor(Model model, @PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date) {
+    public ResponseEntity<User> infoDoctor(@PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date) {
         log.info("Request to infoDocter");
         User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping(value = "/api/user/doctor-by-medical/{id}")
+    public ResponseEntity<?> infoDoctorByMedicalId(@PathVariable("id") Long id) {
+        log.info("Request to infoDocter");
+        UserDetailsImpl userDetails = userDetailsService.getUserDetailsImplFromContext();
+        Optional<MedicalExaminationScheduleEntity> entity = medicalService.findOneByIdAndUserId(id, userDetails.getId());
+        if (entity.isPresent()) {
+            User user = userServiceImpl.findOneDoctorAndWorktime(entity.get().getDoctor().getId(), entity.get().getDate());
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping(value = "api/user/search-docter")
@@ -156,5 +178,14 @@ public class UserApi {
     @GetMapping(value = "/api/user/get-featured-doctor")
     public ResponseEntity<?> getFeaturedDoctor() {
         return ResponseEntity.ok(userServiceImpl.getFeaturedDoctor());
+    }
+
+    @GetMapping(value = "/api/user/get-all-by specialty-workTimeId")
+    public ResponseEntity<List<User>> getALlBySpecialzedId(@RequestParam("specialtyId") Long specialtyId,
+                                                           @RequestParam("workTimeId") Long workTimeId,
+                                                           @RequestParam("date") String date) {
+        log.info("Request to getAllBySpecialzedId {}");
+        List<User> users = userServiceImpl.findAllDoctorBySpecialIdAndWorkTimeIdAndDate(specialtyId, workTimeId, date);
+        return ResponseEntity.ok(users);
     }
 }

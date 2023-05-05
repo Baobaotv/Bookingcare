@@ -1,15 +1,13 @@
 package com.KMA.BookingCare.Repository;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
@@ -114,4 +112,12 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 			"ORDER BY type")
 	List<Map<String, Object>> getSaleReportGroupByTypeMedical(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
+
+	@Query(value = "SELECT m FROM MedicalExaminationScheduleEntity m WHERE m.doctor.id in (:doctorIds) and m.status = 1 and m.date =:date")
+	List<MedicalExaminationScheduleEntity> findAllByDoctorIdsAndDate(@Param("doctorIds") List<Long> doctorIds,
+																	 @Param("date") String date);
+
+	@Query(value = "SELECT m FROM MedicalExaminationScheduleEntity  m WHERE m.id = :medicalId AND m.user.id = :userId ")
+	Optional<MedicalExaminationScheduleEntity> findOneByMedicalIdAndUserId(@Param("medicalId") Long medicalId,
+																		   @Param("userId") Long userId);
 }

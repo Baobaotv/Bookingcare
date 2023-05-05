@@ -209,6 +209,45 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		medicalRepository.save(entity);
 	}
 
+	@Override
+	public void update(BookingForm form) throws JsonProcessingException {
+		MedicalExaminationScheduleEntity entity = medicalRepository.findById(form.getId()).get();
+		entity.setPhoneScheduer(form.getPhoneScheduer());
+		entity.setPhonePatient(form.getPhonePatient());
+		entity.setNamePatient(form.getNamePatient());
+		entity.setNameScheduler(form.getNameScheduler());
+		entity.setSex(form.getSex());
+		entity.setType(form.getType());
+		entity.setReason(form.getReason());
+		entity.setYearOfBirth(form.getYearOfBirth());
+		entity.setLocation(form.getLocation());
+		entity.setStatusPayment(form.getStatusPayment());
+		medicalRepository.save(entity);
+	}
+
+	@Override
+	public void updateTime(BookingForm form) {
+		MedicalExaminationScheduleEntity entity = medicalRepository.findById(form.getId()).get();
+		if(form.getIdDoctor() != null) {
+			UserEntity doctor = new UserEntity();
+			doctor.setId(form.getIdDoctor());
+			entity.setDoctor(doctor);
+		}
+		entity.setDate(form.getDate());
+		entity.setWorkTimeID(form.getIdWorktime());
+		medicalRepository.save(entity);
+	}
+
+	@Override
+	public Optional<MedicalExaminationScheduleEntity> findOneByIdAndUserId(Long medicalId, Long userId) {
+		return medicalRepository.findOneByMedicalIdAndUserId(medicalId, userId);
+	}
+
+	@Override
+	public void cancelMedical(Long medicalId) {
+		medicalRepository.updateByStatus(Constant.MEDICAL_SCHEDULE_IS_CANCEL, List.of(String.valueOf(medicalId)));
+	}
+
 	public String plusDate(String date) {
 		String[] arr = date.split("-");
 		LocalDate l = LocalDate.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));

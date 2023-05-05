@@ -6,6 +6,7 @@ import com.KMA.BookingCare.Api.form.searchDoctorForm;
 import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Entity.*;
 import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.Mapper.WorkTimeMapper;
 import com.KMA.BookingCare.Repository.*;
 import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.Service.WorkTimeService;
@@ -24,6 +25,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -461,9 +463,10 @@ public class UserServiceImpl implements UserService{
 		}
 		UserEntity entity = userRepository.findOneById(id);
 		List<WorkTimeEntity> lstWkEntity= wkRepository.findByDateAndDoctorId(date, id);
-		Set<WorkTimeEntity> setWkEntity= new HashSet<>(lstWkEntity);
-		entity.setWorkTimeEntity(setWkEntity);
+		Set<WorkTimeEntity> workTimeEntities= new HashSet<>(lstWkEntity);
+		List<WorkTimeDto> dtos = workTimeEntities.stream().map(WorkTimeMapper::convertToDto).collect(Collectors.toList());
 		User dto = UserMapper.convertToDto(entity);
+		dto.setLstWorkTime(dtos);
 		return dto;
 	}
 
@@ -502,6 +505,30 @@ public class UserServiceImpl implements UserService{
 		List<UserFeaturedDto> userFeaturedDtoList = userRepository.getFeaturedUser();
 		List<Long> ids = userFeaturedDtoList.stream().map(UserFeaturedDto::getId).collect(Collectors.toList());
 		return userRepository.findAllDoctorByIds(ids);
+	}
+
+	@Override
+	public List<User> findAllDoctorBySpecialIdAndWorkTimeIdAndDate(Long specialtyId, Long workTimeId, String date) {
+		List<User> users = userRepository.findAllBySpecialtyIdAndWorkTimeId(specialtyId, workTimeId);
+		List<Long> userIds = users.stream().map(User::getId).collect(Collectors.toList());
+		List<MedicalExaminationScheduleEntity> medicalExaminationSchedule = medicalRepository.findAllByDoctorIdsAndDate(userIds, date);
+		List<Long> userIdsRemove = new ArrayList<>();
+		for(User user : users) {
+			for(MedicalExaminationScheduleEntity medical : medicalExaminationSchedule) {
+				if (!Objects.equals(user.getId(), medical.getDoctor().getId())) continue;
+				if (Objects.equals(medical.getWorkTimeID(), workTimeId)) {
+					userIdsRemove.add(medical.getDoctor().getId());
+					continue;
+				}
+				List<WorkTimeDto> workTimeDto = user.getLstWorkTime()
+						.stream()
+						.filter(e -> !Objects.equals(e.getId(), medical.getWorkTimeID()))
+						.collect(Collectors.toList());
+				user.setLstWorkTime(workTimeDto);
+			}
+		}
+		if (CollectionUtils.isEmpty(userIdsRemove)) return users;
+		return users.stream().filter(e -> !userIdsRemove.contains(e.getId())).collect(Collectors.toList());
 	}
 
 	@Override

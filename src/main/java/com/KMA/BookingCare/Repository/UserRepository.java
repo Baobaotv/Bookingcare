@@ -99,4 +99,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.User(u.id, u.fullName, u.img, u.specialized.name, u.shortDescription) FROM UserEntity u INNER JOIN u.roles ur WHERE ur.id=2 AND u.id in (:ids)")
 	List<User> findAllDoctorByIds(@Param("ids") List<Long> ids);
 
+	@Query(value = "SELECT u FROM UserEntity u INNER JOIN u.workTimeEntity w WHERE u.specialized.id = :specialtyId and w.id =:workTimeId")
+	List<User> findAllBySpecialtyIdAndWorkTimeId(@Param("specialtyId") Long specialtyId,
+												 @Param("workTimeId") Long workTimeId);
+
 }

@@ -29,16 +29,19 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentEntity save(PaymentSaveForm form) {
-        Optional<MedicalExaminationScheduleEntity> optional = medicalExaminationScheduleService.findOneById(form.getMedicalId());
-        MedicalExaminationScheduleEntity medicalExaminationSchedule = optional.get();
-        medicalExaminationSchedule.setStatusPayment(Constant.payment_paid);
-        medicalExaminationScheduleService.update(medicalExaminationSchedule);
-
+        System.out.println("save i");
         PaymentEntity entity = PaymentMapper.convertToEntity(form);
         entity.setCreatedDate(new Date());
         entity.setCreatedBy(userDetailsService.getUserDetailsImplFromContext().getId());
+//        entity = paymentRepository.save(entity);
+
+        Optional<MedicalExaminationScheduleEntity> optional = medicalExaminationScheduleService.findOneById(form.getMedicalId());
+        MedicalExaminationScheduleEntity medicalExaminationSchedule = optional.get();
+        medicalExaminationSchedule.setStatusPayment(Constant.payment_paid);
+        medicalExaminationSchedule.setPayment(entity);
+        medicalExaminationScheduleService.update(medicalExaminationSchedule);
+
         entity.setMedicalExaminationSchedule(medicalExaminationSchedule);
-        entity = paymentRepository.save(entity);
         entity.getMedicalExaminationSchedule().setUser(null);
         entity.getMedicalExaminationSchedule().setDoctor(null);
         return entity;

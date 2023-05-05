@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BookingForm {
+
+	private Long id;
 	private String nameScheduler;
 	private String phoneScheduer;
 	private String namePatient;
