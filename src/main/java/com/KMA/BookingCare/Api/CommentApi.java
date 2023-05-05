@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Service.CommentService;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
+@RequestMapping("/api")
 public class CommentApi {
 
 	private final Logger log = LoggerFactory.getLogger(CommentApi.class);
@@ -39,14 +39,14 @@ public class CommentApi {
 		return ResponseEntity.ok("true");
 	}
 
-	@GetMapping(value = "/api/comment/handbook/{id}")
+	@GetMapping(value = "/comment/handbook/{id}")
 	public ResponseEntity<?> getAllById(@PathVariable("id") Long id) {
 		log.debug("Request to get comment by handbook id {}", id);
 		if (commentService.existsByHandbookId(id)) {
 			List<CommentDto> lst = commentService.findAllByHandbookId(id);
 			return  ResponseEntity.ok(lst);
 		} else {
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.ok(Collections.emptyList());
 		}
 
 	}

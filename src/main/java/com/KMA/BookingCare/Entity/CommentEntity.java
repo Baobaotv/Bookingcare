@@ -22,15 +22,13 @@ public class CommentEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	
+
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content = content;
 	}
-
 
 	@ManyToOne
 	@JoinColumn(name = "userId")
@@ -52,8 +50,5 @@ public class CommentEntity {
 		this.handbook = handbook;
 	}
 	
-	
-	
-	
-	
+
 }

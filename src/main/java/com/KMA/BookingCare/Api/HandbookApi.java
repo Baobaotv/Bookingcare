@@ -113,7 +113,7 @@ public class HandbookApi {
 
 	}
 
-	@GetMapping(value = "/handbook/{id}")
+	@GetMapping(value = "/api/handbook/{id}")
 	public ResponseEntity<HandbookDto> getOne(@PathVariable long id){
 		log.info("Request to getOneById {}", id);
 		HandbookDto dto = handbookServiceImpl.findOneByIdApi(id);
