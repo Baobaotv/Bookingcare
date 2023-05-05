@@ -53,4 +53,6 @@ public interface UserService {
 	List<User> getDoctorOnline();
 
 	List<User> getFeaturedDoctor();
+
+	List<User> findAllDoctorBySpecialIdAndWorkTimeIdAndDate(Long specialtyId, Long WorkTimeId, String date);
 }

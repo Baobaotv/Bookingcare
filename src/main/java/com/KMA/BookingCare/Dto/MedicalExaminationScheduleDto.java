@@ -44,6 +44,12 @@ public class MedicalExaminationScheduleDto {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createdDate;
 
+	private Integer statusPayment;
+
+	private PaymentDto payment;
+
+	private Long examinationPrice;
+
 	public String getHospitalName() {
 		return hospitalName;
 	}

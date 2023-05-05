@@ -33,8 +33,13 @@ public class MedicalMapper {
 				dto.setWordTimeTime(wkEntity.getTime());
 			}
 		}
+		if (entity.getPayment() != null) {
+			dto.setPayment(PaymentMapper.convertToDTO(entity.getPayment()));
+		}
+		dto.setStatusPayment(entity.getStatusPayment());
 		dto.setHospitalName(entity.getHospitalName());
 		dto.setCreatedDate(entity.getCreatedDate());
+		dto.setExaminationPrice(entity.getExaminationPrice());
 
 		return dto;
 	}

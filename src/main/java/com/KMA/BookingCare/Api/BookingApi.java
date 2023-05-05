@@ -59,13 +59,31 @@ public class BookingApi {
 			log.error(e.getMessage());
 		}
 		return ResponseEntity.ok(medicalServiceImpl.save(form));
-//		return ResponseEntity.ok(1);
 	}
 	
 	@PostMapping(value = "/changedate")
 	public ResponseEntity<?> changeDate(@RequestBody ChangeDateForm form) {
 	List<WorkTimeDto> lstDtos = workTimeserviceImpl.findByDateAndDoctorId(form.getDate(), form.getIdDoctor());
 	 return new ResponseEntity<Object>(lstDtos, HttpStatus.OK);
+	}
+
+	@PostMapping(value = "/update-booking")
+	public ResponseEntity<?>  updateBooking(@RequestBody BookingForm form) throws JsonProcessingException {
+		medicalServiceImpl.update(form);
+		return ResponseEntity.ok(true);
+	}
+
+	@PostMapping(value = "/update-time-booking")
+	public ResponseEntity<?>  updateTimeBooking(@RequestBody BookingForm form) throws JsonProcessingException {
+		medicalServiceImpl.updateTime(form);
+		return ResponseEntity.ok(true);
+	}
+
+	@PostMapping(value = "/cancel-booking/{id}")
+	public ResponseEntity<?>  cancelBooking(@PathVariable Long id) {
+		log.info("Request to cancel medical with id: {}", id);
+		medicalServiceImpl.cancelMedical(id);
+		return ResponseEntity.ok(true);
 	}
 
 }

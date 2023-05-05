@@ -23,10 +23,22 @@ public class WorkTimeApi {
         return ResponseEntity.ok(workTimeDtos);
     }
 
+    @GetMapping("/get-all-by-doctor")
+    public ResponseEntity<?> getAllByDoctor(@RequestParam("doctor-id") Long doctorId) {
+        List<WorkTimeDto> workTimeDtos = workTimeService.findAllByDoctorId(doctorId);
+        return ResponseEntity.ok(workTimeDtos);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getOneById(@PathVariable("id") Long id) {
         WorkTimeDto workTimeDto = workTimeService.findOneById(id);
         return ResponseEntity.ok(workTimeDto);
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAll() {
+        List<WorkTimeDto> workTimeDtos = workTimeService.findAll();
+        return ResponseEntity.ok(workTimeDtos);
     }
 
 }

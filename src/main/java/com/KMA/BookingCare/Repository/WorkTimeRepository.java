@@ -20,7 +20,10 @@ public interface WorkTimeRepository extends JpaRepository<WorkTimeEntity, Long> 
             "WHERE uwt.user_id = :doctorId AND wt.id not in  " +
             "( " +
             "SELECT work_time_id as wki FROM medical_examination_schedule as m where date =:date  and m.doctor_id= :doctorId " +
-            ")", nativeQuery = true)
+            "AND m.status = 1 )", nativeQuery = true)
     List<WorkTimeEntity> findByDateAndDoctorId(@Param("date") String date, @Param("doctorId") Long idDoctor);
+
+    @Query(value = "SELECT w FROM WorkTimeEntity w INNER JOIN w.userEntities u WHERE u.id = :doctorId")
+    List<WorkTimeEntity> findAllByDoctorId(@Param("doctorId") Long doctorId);
 
 }

@@ -6,6 +6,7 @@ import com.KMA.BookingCare.Api.form.formDelete;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
+import com.KMA.BookingCare.Mapper.MedicalMapper;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.common.Constant;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
@@ -203,6 +205,15 @@ public class MedicalApi {
 		UserDetailsImpl user = (UserDetailsImpl) result;
 		List<MedicalExaminationScheduleDto> lstDto = medicalServiceImpl.findAllByUserIdAndStatus(user.getId(), Constant.MEDICAL_SCHEDULE_IS_COMPLETE);
 		return  ResponseEntity.ok(lstDto);
+	}
+
+	@GetMapping ("/api/media/{id}")
+	public ResponseEntity<?> getOneById(@PathVariable Long id){
+		log.info("Request to getOneById {}", id);
+		Optional<MedicalExaminationScheduleEntity> optional = medicalServiceImpl.findOneById(id);
+		if (!optional.isPresent()) return ResponseEntity.noContent().build();
+		MedicalExaminationScheduleDto dto = MedicalMapper.convertToDto(optional.get());
+		return ResponseEntity.ok(dto);
 	}
 
 }
