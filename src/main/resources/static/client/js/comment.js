@@ -61,7 +61,7 @@ function onMessageReceived(payload) {
 function xoaComment(id){
 	var urlpath = window.location.origin;
 	$.ajax({
-		url :urlpath+"/comment/delete",
+		url :urlpath+"/api/comment/delete",
 		type : "post",
 		contentType : "application/json",
 		data : JSON.stringify(id),

@@ -25,7 +25,7 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 
 	HandbookEntity findOneById(Long id);
 
-	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.content, h.createdBy, h.createdDate, h.modifiedDate, h.modifiedBy, h.specialized.name,h.specialized.id,h.img,h.createdBy,h.user.id) FROM HandbookEntity h WHERE h.id =:id")
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.content, h.createdBy, h.createdDate, h.modifiedDate, h.modifiedBy, h.specialized.name,h.specialized.id,h.img, h.user.fullName,h.user.id) FROM HandbookEntity h WHERE h.id =:id")
 	HandbookDto findOneByIdApi(@Param("id") Long id);
 
 	@Query(value = "SELECT * FROM handbook as u where title like CONCAT('%',:title,'%')  and status =1 ;", nativeQuery = true)

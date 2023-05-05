@@ -12,6 +12,8 @@ public class CommentMapper {
 		dto.setIdHandbook(entity.getHandbook().getId());
 		dto.setIdUser(entity.getUser().getId());
 		dto.setUserName(entity.getUser().getFullName());
+		dto.setFullName(entity.getUser().getFullName());
+		dto.setImg(entity.getUser().getImg());
 		return dto;
 	}
 
