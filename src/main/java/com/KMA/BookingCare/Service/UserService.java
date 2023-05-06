@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Service;
 import java.io.IOException;
 import java.util.List;
 
+import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -55,4 +56,8 @@ public interface UserService {
 	List<User> getFeaturedDoctor();
 
 	List<User> findAllDoctorBySpecialIdAndWorkTimeIdAndDate(Long specialtyId, Long WorkTimeId, String date);
+
+	List<SearchFullTextDto> searchAllByFullText(String query);
+
+	Page<User> searchDoctorForClient(Long hospitalId, Long specialtyId, String doctorName, Pageable pageable);
 }

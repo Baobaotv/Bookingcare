@@ -55,4 +55,9 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity h where h.status = 1 and h.id in (:ids)")
 	List<HandbookDto> getAllByIds(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT *" +
+			"FROM bookingCare.handbook " +
+			"WHERE status = 1 AND MATCH(content, description, title) AGAINST (:query)", nativeQuery = true)
+	List<HandbookEntity> searchAllByFullText(@Param("query") String query);
 }

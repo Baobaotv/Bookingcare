@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -187,5 +186,15 @@ public class UserApi {
         log.info("Request to getAllBySpecialzedId {}");
         List<User> users = userServiceImpl.findAllDoctorBySpecialIdAndWorkTimeIdAndDate(specialtyId, workTimeId, date);
         return ResponseEntity.ok(users);
+    }
+
+    //search-doctor
+    @GetMapping("/api/user/search-doctor")
+    public ResponseEntity<?> searchDoctor(@RequestParam("hospitalId") Long hospitalId,
+                                          @RequestParam("specialtyId") Long specialtyId,
+                                          @RequestParam(value = "doctorName", defaultValue = "") String doctorName,
+                                          @PageableDefault(page = 0, size = 8) Pageable pageable) {
+        log.info("Request to search Doctor by hospitalid {}, specialtyId {}, doctorName {}", hospitalId, specialtyId, doctorName);
+        return ResponseEntity.ok(userServiceImpl.searchDoctorForClient(hospitalId, specialtyId, doctorName, pageable));
     }
 }

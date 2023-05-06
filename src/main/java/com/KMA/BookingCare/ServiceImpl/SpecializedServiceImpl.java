@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.KMA.BookingCare.Dto.SpecialtyFeaturedDto;
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.document.SpecializedDocument;
 import com.KMA.BookingCare.search.SpecializedSearchRepository;
@@ -17,9 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.KMA.BookingCare.Api.form.SpecializedForm;
-import com.KMA.BookingCare.Dto.HospitalDto;
-import com.KMA.BookingCare.Dto.MyUser;
-import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Entity.SpecializedEntity;
 import com.KMA.BookingCare.Mapper.HospitalMapper;
@@ -133,6 +130,20 @@ public class SpecializedServiceImpl implements SpecializedService{
 		SpecializedEntity specializedEntity = specializedRepository.findOneById(id);
 		SpecializedDto specializedDto = SpecializedMapper.convertToDto(specializedEntity);
 		return specializedDto;
+	}
+
+	@Override
+	public List<SearchFullTextDto> searchAllByFullText(String query) {
+		List<SpecializedEntity> specializedEntities = specializedRepository.searchAllByFullText(query);
+		return specializedEntities.stream()
+				.map(e -> SearchFullTextDto.builder()
+						.id(e.getId())
+						.title(e.getName())
+						.description(e.getDescription())
+						.img(e.getImg())
+						.tableName("SPECIALZED")
+						.build())
+				.collect(Collectors.toList());
 	}
 
 

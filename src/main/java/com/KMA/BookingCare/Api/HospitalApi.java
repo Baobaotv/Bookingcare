@@ -155,4 +155,11 @@ public class HospitalApi {
 		return ResponseEntity.ok(hospitalServiceImpl.getFeaturedHospital());
 	}
 
+	@GetMapping(value = "/api/hospital/search-by-name")
+	public ResponseEntity<?> searchByName(@RequestParam("query") String query,
+										  @PageableDefault(page = 0, size = 10) Pageable pageable) {
+		log.info("Request to search hospital by name: {}", query);
+
+		return ResponseEntity.ok(hospitalServiceImpl.searchByNameAndStatus(query, pageable));
+	}
 }

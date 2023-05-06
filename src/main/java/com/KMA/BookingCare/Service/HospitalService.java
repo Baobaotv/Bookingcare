@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Service;
 import java.text.ParseException;
 import java.util.List;
 
+import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,4 +23,8 @@ public interface HospitalService {
 	HospitalEntity findOneById(Long id);
 
 	List<HospitalDto> getFeaturedHospital();
+
+	List<SearchFullTextDto> searchAllByFullText(String query);
+
+	Page<HospitalDto> searchByNameAndStatus(String query, Pageable pageable);
 }

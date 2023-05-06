@@ -2,8 +2,10 @@ package com.KMA.BookingCare.Repository;
 
 import java.util.List;
 
+import com.KMA.BookingCare.Dto.HandbookDto;
 import com.KMA.BookingCare.Dto.HospitalDto;
 import com.KMA.BookingCare.Dto.HospitalFeaturedDto;
+import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Repository.CustomRepository.CustomHospitalRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,4 +33,11 @@ public interface HospitalRepository extends JpaRepository<HospitalEntity, Long>,
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img, h.longitude, h.latitude) FROM HospitalEntity h WHERE h.status= 1 AND h.name not in (:hospitalNames)")
 	List<HospitalDto> findAllNotContainHospitalName(@Param("hospitalNames") List<String> hospitalNames);
 
+	@Query(value = "SELECT *" +
+			"FROM bookingCare.hospital " +
+			"WHERE status = 1 AND MATCH(location, description, name) AGAINST (:query)", nativeQuery = true)
+	List<HospitalEntity> searchAllByFullText(@Param("query") String query);
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img, h.longitude, h.latitude) FROM HospitalEntity h WHERE h.status=:status AND h.name LIKE CONCAT('%',:name,'%')")
+	Page<HospitalDto> findAllByNameIsLikeIgnoreCaseAndStatus(@Param("name") String name, @Param("status") Integer status, Pageable pageable);
 }

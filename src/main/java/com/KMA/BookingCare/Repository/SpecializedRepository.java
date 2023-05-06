@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Repository;
 import java.util.List;
 
 import com.KMA.BookingCare.Dto.SpecializedDto;
+import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Repository.CustomRepository.CustomSpecialtyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,4 +26,9 @@ public interface SpecializedRepository extends JpaRepository<SpecializedEntity, 
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.SpecializedDto(s.id, s.name,s.code, s.description, s.img) FROM SpecializedEntity s WHERE s.status = 1 and s.id in (:ids) ")
 	List<SpecializedDto> findAllByIds(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT *" +
+			"FROM bookingCare.specialized " +
+			"WHERE status = 1 AND MATCH(name, description) AGAINST (:query)", nativeQuery = true)
+	List<SpecializedEntity> searchAllByFullText(@Param("query") String query);
 }

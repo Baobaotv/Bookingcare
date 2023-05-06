@@ -532,6 +532,25 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public List<SearchFullTextDto> searchAllByFullText(String query) {
+		List<UserEntity> userEntities = userRepository.searchAllByFullText(query);
+		return userEntities.stream()
+				.map(e -> SearchFullTextDto.builder()
+						.id(e.getId())
+						.title(e.getFullName())
+						.description(e.getShortDescription())
+						.img(e.getImg())
+						.tableName("USER")
+						.build())
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Page<User> searchDoctorForClient(Long hospitalId, Long specialtyId, String doctorName, Pageable pageable) {
+		return userRepository.searchDoctorAndPageable(doctorName,specialtyId, hospitalId, pageable);
+	}
+
+	@Override
 	public List<User> searchDoctorAndPageable(searchDoctorForm form, String roleUser, Pageable page) {
 
 		if(form.getName()==null||form.getName().equals("")) {

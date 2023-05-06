@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Service;
 import java.text.ParseException;
 import java.util.List;
 
+import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -42,4 +43,6 @@ public interface HandbookService {
 	List<HandbookDto> getListOfRecentHandbook();
 
 	List<HandbookDto> getFeaturedHandbook();
+
+	List<SearchFullTextDto> searchAllByFullText(String query);
 }
