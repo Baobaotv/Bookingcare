@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Mapper;
 import java.text.SimpleDateFormat;
 
 import com.KMA.BookingCare.Dto.HandbookDto;
+import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.document.HandbookDocument;
 

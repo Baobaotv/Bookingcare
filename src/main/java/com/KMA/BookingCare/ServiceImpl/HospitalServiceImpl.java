@@ -5,8 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.KMA.BookingCare.Dto.HospitalFeaturedDto;
-import com.KMA.BookingCare.Dto.SpecializedDto;
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Repository.CustomRepository.CustomHospitalRepository;
@@ -21,8 +20,6 @@ import org.springframework.stereotype.Service;
 
 import com.KMA.BookingCare.Api.form.HandbookForm;
 import com.KMA.BookingCare.Api.form.HospitalForm;
-import com.KMA.BookingCare.Dto.HospitalDto;
-import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Entity.SpecializedEntity;
@@ -143,9 +140,29 @@ public class HospitalServiceImpl implements HospitalService{
 	}
 
 	@Override
+	public List<SearchFullTextDto> searchAllByFullText(String query) {
+		List<HospitalEntity> hospitalEntities = hospitalRepository.searchAllByFullText(query);
+		return hospitalEntities.stream()
+				.map(e -> SearchFullTextDto.builder()
+						.id(e.getId())
+						.title(e.getName())
+						.description(e.getDescription())
+						.img(e.getImg())
+						.tableName("HOSPITAL")
+						.build())
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Page<HospitalDto> searchByNameAndStatus(String query, Pageable pageable) {
+		Page<HospitalDto> page = hospitalRepository.findAllByNameIsLikeIgnoreCaseAndStatus(query,1, pageable);
+		return page;
+	}
+
+	@Override
 	public List<HospitalDto> findAllByStatus(Integer status, Pageable pageable) {
 		List<HospitalEntity> lstEntity = hospitalRepository.findAllByStatus(1,pageable);
-		List<HospitalDto> lstDto = new ArrayList<HospitalDto>();
+		List<HospitalDto> lstDto = new ArrayList<>();
 		for(HospitalEntity entity: lstEntity) {
 			HospitalDto dto = HospitalMapper.convertToDto(entity);
 			lstDto.add(dto);

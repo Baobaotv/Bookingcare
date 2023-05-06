@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.KMA.BookingCare.Dto.HandbookFeaturedDto;
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.document.HandbookDocument;
 import com.KMA.BookingCare.search.HandbookingSearchRepository;
@@ -23,9 +23,6 @@ import org.springframework.stereotype.Service;
 
 import com.KMA.BookingCare.Api.form.HandbookForm;
 import com.KMA.BookingCare.Api.form.searchHandbookForm;
-import com.KMA.BookingCare.Dto.HandbookDto;
-import com.KMA.BookingCare.Dto.MyUser;
-import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Entity.HandbookEntity;
 import com.KMA.BookingCare.Entity.SpecializedEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
@@ -228,6 +225,21 @@ public class HandbookServiceImpl implements HandbookService{
 		List<HandbookFeaturedDto> handbookFeaturedDtoList = handbookRepository.getFeaturedHandbook();
 		List<Long> ids = handbookFeaturedDtoList.stream().map(HandbookFeaturedDto::getId).collect(Collectors.toList());
 		return handbookRepository.getAllByIds(ids);
+	}
+
+	@Override
+	public List<SearchFullTextDto> searchAllByFullText(String query) {
+		List<HandbookEntity> handbookEntities = handbookRepository.searchAllByFullText(query);
+		return handbookEntities.stream()
+				.map(e -> SearchFullTextDto
+						.builder()
+						.id(e.getId())
+						.title(e.getTitle())
+						.description(e.getDescription())
+						.img(e.getImg())
+						.tableName("HANDBOOK")
+						.build())
+				.collect(Collectors.toList());
 	}
 
 	private HandbookDocument convertToDocument(HandbookEntity entity) {

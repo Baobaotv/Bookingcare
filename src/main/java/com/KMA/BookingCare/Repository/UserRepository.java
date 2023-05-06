@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.KMA.BookingCare.Dto.User;
+import com.KMA.BookingCare.Entity.SpecializedEntity;
 import com.KMA.BookingCare.Repository.CustomRepository.CustomUserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -103,4 +104,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 	List<User> findAllBySpecialtyIdAndWorkTimeId(@Param("specialtyId") Long specialtyId,
 												 @Param("workTimeId") Long workTimeId);
 
+	@Query(value = "SELECT * " +
+			"FROM bookingCare.user as u " +
+			"inner join user_role as ur " +
+			"ON ur.user_id = u.id " +
+			"WHERE u.status = 1 AND ur.role_id = 2 AND MATCH(full_name, description, short_description) AGAINST (:query) ", nativeQuery = true)
+	List<UserEntity> searchAllByFullText(@Param("query") String query);
+
+	@Query(value = "SELECT u " +
+			" FROM UserEntity u INNER JOIN u.roles ur WHERE ur.id = 2 AND u.status = 1 AND u.fullName LIKE CONCAT('%',:fullName,'%') " +
+			" AND ( (0L != :specializedId AND u.specialized.id = :specializedId) OR (0L = :specializedId)) " +
+			" AND ( (0L != :hospitalId AND u.hospital.id = :hospitalId) OR (0L = :hospitalId))")
+	Page<User> searchDoctorAndPageable(@Param("fullName") String fullName,@Param("specializedId") Long specializedId,@Param("hospitalId") Long hospitalId,Pageable page);
 }

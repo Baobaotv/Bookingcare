@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Service;
 import java.text.ParseException;
 import java.util.List;
 
+import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,4 +20,6 @@ public interface SpecializedService {
 	List<SpecializedDto> getFeaturedSpecialty();
 
 	SpecializedDto findOneById(Long id);
+
+	List<SearchFullTextDto> searchAllByFullText(String query);
 }
