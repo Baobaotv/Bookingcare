@@ -1,12 +1,11 @@
-
-let optionsDonutForm  = {
+let optionsDonutForm = {
     series: [70, 30],
     labels: ['Male', 'Female'],
-    colors: ['#435ebe','#55c6e8'],
+    colors: ['#435ebe', '#55c6e8'],
     chart: {
         type: 'donut',
         width: '100%',
-        height:'350px'
+        height: '350px'
     },
     legend: {
         position: 'bottom'
@@ -25,24 +24,23 @@ let optionsBarForm = {
         position: 'back'
     },
     dataLabels: {
-        enabled:false
+        enabled: false
     },
     chart: {
         type: 'bar',
         height: 300
     },
     fill: {
-        opacity:1
+        opacity: 1
     },
-    plotOptions: {
-    },
+    plotOptions: {},
     series: [{
         name: 'sales',
-        data: [9,20,30,20,10,20,30,20,10,20,30,20]
+        data: [9, 20, 30, 20, 10, 20, 30, 20, 10, 20, 30, 20]
     }],
     colors: '#435ebe',
     xaxis: {
-        categories: ["Jan","Feb","Mar","Apr","May","Jun","Jul", "Aug","Sep","Oct","Nov","Dec"],
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     },
 }
 
@@ -51,28 +49,27 @@ let optionsProfileVisitDate = {
         position: 'back'
     },
     dataLabels: {
-        enabled:false
+        enabled: false
     },
     chart: {
         type: 'bar',
         height: 300
     },
     fill: {
-        opacity:1
+        opacity: 1
     },
-    plotOptions: {
-    },
+    plotOptions: {},
     series: [{
         name: 'online',
-        data: [9,20,30,20,10,20,30,20,10,20,30,20]
+        data: [9, 20, 30, 20, 10, 20, 30, 20, 10, 20, 30, 20]
     },
-    {
-        name: 'off',
-        data: [9,10,40,40,15,20,30,50,60,40,10,20]
-    }],
-    colors: ['#435ebe','#dc3545'],
+        {
+            name: 'off',
+            data: [9, 10, 40, 40, 15, 20, 30, 50, 60, 40, 10, 20]
+        }],
+    colors: ['#435ebe', '#dc3545'],
     xaxis: {
-        categories: ["Jan","Feb","Mar","Apr","May","Jun","Jul", "Aug","Sep","Oct","Nov","Dec"],
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     },
 }
 
@@ -80,46 +77,46 @@ let optionsProfileVisitDate = {
 let optionsAreaForm = {
     series: [{
         name: 'series1',
-        data: [510, 800, 600, 430, 540, 340, 605, 805,430, 540, 540, 605]
+        data: [510, 800, 600, 430, 540, 340, 605, 805, 430, 540, 540, 605]
     },
-    {
-        name: 'series2',
-        data: [400, 500, 900, 630, 540, 440, 405, 705,930, 840, 540, 405]
-    }],
+        {
+            name: 'series2',
+            data: [400, 500, 900, 630, 540, 440, 405, 705, 930, 840, 540, 405]
+        }],
     chart: {
         height: 300,
         type: 'area',
         toolbar: {
-            show:false,
+            show: false,
         },
     },
-    colors: ['#5350e9','#dc3545'],
+    colors: ['#5350e9', '#dc3545'],
     stroke: {
         width: 2,
     },
     grid: {
-        show:false,
+        show: false,
     },
     dataLabels: {
         enabled: false
     },
     xaxis: {
         type: 'datetime',
-        categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z","2018-09-19T07:30:00.000Z","2018-09-19T08:30:00.000Z","2018-09-19T09:30:00.000Z","2018-09-19T10:30:00.000Z","2018-09-19T11:30:00.000Z"],
+        categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z", "2018-09-19T07:30:00.000Z", "2018-09-19T08:30:00.000Z", "2018-09-19T09:30:00.000Z", "2018-09-19T10:30:00.000Z", "2018-09-19T11:30:00.000Z"],
         axisBorder: {
-            show:false
+            show: false
         },
         axisTicks: {
-            show:false
+            show: false
         },
         labels: {
-            show:false,
+            show: false,
         }
     },
-    show:false,
+    show: false,
     yaxis: {
         labels: {
-            show:false,
+            show: false,
         },
     },
     tooltip: {
@@ -143,7 +140,7 @@ const renderDonut = async (result, id = '#chart-visitors-profile-test') => {
         labels: names
     }
     $("#chart-visitors-profile-test").html('');
-    let chartDonut  = await new ApexCharts(document.querySelector(id), optionsDonut);
+    let chartDonut = await new ApexCharts(document.querySelector(id), optionsDonut);
     chartDonut.render();
 }
 
@@ -162,13 +159,13 @@ const renderBar = async (result) => {
         },
     }
     $("#chart-profile-visit-test").html('');
-    let chartBar  = await new ApexCharts(document.querySelector("#chart-profile-visit-test"), optionsBar);
+    let chartBar = await new ApexCharts(document.querySelector("#chart-profile-visit-test"), optionsBar);
     chartBar.render();
 }
 
 
 const renderArea = async (result) => {
-    let series = result.series.map( e => {
+    let series = result.series.map(e => {
         return {
             name: e.name,
             data: e.datas
@@ -235,7 +232,7 @@ function renderTableReport(result) {
     $('#tableReport').show();
     $('#chartDonutTableContainer').hide();
     handleShowTxtTitle();
-    let totalPrice = result.totalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+    let totalPrice = result.totalPrice.toLocaleString('it-IT', {style: 'currency', currency: 'VND'});
     $('#totalPrice').html(totalPrice);
     $('#totalMedicalTable').html(result.totalMedical);
     if (!result.table || !result.table.records || !result.table.records.length) {
@@ -246,7 +243,7 @@ function renderTableReport(result) {
     $('#notHasReport').hide();
     let recordHtml = '';
     result.table.records.forEach((item) => {
-        let price = item.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        let price = item.price.toLocaleString('it-IT', {style: 'currency', currency: 'VND'});
         recordHtml = recordHtml + `<tr>
                                         <td style="text-align: center;">${item.title}</td>
                                         <td style="text-align: center;">${item.totalSchedule}</td>
@@ -262,20 +259,20 @@ function renderTableReport(result) {
 }
 
 function renderChart() {
-    let form  = {
-        'typeReport' : $('#typeReport').val(),
-        'timeReport' : $('#timeReport').val(),
+    let form = {
+        'typeReport': $('#typeReport').val(),
+        'timeReport': $('#timeReport').val(),
         'startTimeReport': $('#startTimeReport').val(),
         'endTimeReport': $('#endTimeReport').val()
     }
     let urlPath = window.location.origin;
     $.ajax({
-        url : urlPath + "/api/sale-report",
-        type : "post",
+        url: urlPath + "/api/sale-report",
+        type: "post",
         contentType: "application/json",
         data: JSON.stringify(form),
-        cache : false,
-        success : function(result) {
+        cache: false,
+        success: function (result) {
             if ($('#typeReport').val() === '1') {
                 renderOverviewReport(result);
             } else {
@@ -283,7 +280,7 @@ function renderChart() {
             }
             console.log(result);
         },
-        error : function(e) {
+        error: function (e) {
             console.log('Đã có lỗi xảy ra' + e);
         }
     });

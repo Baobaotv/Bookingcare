@@ -1,17 +1,17 @@
 $(document)
-		.ready(
-				function() {
-					let descriptionEdittor= null;
-					let contentEditor= null;
-					(function(){
-						descriptionEdittor= new FroalaEditor("#description",{
-					        // Define new link styles.
-					        linkStyles: {
-					          class1: 'Class 1',
-					          class2: 'Class 2'
-					        }
-					      })
-					    })();
+    .ready(
+        function () {
+            let descriptionEdittor = null;
+            let contentEditor = null;
+            (function () {
+                descriptionEdittor = new FroalaEditor("#description", {
+                    // Define new link styles.
+                    linkStyles: {
+                        class1: 'Class 1',
+                        class2: 'Class 2'
+                    }
+                })
+            })();
 //					 (function () {
 //					       contentEditor = new FroalaEditor('#content', {
 //					        events: {
@@ -31,285 +31,282 @@ $(document)
 //					        }
 //					      })
 //					    })()
-					 (function () {
-						  var curentPage=   parseInt($('#curentPage').val());
-						
-				        window.pagObj = $('#pagination').twbsPagination({
-				        	totalPages: 10,
-							visiblePages: 4,
-							startPage: parseInt(curentPage),
-				            onPageClick: function (event, page) {
-				            	if(page!=parseInt($('#curentPage').val())){
-									$('#page').val(page);
-									var url= window.location.pathname;
-									$('#formPagination').attr('action',url)
-									$('#formPagination').submit();
-				            	}
-				            }
-				            
-				        });
-				    })();
-					var count = 0;
-					 $('#uploadHospital')
-						.validate(
-								{
-									rules : {
-										name : {
-											required : true
+            (function () {
+                var curentPage = parseInt($('#curentPage').val());
 
-										},
-										location : {
-											required : true
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: 10,
+                    visiblePages: 4,
+                    startPage: parseInt(curentPage),
+                    onPageClick: function (event, page) {
+                        if (page != parseInt($('#curentPage').val())) {
+                            $('#page').val(page);
+                            var url = window.location.pathname;
+                            $('#formPagination').attr('action', url)
+                            $('#formPagination').submit();
+                        }
+                    }
 
-										}
-									},
-									messages : {
-										name : {
-											required : "Tên không được để trống"
-										},
-										location : {
-											required : "Địa chỉ không được để trống"
-										}
-									},
+                });
+            })();
+            var count = 0;
+            $('#uploadHospital')
+                .validate(
+                    {
+                        rules: {
+                            name: {
+                                required: true
 
-									submitHandler : function(form) {
-										alert('oke');
-									}
-								});
-					$("#addHospital")
-							.click(
-									function() {
-										
-										if ($("#uploadHospital").valid()){
-											var descriptionHTML= descriptionEdittor.html.get();
-											var stringDesctiption=$.trim(jQuery(descriptionHTML).text());
-											if(stringDesctiption){
-												event.preventDefault();
-												var form = $('#uploadHospital')[0];
-												var urlpath=window.location.origin;
-												var data = new FormData(form);
-												$
-														.ajax({
-															url : urlpath+"/admin/api/managerHospital/add",
-															type : "POST",
-															enctype : 'multipart/form-data',
-															data : data,
-															processData : false,
-															contentType : false,
-															cache : false,
-															success : function(result) {
-																if (result) {
-																	success:$('#modal')
-																	.modal('hide');
-																	
-																	complete:$('#ok').modal(
-																	'show');
+                            },
+                            location: {
+                                required: true
 
-																	setTimeout(
-																			function() {
-																				window.location
-																						.replace(urlpath+"/admin/managerHospital")
-																			}, 1500);
-																}
-															},
-															error : function(e) {
-																if (e.status) {
-																	success:$('#modal')
-																	.modal('hide');
-																	
-																	complete:$('#ok').modal(
-																	'show');
+                            }
+                        },
+                        messages: {
+                            name: {
+                                required: "Tên không được để trống"
+                            },
+                            location: {
+                                required: "Địa chỉ không được để trống"
+                            }
+                        },
 
-																	setTimeout(
-																			function() {
-																				window.location
-																						.replace(urlpath+"/admin/managerHospital")
-																			}, 1500);
-																} else {
-																	alert('Đã có lỗi xảy ra !');
-																}
-															}
-														});
-												}else{
-													alert("Bạn cần nhập lại phần mô tả")
-												}
-											}else{
-												alert("Bạn cần nhập đầy đủ thông tin cần thiết")
-											}
-									
-										
-										
-									});
+                        submitHandler: function (form) {
+                            alert('oke');
+                        }
+                    });
+            $("#addHospital")
+                .click(
+                    function () {
 
-					// checkAllCheckBox
-					$("#checkAll").change(
-							function() {
-								$("input[name='checkOne']").not(this).prop('checked',
-										this.checked);
-							});
+                        if ($("#uploadHospital").valid()) {
+                            var descriptionHTML = descriptionEdittor.html.get();
+                            var stringDesctiption = $.trim(jQuery(descriptionHTML).text());
+                            if (stringDesctiption) {
+                                event.preventDefault();
+                                var form = $('#uploadHospital')[0];
+                                var urlpath = window.location.origin;
+                                var data = new FormData(form);
+                                $
+                                    .ajax({
+                                        url: urlpath + "/admin/api/managerHospital/add",
+                                        type: "POST",
+                                        enctype: 'multipart/form-data',
+                                        data: data,
+                                        processData: false,
+                                        contentType: false,
+                                        cache: false,
+                                        success: function (result) {
+                                            if (result) {
+                                                success:$('#modal')
+                                                    .modal('hide');
 
-					// checkAnyCheckBox
-					var countChecked = function() {
-						count = $("input[name='checkOne']:checked").length
-						console.log(count);
-						if (count < 1) {
-							$("#btnDeleteHospital").prop("disabled", true);
-							$("#btnEditHospital").prop("disabled", true);
-							$("#btnAddHospital").prop("disabled", false);
-						} else {
-							$("#btnAddHospital").prop("disabled", true);
-							$("#btnDeleteHospital").prop("disabled", false);
-							if (count == 1) {
-								$("#btnEditHospital").prop("disabled", false);
-							} else {
-								$("#btnEditHospital").prop("disabled", true);
-							}
-						}
-					};
-					countChecked();
+                                                complete:$('#ok').modal(
+                                                    'show');
 
-					$("input[type=checkbox]").on("click", countChecked);
+                                                setTimeout(
+                                                    function () {
+                                                        window.location
+                                                            .replace(urlpath + "/admin/managerHospital")
+                                                    }, 1500);
+                                            }
+                                        },
+                                        error: function (e) {
+                                            if (e.status) {
+                                                success:$('#modal')
+                                                    .modal('hide');
 
-					// editProduct
-					$("#btnEditHospital").click(
-							function(event) {
-								event.preventDefault();
+                                                complete:$('#ok').modal(
+                                                    'show');
 
-								var values = new Array();
-								var values2 = new Array();
+                                                setTimeout(
+                                                    function () {
+                                                        window.location
+                                                            .replace(urlpath + "/admin/managerHospital")
+                                                    }, 1500);
+                                            } else {
+                                                alert('Đã có lỗi xảy ra !');
+                                            }
+                                        }
+                                    });
+                            } else {
+                                alert("Bạn cần nhập lại phần mô tả")
+                            }
+                        } else {
+                            alert("Bạn cần nhập đầy đủ thông tin cần thiết")
+                        }
 
-								$.each($("input[name='checkOne']:checked")
-										.closest("td").siblings("td"),
-										function() {
-											values.push($(this).text());
-										});
-								$.each($("input[name='checkOne']:checked")
-										.closest("td").siblings("input"),
-										function() {
-											values2.push($(this).val());
-										});
-							
-						
-								$('#id').val($("input[name='checkOne']:checked").val());
-								$('#name').val(values[0]);
+
+                    });
+
+            // checkAllCheckBox
+            $("#checkAll").change(
+                function () {
+                    $("input[name='checkOne']").not(this).prop('checked',
+                        this.checked);
+                });
+
+            // checkAnyCheckBox
+            var countChecked = function () {
+                count = $("input[name='checkOne']:checked").length
+                console.log(count);
+                if (count < 1) {
+                    $("#btnDeleteHospital").prop("disabled", true);
+                    $("#btnEditHospital").prop("disabled", true);
+                    $("#btnAddHospital").prop("disabled", false);
+                } else {
+                    $("#btnAddHospital").prop("disabled", true);
+                    $("#btnDeleteHospital").prop("disabled", false);
+                    if (count == 1) {
+                        $("#btnEditHospital").prop("disabled", false);
+                    } else {
+                        $("#btnEditHospital").prop("disabled", true);
+                    }
+                }
+            };
+            countChecked();
+
+            $("input[type=checkbox]").on("click", countChecked);
+
+            // editProduct
+            $("#btnEditHospital").click(
+                function (event) {
+                    event.preventDefault();
+
+                    var values = new Array();
+                    var values2 = new Array();
+
+                    $.each($("input[name='checkOne']:checked")
+                            .closest("td").siblings("td"),
+                        function () {
+                            values.push($(this).text());
+                        });
+                    $.each($("input[name='checkOne']:checked")
+                            .closest("td").siblings("input"),
+                        function () {
+                            values2.push($(this).val());
+                        });
+
+
+                    $('#id').val($("input[name='checkOne']:checked").val());
+                    $('#name').val(values[0]);
 //								$('#specializedId').val(values[1]).change();
-								
-							/*	descriptionEdittor.html.insert(values[2], true);*/
-								$('#location').val(values[2])
-								descriptionEdittor.html.set (values2[0]);
-								$('#description').val(values2[0])
-								$('#imgOld').val(values[4]);
-								$('#longitude').val(values[6]);
-								$('#latitude').val(values[5]);
-								$("#addHospital").css("display", "none");
-								$("#editHospital").css("display", "block");
-								valueViDo = Number(values[5]);
-								valueKinhDo = Number(values[6]);
-								initMap();
 
-							});
-					
-					$("#btnAddHospital").click(
-							function(event) {
-								event.preventDefault();
-								$("#addHospital").css("display", "block");
-								$("#editHospital").css("display", "none");
-							});
-							
-							
-					 $("#btnDeleteHospital").click(
-							function(event) {
-								
-								event.preventDefault();
-								var data = {};
-								var urlpath=window.location.origin;
-								var ids = $('tbody input[name="checkOne"]:checked').map(function () {
-		           				return $(this).val();
-		        				}).get();
-								data['ids'] = ids;
-									$.ajax({
-									url : urlpath+"/admin/api/managerHandbok/delete",
-									type : "post",
-									contentType: "application/json",
-									data: JSON.stringify(data),
-									cache : false,
-									success : function(result) {
-									alert("oke lunn");
-									window.location
-									.replace(urlpath+"/admin/managerHospital");
-					
-					
-									},
-									error : function(e) {
-										alert('Đã có lỗi xảy ra !');
-										window.location
-										.replace(urlpath+"/admin/managerHospital");
-									}
-									});
-							});
-							
-							
-							
+                    /*	descriptionEdittor.html.insert(values[2], true);*/
+                    $('#location').val(values[2])
+                    descriptionEdittor.html.set(values2[0]);
+                    $('#description').val(values2[0])
+                    $('#imgOld').val(values[4]);
+                    $('#longitude').val(values[6]);
+                    $('#latitude').val(values[5]);
+                    $("#addHospital").css("display", "none");
+                    $("#editHospital").css("display", "block");
+                    valueViDo = Number(values[5]);
+                    valueKinhDo = Number(values[6]);
+                    initMap();
 
-					$("#editHospital")
-							.click(
-									function() {
-										
-										if ($("#uploadHospital").valid()){
-											var descriptionHTML= descriptionEdittor.html.get();
-											var stringDesctiption=$.trim(jQuery(descriptionHTML).text());
-											if(stringDesctiption){
-												event.preventDefault();
-												var form = $('#uploadHospital')[0];
-												var urlpath=window.location.origin;
-												var data = new FormData(form);
-												$
-														.ajax({
-															url : urlpath+"/admin/api/managerHospital/edit",
-															type : "post",
-															enctype : 'multipart/form-data',
-															data : data,
-															processData : false,
-															contentType : false,
-															cache : false,
-															success : function(result) {
-																if (result) {
-																
-																
-																	$('#modal').modal('toggle');
+                });
 
-																	setTimeout(
-																			function() {
-																				window.location
-																						.replace(urlpath+"/admin/managerHospital")
-																			}, 1000);
-																			$('#ok').modal('show');
-																	
-																}
-															},
-															error : function(e) {
-																if (e.status) {
-																	success:$('#modal')
-																	.modal('hide');
-																	
-																	complete:$('#ok').modal(
-																	'show');
+            $("#btnAddHospital").click(
+                function (event) {
+                    event.preventDefault();
+                    $("#addHospital").css("display", "block");
+                    $("#editHospital").css("display", "none");
+                });
 
-																	setTimeout(
-																			function() {
-																				window.location
-																						.replace(urlpath+"/admin/managerHospital")
-																			}, 1500);
-																} else {
-																	alert('Đã có lỗi xảy ra !');
-																}
-															}
-														});
-												}else{
-													alert("Bạn cần nhập lại phần mô tả");
-												}
-											}else{
-												alert("Bạn cần nhập lại các thông tin cần thiết")
-											}
-									});
-				});
+
+            $("#btnDeleteHospital").click(
+                function (event) {
+
+                    event.preventDefault();
+                    var data = {};
+                    var urlpath = window.location.origin;
+                    var ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                        return $(this).val();
+                    }).get();
+                    data['ids'] = ids;
+                    $.ajax({
+                        url: urlpath + "/admin/api/managerHandbok/delete",
+                        type: "post",
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        cache: false,
+                        success: function (result) {
+                            alert("oke lunn");
+                            window.location
+                                .replace(urlpath + "/admin/managerHospital");
+
+
+                        },
+                        error: function (e) {
+                            alert('Đã có lỗi xảy ra !');
+                            window.location
+                                .replace(urlpath + "/admin/managerHospital");
+                        }
+                    });
+                });
+
+
+            $("#editHospital")
+                .click(
+                    function () {
+
+                        if ($("#uploadHospital").valid()) {
+                            var descriptionHTML = descriptionEdittor.html.get();
+                            var stringDesctiption = $.trim(jQuery(descriptionHTML).text());
+                            if (stringDesctiption) {
+                                event.preventDefault();
+                                var form = $('#uploadHospital')[0];
+                                var urlpath = window.location.origin;
+                                var data = new FormData(form);
+                                $
+                                    .ajax({
+                                        url: urlpath + "/admin/api/managerHospital/edit",
+                                        type: "post",
+                                        enctype: 'multipart/form-data',
+                                        data: data,
+                                        processData: false,
+                                        contentType: false,
+                                        cache: false,
+                                        success: function (result) {
+                                            if (result) {
+
+
+                                                $('#modal').modal('toggle');
+
+                                                setTimeout(
+                                                    function () {
+                                                        window.location
+                                                            .replace(urlpath + "/admin/managerHospital")
+                                                    }, 1000);
+                                                $('#ok').modal('show');
+
+                                            }
+                                        },
+                                        error: function (e) {
+                                            if (e.status) {
+                                                success:$('#modal')
+                                                    .modal('hide');
+
+                                                complete:$('#ok').modal(
+                                                    'show');
+
+                                                setTimeout(
+                                                    function () {
+                                                        window.location
+                                                            .replace(urlpath + "/admin/managerHospital")
+                                                    }, 1500);
+                                            } else {
+                                                alert('Đã có lỗi xảy ra !');
+                                            }
+                                        }
+                                    });
+                            } else {
+                                alert("Bạn cần nhập lại phần mô tả");
+                            }
+                        } else {
+                            alert("Bạn cần nhập lại các thông tin cần thiết")
+                        }
+                    });
+        });
