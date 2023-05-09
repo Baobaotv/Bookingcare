@@ -91,11 +91,34 @@
                 <form method="POST" action="" enctype="multipart/form-data"
                       id="uploadUser">
 
-                    <button type="button" style="width: 60px;" class="btn btn-primary"
-                            data-toggle="modal" data-target="#exampleModal" id="btnAddUser">
-							<span> <i class="fa fa-plus-circle bigger-110 purple"></i>
+                    <button style="width: 60px;" id="btnRestore" type="button"
+                            class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
+                            data-toggle="modal" data-target="#dialogConfirmRestore"
+                            title='Khôi phục người dùng'>
+							<span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-reply-fill" viewBox="0 0 16 16">
+                                      <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z"/>
+                                    </svg>
+							    </span>
 							</span>
                     </button>
+
+                    <button type="button" style="width: 60px;" class="btn btn-primary"
+                            data-toggle="modal" data-target="#exampleModal" id="btnDetailUser"
+                            title="Chi tiết người dùng ">
+							<span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-info-circle" viewBox="0 0 16 16">
+                                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+							    </span>
+							</span>
+                    </button>
+
 
                     <button style="width: 60px;" id="btnDelete" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
@@ -103,6 +126,8 @@
 							<span> <i class="far fa-trash-alt"></i>
 							</span>
                     </button>
+
+
                     <!-- Modal -->
 
                     <div class="modal fade" id="exampleModal" tabindex="-1"
@@ -124,90 +149,58 @@
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Họ và tên</label>
-                                                                    <input
+                                                                    <input readonly
                                                                             type="text" class="form-control"
                                                                             placeholder="First Name" name="fullname"
                                                                             id="fullname">
 
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6 col-12">
+                                                            <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="last-name-column">Ảnh đại diện</label>
+                                                                    <div class="col-12 col-lg-6 col-md-6">
                                                                     <img
                                                                             style="display: block; margin-left: auto; width: 25%; margin-right: auto;"
                                                                             class="product__item-img" id="showImage"
                                                                             src="">
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
                                                                     <label for="city-column">Tài khoản</label> <input
+                                                                        readonly
                                                                         type="text" id="username" class="form-control"
-                                                                        placeholder="Email" name="username">
+                                                                        placeholder="" name="username">
                                                                     <div id="msg"></div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6 col-12">
-                                                                <div class="form-group">
-                                                                    <label for="last-name-column">Ảnh đại diện</label>
-                                                                    <input
-                                                                            type="file" id="img" class="form-control"
-                                                                            placeholder="Last Name" name="img">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 col-12">
-                                                                <div class="form-group">
-                                                                    <label for="company-column">Mật khẩu</label> <input
-                                                                        type="password" id="password"
-                                                                        class="form-control"
-                                                                        name="password" placeholder="Mật khẩu">
-                                                                </div>
-                                                            </div>
+
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
                                                                     <label for="country-floating">Số điện thoại</label>
                                                                     <input
+                                                                            readonly
                                                                             type="text" id="phoneNumber"
                                                                             class="form-control"
                                                                             name="phoneNumber"
                                                                             placeholder="Số điện thoại">
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6 col-12">
-                                                                <div class="form-group">
-                                                                    <label for="email-id-column">Xác thực mật
-                                                                        khẩu</label>
-                                                                    <input type="password" id="confirmPassword"
-                                                                           class="form-control" name="confirmPassword"
-                                                                           placeholder="Xác thực mật khẩu">
-                                                                </div>
-                                                            </div>
 
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
                                                                     <label for="email-id-column">Địa chỉ</label> <input
+                                                                        readonly
                                                                         type="text" id="location" class="form-control"
                                                                         name="location" placeholder="Địa chỉ">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3 col-4">
                                                                 <div class="form-group">
-                                                                    <label for="company-column">Giới tính</label>
-                                                                    <select
-                                                                            name="sex" class="form-control required"
-                                                                            id="sex">
-                                                                        <option value="" selected>Chọn giới tính
-                                                                        </option>
-                                                                        <option value="Nam">Nam</option>
-                                                                        <option value="Nữ">Nữ</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3 col-4">
-                                                                <div class="form-group">
                                                                     <label for="company-column">Chọn chuyên khoa</label>
-                                                                    <select
+                                                                    <select readonly
                                                                             name="specializedId" class="form-control"
                                                                             id="specializedId">
                                                                         <option value="" selected>Chọn chuyên khoa
@@ -224,33 +217,17 @@
                                                             <div class="col-md-3 col-14">
                                                                 <div class="form-group">
                                                                     <label for="email-id-column">Ngày sinh</label>
-                                                                    <input
-                                                                            type="date" id=" "
+                                                                    <input readonly
+                                                                            type="date" id="yearOfBirth"
                                                                             class="form-control"
                                                                             name="yearOfBirth" placeholder="Ngày sinh">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3 col-14">
-                                                                <div class="form-group">
-                                                                    <label for="email-id-column">Chức năng</label>
-                                                                    <select
-                                                                            name="roleName" class="form-control"
-                                                                            id="roleName">
-                                                                        <option value="" selected>Chọn chức năng
-                                                                        </option>
-                                                                        <th:block th:each="itemRole : ${lstRole}">
-
-                                                                            <option th:value="${itemRole.name}"
-                                                                                    th:utext="${itemRole.name}"></option>
-                                                                        </th:block>
-
-                                                                    </select>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-md-6 col-14">
                                                                 <div class="form-group">
                                                                     <label for="email-id-column">Email</label> <input
+                                                                        readonly
                                                                         type="email" id="email" class="form-control"
                                                                         name="email" placeholder="Địa chỉ" required
                                                                         pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
@@ -260,13 +237,13 @@
                                                                 <div class="form-group">
                                                                     <label for="company-column">Bệnh viện</label>
                                                                     <select
+                                                                            readonly
                                                                             name="hospitalId" class="form-control"
                                                                             id="hospitalId">
                                                                         <option value="" selected>Chọn Bệnh viện
                                                                         </option>
                                                                         <th:block
                                                                                 th:each="itemHospital : ${lstHospital}">
-
                                                                             <option th:value="${itemHospital.id}"
                                                                                     th:utext="${itemHospital.name}"></option>
                                                                         </th:block>
@@ -277,29 +254,11 @@
 
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Chọn ca khám</label>
-                                                                    <th:block
-                                                                            th:each="itemlstWorkTime : ${lstWorkTime}">
-                                                                        <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input checkWorkTime"
-                                                                                   type="checkbox" name="workTimeId"
-                                                                                   id="inlineCheckbox1"
-                                                                                   th:value="${itemlstWorkTime.id}">
-                                                                            <label
-                                                                                    th:utext="${itemlstWorkTime.time}"
-                                                                                    class="form-check-label "
-                                                                                    for="inlineCheckbox1"></label>
-                                                                        </div>
-                                                                    </th:block>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-12 col-24">
-                                                                <div class="form-group">
                                                                     <label for="email-id-column">Mô tả ngắn</label>
-                                                                    <textarea rows="12" cols="auto" class="form-control"
+                                                                    <div rows="12" cols="auto" class="form-control"
                                                                               name="shortDescription"
-                                                                              id="shortDescription"></textarea>
+                                                                                readonly
+                                                                              id="shortDescription"></div>
 
                                                                 </div>
                                                             </div>
@@ -307,9 +266,9 @@
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="email-id-column">Mô tả</label>
-                                                                    <textarea rows="12" cols="auto" class="form-control"
+                                                                    <div rows="12" cols="auto" class="form-control" readonly
                                                                               name="description"
-                                                                              id="description"></textarea>
+                                                                              id="description"></div>
 
                                                                 </div>
                                                             </div>
@@ -329,15 +288,7 @@
                                             data-dismiss="modal">Close
                                     </button>
 
-
-                                    <button type="button" id="addUser" class="btn btn-primary">Thêm
-                                        người dùng
-                                    </button>
-                                    <button type="button" id="editUser" class="btn btn-primary">Cập
-                                        nhập thông tin
-                                    </button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -360,7 +311,6 @@
                                 <label class="d-flex justify-content-center">Chọn tất
                                     cả</label>
                                 <div style="display: flex;">
-
                                     <input class="d-flex justify-content-center" type="checkbox"
                                            style="margin: auto;" name="selectBox" id="checkAll">
                                 </div>
@@ -373,11 +323,6 @@
                                 đại diện</label></th>
                             <th><label class="d-flex justify-content-center">Số
                                 điện thoại</label></th>
-
-                            <!-- <th><label class="d-flex justify-content-center">Chức
-                                    năng</label></th> -->
-
-
                         </tr>
                         </thead>
 
@@ -400,6 +345,18 @@
 
                                 <td style="text-align: center;"
                                     th:utext="${itemlstUser.phone}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.location}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.specializedId}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.yearOfBirth}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.email}"></td>
+                                <input type="hidden" th:value="${itemlstUser.shortDescription}"/>
+                                <input type="hidden" th:value="${itemlstUser.description}"/>
+                                <input type="hidden" th:value="${itemlstUser.img}"/>
+                                <input type="hidden" th:value="${itemlstUser.hospitalId}"/>
                             </tr>
                         </th:block>
                         </tbody>
@@ -410,8 +367,6 @@
                         <ul class="pagination" id="pagination"></ul>
                     </nav>
                 </div>
-                <!--  -->
-
             </div>
         </div>
 
@@ -452,10 +407,30 @@
 
         </div>
     </div>
+
+    <div class="modal fade" id="dialogConfirmRestore" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông báo</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn chắc chắn muốn KHÔI PHỤC bài viết này chứ</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnConfirmRestore" data-dismiss="modal">Khôi phục
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </section>
 
 <script layout:fragment="js"
-        th:src="@{/admin/assets/js/managerUser.js}"></script>
+        th:src="@{/admin/assets/js/managerUserUDelete.js}"></script>
 </body>
 
 </html>

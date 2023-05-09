@@ -1,10 +1,11 @@
 package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Api.form.HandbookForm;
-import com.KMA.BookingCare.Api.form.formDelete;
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.HandbookDto;
 import com.KMA.BookingCare.Repository.HandbookRepository;
 import com.KMA.BookingCare.Service.HandbookService;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.search.HandbookingSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
@@ -144,16 +145,36 @@ public class HandbookApi {
 		return ResponseEntity.ok("true");
 	}
 
-	@PostMapping(value = {"/admin/managerHandbook/delete","/doctor/managerHandbook/delete"})
-	public ResponseEntity<?> deleteHandbook(@RequestBody formDelete form) {
+	@PostMapping(value = {"/admin/managerHandbook/uDelete","/doctor/managerHandbook/uDelete"})
+	public ResponseEntity<?> uDeleteHandbook(@RequestBody DeleteForm form) {
 		try {
-			handbookServiceImpl.updateHandbookByStatus(form.getIds());
-
+			handbookServiceImpl.updateHandbookByStatus(form.getIds(), Constant.del_flg_on);
 		} catch (Exception e ) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return ResponseEntity.ok("true");
+	}
+
+	@PostMapping(value = {"/api/handbook/restore"})
+	public ResponseEntity<?> restoreHandbook(@RequestBody DeleteForm form) {
+		try {
+			handbookServiceImpl.updateHandbookByStatus(form.getIds(), Constant.del_flg_off);
+			return ResponseEntity.ok("true");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
+	}
+
+	@PostMapping(value = {"/api/handbook/delete"})
+	public ResponseEntity<?> deleteHandbook(@RequestBody DeleteForm form) {
+		try {
+			handbookServiceImpl.deleteHandbook(form);
+			return ResponseEntity.ok("true");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PostMapping(value = {"/admin/managerHandbook/edit","/doctor/managerHandbook/edit"})

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.common.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,7 @@ public class UserManagerController {
     public String managerUerPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page,
                                  @ModelAttribute searchDoctorForm form) {
         Pageable pageable = PageRequest.of(page - 1, 3);
-        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable);
+        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable, Constant.del_flg_off);
         List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
         List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
         List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
@@ -62,12 +63,28 @@ public class UserManagerController {
         model.addAttribute("lstHospital", lstHospital);
         model.addAttribute("lstSpecialized", lstSpecialized);
         model.addAttribute("lstUser", lstUser);
-//		Integer curentPage=page;
-//		model.addAttribute("curentPage", curentPage);
         model.addAttribute("formSearch", form);
-        Integer curentPage = page;
-        model.addAttribute("curentPage", curentPage);
+        model.addAttribute("curentPage", page);
         return "admin/views/managerUser";
+    }
+
+    @GetMapping(value = "/admin/managerUDeleteUser")
+    public String managerUDeleteUerPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page,
+                                 @ModelAttribute searchDoctorForm form) {
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable, Constant.del_flg_on);
+        List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
+        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
+        List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
+        List<Role> lstRole = roleSeviceImpl.findAll();
+        model.addAttribute("lstRole", lstRole);
+        model.addAttribute("lstWorkTime", lstWorkTime);
+        model.addAttribute("lstHospital", lstHospital);
+        model.addAttribute("lstSpecialized", lstSpecialized);
+        model.addAttribute("lstUser", lstUser);
+        model.addAttribute("formSearch", form);
+        model.addAttribute("curentPage", page);
+        return "admin/views/managerUserUDelete";
     }
 
     @PostMapping(value = {"/admin/editProfile", "/doctor/editProfile"})

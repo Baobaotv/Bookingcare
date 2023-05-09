@@ -120,4 +120,11 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 	@Query(value = "SELECT m FROM MedicalExaminationScheduleEntity  m WHERE m.id = :medicalId AND m.user.id = :userId ")
 	Optional<MedicalExaminationScheduleEntity> findOneByMedicalIdAndUserId(@Param("medicalId") Long medicalId,
 																		   @Param("userId") Long userId);
+
+	@Query(value = "SELECT count(m) FROM MedicalExaminationScheduleEntity AS m WHERE m.doctor.id in (:ids) AND m.status = 1")
+	long existsByUser(@Param("ids") List<Long> ids);
+
+	@Modifying
+	@Query(value = "DELETE FROM MedicalExaminationScheduleEntity AS m WHERE m.doctor.id in (:ids) ")
+	void deleteAllByDoctorIds(@Param("ids") List<Long> ids);
 }

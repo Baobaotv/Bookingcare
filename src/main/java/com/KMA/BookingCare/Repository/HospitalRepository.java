@@ -12,9 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.KMA.BookingCare.Entity.HospitalEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 @Repository
 public interface HospitalRepository extends JpaRepository<HospitalEntity, Long>,CustomHospitalRepository {
 	HospitalEntity findOneById(Long id);
@@ -40,4 +43,9 @@ public interface HospitalRepository extends JpaRepository<HospitalEntity, Long>,
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HospitalDto(h.id, h.name, h.location, h.description, h.img, h.longitude, h.latitude) FROM HospitalEntity h WHERE h.status=:status AND h.name LIKE CONCAT('%',:name,'%')")
 	Page<HospitalDto> findAllByNameIsLikeIgnoreCaseAndStatus(@Param("name") String name, @Param("status") Integer status, Pageable pageable);
+
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE hospital  SET status = :status WHERE id in :ids", nativeQuery = true)
+	void updateStatusByIds(@Param("ids") List<Long> ids, @Param("status") Integer status);
 }

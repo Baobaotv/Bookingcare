@@ -2,10 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/masterLayout.html}">
-
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý bài viết</title>
+    <title>Quản lý bài viết dã xoá</title>
 </head>
 <body>
 <section class="row" layout:fragment="content">
@@ -51,41 +50,48 @@
                                 </div>
                             </div>
                             <input type="hidden" id="page" name="page"/> <input
-                                type="hidden" th:value="${curentPage}" id="curentPage"/>
+                                type="hidden" th:value="${currentPage}" id="curentPage"/>
                             <button id="search" class="btn btn-primary">Tìm
                                 kiếm
                             </button>
-
-
-                            <!--  -->
                         </div>
                     </form>
                 </div>
             </div>
         </div>
         <!--  -->
-        <div class="card-group"><h5> Danh sách bài viết</h5></div>
+        <div class="card-group"><h5> Danh sách bài viết đã xoá</h5></div>
         <div class="card shadow mb-4">
             <div class="card-header py-4 d-flex flex-row-reverse">
                 <form method="POST" action="" enctype="multipart/form-data"
                       id="uploadHandbook">
 
                     <button type="button" style="width: 60px;" class="btn btn-primary"
-                            data-toggle="modal" data-target="#exampleModal" id="btnAddHandbook">
-							<span> <i class="fa fa-plus-circle bigger-110 purple"></i>
+                            title='Khôi phục bài viết'
+                            data-toggle="modal" data-target="#dialogConfirmRestore" id="btnRestoreHandbook">
+							<span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-reply-fill" viewBox="0 0 16 16">
+                                  <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z"/>
+                                </svg>
 							</span>
                     </button>
 
                     <button style="width: 60px;" id="btnEditHandbook" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
                             data-toggle="modal" data-target="#exampleModal"
-                            title='Sửa sản phẩm'>
-							<span> <i class="far fa-edit"></i>
+                            title='Chi tiết bài viết'>
+							<span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-info-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
 							</span>
                     </button>
                     <button style="width: 60px;" id="btnDeleteHandbook" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                            data-toggle="modal" title='Xóa sản phẩm'
+                            data-toggle="modal" title='Xóa vĩnh viễn'
                             data-target="#dialogConfirmDelete">
 							<span> <i class="far fa-trash-alt"></i>
 							</span>
@@ -116,7 +122,7 @@
                                                                     <input
                                                                             type="text" class="form-control"
                                                                             placeholder="First Name" name="title"
-                                                                            id="title">
+                                                                            id="title" readonly>
                                                                     <input name="id" type="hidden"
                                                                            id="id">
                                                                 </div>
@@ -124,10 +130,12 @@
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Ảnh bài viết</label>
-                                                                    <input
-                                                                            type="file" class="form-control"
-                                                                            placeholder="" name="img"
-                                                                            id="img">
+                                                                    <div class="col-12 col-lg-6 col-md-6">
+                                                                        <img
+                                                                                type="file" class="form-control"
+                                                                                placeholder="" name="img"
+                                                                                id="img"/>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -136,7 +144,7 @@
                                                                     <label for="company-column">Chọn chuyên khoa</label>
                                                                     <select
                                                                             name="specializedId" class="form-control"
-                                                                            id="specializedId">
+                                                                            id="specializedId" disabled>
                                                                         <option value=""
                                                                         >Chọn chuyên khoa
                                                                         </option>
@@ -152,18 +160,20 @@
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Mô tả ngắn</label>
-                                                                    <textarea
-                                                                            type="text" class="form-control"
-                                                                            placeholder="Mô tả ngắn" name="description"
-                                                                            id="description"></textarea>
+                                                                    <div readonly
+                                                                              type="text" class="form-control"
+                                                                              placeholder="Mô tả ngắn"
+                                                                              name="description"
+                                                                              id="description"></div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group" id=setContent>
                                                                     <label for="email-id-column">Nội dung</label>
-                                                                    <textarea rows="12" cols="auto" class="form-control"
-                                                                              name="content" id="content"></textarea>
+                                                                    <div readonly rows="12" cols="auto"
+                                                                              class="form-control"
+                                                                              name="content" id="content"></div>
 
                                                                 </div>
                                                             </div>
@@ -189,14 +199,6 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Close
-                                    </button>
-
-
-                                    <button type="button" id="addHandbook" class="btn btn-primary">Thêm
-                                        bài viết
-                                    </button>
-                                    <button type="button" id="editHandbook" class="btn btn-primary">Cập
-                                        nhập thông tin
                                     </button>
                                 </div>
 
@@ -237,10 +239,6 @@
 
                             <th><label class="d-flex justify-content-center">Ngày cập nhâp cuối cùng
                             </label></th>
-                            <!--	<th><label class="d-flex justify-content-center">Thao tác
-                                    </label></th>-->
-
-
                         </tr>
                         </thead>
 
@@ -261,11 +259,12 @@
                                 <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
                                     th:utext="${itemHandbook.createdDate}"></td>
                                 <td style="text-align: center;" th:utext="${itemHandbook.modifiedDate}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemHandbook.img}"></td>
+
                                 <input name="id" type="hidden" id="contentHtml" th:value="${itemHandbook.content}">
                                 <input name="id" type="hidden" id="descriptionHtml"
                                        th:value="${itemHandbook.description}">
-                                <!--										<td style="text-align: center;"><a th:href="@{/cam-nang/{id}(id=${itemHandbook.id})}"><i class="bi bi-eye-fill"></i></a></td>-->
-
                             </tr>
                         </th:block>
                         </tbody>
@@ -278,7 +277,7 @@
                 </div>
                 <form action="" method="GET" id="formPagination">
                     <input type="hidden" id="page" name="page"/>
-                    <input type="hidden" th:value="${curentPage}" id="curentPage"/>
+                    <input type="hidden" th:value="${currentPage}" id="curentPage"/>
                 </form>
             </div>
         </div>
@@ -310,10 +309,31 @@
                     <h4 class="modal-title">Thông báo</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Bạn chắc chắn muốn xoá chứ</p>
+                    <p>Bạn chắc chắn muốn xoá VĨNH VIỄN bài viết này chứ</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal">Xoá</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal">Xoá
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="dialogConfirmRestore" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông báo</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn chắc chắn muốn KHÔI PHỤC bài viết này chứ</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnConfirmRestore" data-dismiss="modal">Khôi phục
+                    </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
                 </div>
             </div>
@@ -321,7 +341,7 @@
         </div>
     </div>
 </section>
-<script layout:fragment="js" th:src="@{/admin/assets/js/managerHandbook.js}"></script>
+<script layout:fragment="js" th:src="@{/admin/assets/js/managerHandbookUDelete.js}"></script>
 
 </body>
 

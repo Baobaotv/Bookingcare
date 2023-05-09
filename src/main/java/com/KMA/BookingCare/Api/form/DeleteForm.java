@@ -2,7 +2,7 @@ package com.KMA.BookingCare.Api.form;
 
 import java.util.List;
 
-public class formDelete {
+public class DeleteForm {
 	private List<String> ids;
 
 	public List<String> getIds() {

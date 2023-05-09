@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Service;
 import java.text.ParseException;
 import java.util.List;
 
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public interface HandbookService {
 
 	List<HandbookDto> findAllByStatusAndUserId(Integer status, Long id,Pageable pageable);
 
-	void updateHandbookByStatus(List<String> ids);
+	void updateHandbookByStatus(List<String> ids, Integer status);
 
 	void update(HandbookForm form);
 
@@ -36,6 +37,8 @@ public interface HandbookService {
 	
 	List<HandbookDto> searchHandbookAndPageable(searchHandbookForm form,Long userId, Pageable page);
 
+	List<HandbookDto> searchHandbookUDeleteAndPageable(searchHandbookForm form,Long userId, Pageable page);
+
 	Page<HandbookDto> searchHandbookAndPageableapi(String title,Long specialzed,String userId, Pageable page);
 
 	List<HandbookEntity> getAll();
@@ -45,4 +48,6 @@ public interface HandbookService {
 	List<HandbookDto> getFeaturedHandbook();
 
 	List<SearchFullTextDto> searchAllByFullText(String query);
+
+	void deleteHandbook(DeleteForm form);
 }

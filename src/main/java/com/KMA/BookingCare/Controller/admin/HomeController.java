@@ -8,6 +8,7 @@ import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Service.*;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.common.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class HomeController {
 
     @Autowired
     private HospitalService hospitalServiceImpl;
+
     @Autowired
     private UserService userServiceImpl;
 
@@ -52,27 +54,6 @@ public class HomeController {
         model.addAttribute("featureUsers", users);
         return "admin/views/home";
     }
-
-    @GetMapping(value = "/admin/managerHospital")
-    public String hospitalPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 3);
-        List<HospitalDto> lstHospital = hospitalServiceImpl.findAllByStatus(1, pageable);
-        model.addAttribute("lstHospital", lstHospital);
-        Integer curentPage = page;
-        model.addAttribute("curentPage", curentPage);
-        return "admin/views/managerHospital";
-    }
-
-    @GetMapping(value = "/admin/managerSpecialized")
-    public String specializedPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
-        Pageable pageable = PageRequest.of(page - 1, 3);
-        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAllByStatus(1, pageable);
-        model.addAttribute("lstSpecialized", lstSpecialized);
-        Integer curentPage = page;
-        model.addAttribute("curentPage", curentPage);
-        return "admin/views/managerSpecialized";
-    }
-
 
     @GetMapping(value = {"/admin/editProfile", "/doctor/editProfile"})
     public String profilePage(Model model, HttpSession session) {

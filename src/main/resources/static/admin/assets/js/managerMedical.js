@@ -6,9 +6,9 @@ $(document)
                 .click(
                     function (event) {
                         event.preventDefault();
-                        var data = {};
-                        var urlpath = window.location.href;
-                        var ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                        let data = {};
+                        let urlpath = window.location.href;
+                        let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                             return $(this).val();
                         }).get();
                         data['ids'] = ids;
@@ -19,14 +19,12 @@ $(document)
                             data: JSON.stringify(data),
                             cache: false,
                             success: function (result) {
-                                alert("oke lunn");
-                                window.location
-                                    .replace(urlpath);
+                                alert("Đã hoàn thành ca khám");
+                                window.location.reload();
                             },
                             error: function (e) {
-                                alert('Đã có lỗi xảy ra !');
-                                window.location
-                                    .replace(urlpath);
+                                alert('Đã có lỗi xảy ra, xin vui lòng thử lại!');
+                                window.location.reload();
                             }
                         });
 

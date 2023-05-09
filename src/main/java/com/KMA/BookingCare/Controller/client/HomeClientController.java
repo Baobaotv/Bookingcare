@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.config.SessionUserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,7 +167,7 @@ public class HomeClientController {
 	public String doctor(Model model,@RequestParam(required = false,name = "page",defaultValue = "1") Integer page
 			,@ModelAttribute searchDoctorForm form){
 		Pageable pageable = PageRequest.of(page-1, 4);
-		List<User> lstDto = userServiceImpl.searchDoctorAndPageable(form, "USER", pageable);
+		List<User> lstDto = userServiceImpl.searchDoctorAndPageable(form, "USER", pageable, Constant.del_flg_off);
 		List<SpecializedDto> lstChuyenKhoa = specializedServiceImpl.findAll();
 		List<HospitalDto> lstBenhvien= hospitalServiceImpl.findAllByStatus(1);
 		model.addAttribute("lstBenhvien", lstBenhvien);

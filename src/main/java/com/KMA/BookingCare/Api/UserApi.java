@@ -2,7 +2,7 @@ package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Api.form.UpdateCientForm;
 import com.KMA.BookingCare.Api.form.UserForm;
-import com.KMA.BookingCare.Api.form.formDelete;
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Api.form.searchDoctorForm;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Dto.UserInput;
@@ -13,7 +13,7 @@ import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.ServiceImpl.MedicalExaminationScheduleServiceImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsServiceImpl;
-import io.swagger.v3.oas.annotations.Hidden;
+import com.KMA.BookingCare.common.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,18 +71,43 @@ public class UserApi {
 
     }
 
-    @Hidden
-    @PostMapping(value = "/admin/api/managerUser/delete")
-    public ResponseEntity<?> deleteUserOke(@RequestBody formDelete userDelete) {
-        try {
-            userServiceImpl.updateUserByStatus(userDelete.getIds());
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.out.println("looxi");
+    @PostMapping(value = "/api/user/uDelete")
+    public ResponseEntity<?> deleteUserOke(@RequestBody DeleteForm form) {
+        log.info("request to uDelete user by ids: {}", form.getIds());
+        boolean isExits = userServiceImpl.isExistItemRelationWithSpecialIsUsing(form.getIds());
+        if (isExits) {
+            return ResponseEntity.badRequest().body("Không thể xoá người dùng do vẫn còn bài viết hoặc ca khám còn hoạt động");
         }
-        return ResponseEntity.ok("true");
+        try {
+            userServiceImpl.updateUserByStatus(form.getIds(), Constant.del_flg_on);
+            return ResponseEntity.ok("true");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
+    @PostMapping(value = {"/api/user/restore"})
+    public ResponseEntity<?> restoreUser(@RequestBody DeleteForm form) {
+        try {
+            userServiceImpl.updateUserByStatus(form.getIds(), Constant.del_flg_off);
+            return ResponseEntity.ok("true");
+        } catch (Exception e ) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping(value = {"/api/user/delete"})
+    public ResponseEntity<?> deleteUser(@RequestBody DeleteForm form) {
+        try {
+            userServiceImpl.deleteUser(form.getIds());
+            return ResponseEntity.ok("true");
+        } catch (Exception e ) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping(value = "/api/updateClient")
@@ -140,7 +165,7 @@ public class UserApi {
     @PostMapping(value = "api/user/search-docter")
     public List<User> searchDocter(@RequestBody searchDoctorForm form, @PageableDefault(page = 0, size = 10) Pageable pageable) {
         log.info("Request to search docter {}", form);
-        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "USER", pageable);
+        List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "USER", pageable, Constant.del_flg_off);
         return lstUser;
     }
 

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,10 +19,11 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.img) FROM HandbookEntity h where  h.status =:status")
 	Page<HandbookDto> findAllByStatus(Integer status, Pageable pageable);
 	List<HandbookEntity> findAllByStatusAndUserId(Integer status, Long id,Pageable pageable);
+
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE handbook  SET status = 0 WHERE id in :ids", nativeQuery = true)
-	Integer updateByStatus(@Param("ids") List<String> ids);
+	@Query(value = "UPDATE handbook  SET status = :status WHERE id in :ids", nativeQuery = true)
+	Integer updateByStatus(@Param("ids") List<String> ids, @Param("status") Integer status);
 
 	HandbookEntity findOneById(Long id);
 
@@ -39,10 +41,14 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 	@Query(value = "SELECT * FROM handbook h where h.status =1 ORDER BY RAND() LIMIT 4;",nativeQuery = true)
 	List<HandbookEntity> findRandomHandbook();
 	
-	@Query(value = "SELECT * FROM handbook h  where h.status =1 AND title   like CONCAT('%',:title,'%') "
+	@Query(value = "SELECT * FROM handbook h  where h.status = :status AND title like CONCAT('%',:title,'%') "
 			+ "AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)"
 			+ "AND ( (:userId IS NOT NULL AND user_id =:userId) || :userId IS NULL)",nativeQuery = true)
-	List<HandbookEntity> searchHandbookAndPageable(@Param("title") String title,@Param("specializedId") Long specializedId,@Param("userId") Long userId,Pageable page);
+	List<HandbookEntity> searchHandbookAndPageable(@Param("title") String title,
+												   @Param("specializedId") Long specializedId,
+												   @Param("userId") Long userId,
+												   @Param("status") Integer status,
+												   Pageable page);
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity h  where h.status =1 AND h.title like CONCAT('%',:title,'%') "
 			+ "AND ((:specializedId is not null and h.specialized.id =:specializedId) or :specializedId is null) "
@@ -60,4 +66,25 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 			"FROM bookingCare.handbook " +
 			"WHERE status = 1 AND MATCH(content, description, title) AGAINST (:query)", nativeQuery = true)
 	List<HandbookEntity> searchAllByFullText(@Param("query") String query);
+
+	@Query(value = "SELECT count(h) FROM HandbookEntity AS h WHERE h.specialized.id in (:ids) AND h.status = 1")
+	Long existsBySpecial(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT count(h) FROM HandbookEntity AS h WHERE h.user.id in (:ids) AND h.status = 1")
+	Long existsByUser(@Param("ids") List<Long> ids);
+
+	@Modifying
+	@Query(value = "DELETE FROM HandbookEntity AS h WHERE h.user.id in (:ids)")
+	void deleteAllByUser(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity AS h WHERE h.user.id in (:ids)")
+	List<HandbookDto> findAllByUser(@Param("ids") List<Long> ids);
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM HandbookEntity AS h WHERE h.specialized.id in (:ids)")
+	void deleteAllBySpecialized(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity AS h WHERE h.specialized.id in (:ids)")
+	List<HandbookDto> findAllBySpecializedIds(@Param("ids") List<Long> ids);
 }

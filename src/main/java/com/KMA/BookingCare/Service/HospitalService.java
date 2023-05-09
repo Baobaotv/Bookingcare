@@ -27,4 +27,10 @@ public interface HospitalService {
 	List<SearchFullTextDto> searchAllByFullText(String query);
 
 	Page<HospitalDto> searchByNameAndStatus(String query, Pageable pageable);
+
+	boolean isExistItemRelationWithSpecialIsUsing(List<String> ids);
+
+	void updateByStatusAndIds(List<String> ids, Integer status);
+
+	void deleteHospitals(List<String> ids);
 }

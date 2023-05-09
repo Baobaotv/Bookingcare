@@ -145,12 +145,12 @@ $(document)
                 function () {
                     $("input[name='checkOne']").not(this).prop('checked',
                         this.checked);
+                    countChecked();
                 });
 
             // checkAnyCheckBox
             var countChecked = function () {
                 count = $("input[name='checkOne']:checked").length
-                console.log(count);
                 if (count < 1) {
                     $("#btnDeleteHospital").prop("disabled", true);
                     $("#btnEditHospital").prop("disabled", true);
@@ -173,9 +173,8 @@ $(document)
             $("#btnEditHospital").click(
                 function (event) {
                     event.preventDefault();
-
-                    var values = new Array();
-                    var values2 = new Array();
+                    let values = new Array();
+                    let values2 = new Array();
 
                     $.each($("input[name='checkOne']:checked")
                             .closest("td").siblings("td"),
@@ -191,9 +190,6 @@ $(document)
 
                     $('#id').val($("input[name='checkOne']:checked").val());
                     $('#name').val(values[0]);
-//								$('#specializedId').val(values[1]).change();
-
-                    /*	descriptionEdittor.html.insert(values[2], true);*/
                     $('#location').val(values[2])
                     descriptionEdittor.html.set(values2[0]);
                     $('#description').val(values2[0])
@@ -216,33 +212,32 @@ $(document)
                 });
 
 
-            $("#btnDeleteHospital").click(
+            $("#btnConfirmDelete").click(
                 function (event) {
-
                     event.preventDefault();
-                    var data = {};
-                    var urlpath = window.location.origin;
-                    var ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                    let data = {};
+                    let urlPath = window.location.origin + '/api/hospital/uDelete';
+                    let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                         return $(this).val();
                     }).get();
                     data['ids'] = ids;
                     $.ajax({
-                        url: urlpath + "/admin/api/managerHandbok/delete",
+                        url: urlPath,
                         type: "post",
                         contentType: "application/json",
                         data: JSON.stringify(data),
                         cache: false,
                         success: function (result) {
-                            alert("oke lunn");
-                            window.location
-                                .replace(urlpath + "/admin/managerHospital");
-
-
+                            alert("Đã xoá thành công");
+                            window.location.reload();
                         },
                         error: function (e) {
-                            alert('Đã có lỗi xảy ra !');
-                            window.location
-                                .replace(urlpath + "/admin/managerHospital");
+                            if (!!e.responseText) {
+                                alert(e.responseText);
+                            } else {
+                                alert('Đã có lỗi xảy ra !');
+                            }
+                            window.location.reload();
                         }
                     });
                 });

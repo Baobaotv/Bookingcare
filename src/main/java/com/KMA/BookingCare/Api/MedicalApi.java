@@ -2,7 +2,7 @@ package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
 import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
-import com.KMA.BookingCare.Api.form.formDelete;
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -169,7 +166,7 @@ public class MedicalApi {
 	}
 
 	@PostMapping(value = {"/admin/managerMedical/delete","/doctor/managerMedical/delete"})
-	public ResponseEntity<?> deleteMedical(@RequestBody formDelete form) {
+	public ResponseEntity<?> deleteMedical(@RequestBody DeleteForm form) {
 		try {
 			medicalServiceImpl.updateMedicalByStatus(0, form.getIds());
 		} catch (Exception e ) {
@@ -178,7 +175,7 @@ public class MedicalApi {
 		return ResponseEntity.ok("true");
 	}
 	@PostMapping(value = {"/admin/managerMedical/complete","/doctor/managerMedical/complete"})
-	public ResponseEntity<?> completeMedical(@RequestBody formDelete form) {
+	public ResponseEntity<?> completeMedical(@RequestBody DeleteForm form) {
 		try {
 			medicalServiceImpl.updateMedicalByStatus(2, form.getIds());
 		} catch (Exception e ) {

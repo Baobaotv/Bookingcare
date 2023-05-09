@@ -54,11 +54,9 @@ $(document)
                         rules: {
                             title: {
                                 required: true
-
                             },
                             description: {
                                 required: true
-
                             }
                         },
                         messages: {
@@ -152,12 +150,12 @@ $(document)
                 function () {
                     $("input[name='checkOne']").not(this).prop('checked',
                         this.checked);
+                    countChecked();
                 });
 
             // checkAnyCheckBox
             var countChecked = function () {
                 count = $("input[name='checkOne']:checked").length
-                console.log(count);
                 if (count < 1) {
                     $("#btnDeleteHandbook").prop("disabled", true);
                     $("#btnEditHandbook").prop("disabled", true);
@@ -220,31 +218,29 @@ $(document)
                 });
 
 
-            $("#btnDeleteHandbook").click(
+            $("#btnConfirmDelete").click(
                 function (event) {
                     event.preventDefault();
-                    var data = {};
-                    var urlLocation = window.location.href;
-                    var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
-                    var ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                    let data = {};
+                    let urlLocation = window.location.href;
+                    let urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
+                    let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                         return $(this).val();
                     }).get();
                     data['ids'] = ids;
                     $.ajax({
-                        url: urlpath + "/delete",
+                        url: urlpath + "/uDelete",
                         type: "post",
                         contentType: "application/json",
                         data: JSON.stringify(data),
                         cache: false,
                         success: function (result) {
-                            alert("oke lunn");
-                            window.location
-                                .replace(urlpath + "/admin/managerHandbook");
+                            alert("Đã xoá thành công");
+                            window.location.reload();
                         },
                         error: function (e) {
                             alert('Đã có lỗi xảy ra !');
-                            window.location
-                                .replace(urlpath + "/admin/managerHandbook");
+                            window.location.reload();
                         }
                     });
                 });
@@ -276,10 +272,7 @@ $(document)
                                             cache: false,
                                             success: function (result) {
                                                 if (result) {
-
-
                                                     $('#modal').modal('toggle');
-
                                                     setTimeout(
                                                         function () {
                                                             window.location

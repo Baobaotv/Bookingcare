@@ -54,4 +54,24 @@ public class HandbookController {
 		return "admin/views/managerHandbook";
 	}
 
+	@GetMapping(value = {"/admin/managerUDeleteHandbook","/doctor/managerUDeleteHandbook"})
+	public String managerHandbookUDelkete( Model model,HttpSession session,
+										   @RequestParam(required = false,name = "page",defaultValue = "1") Integer page,
+								  			@ModelAttribute searchHandbookForm form) {
+		Pageable pageable = PageRequest.of(page - 1, 3);
+		List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
+		MyUser user = (MyUser) session.getAttribute("userDetails");
+		List<HandbookDto> lstHandbook;
+		if(user.getRoles().contains("ROLE_DOCTOR")) {
+			lstHandbook= handbookSeviceImpl.searchHandbookUDeleteAndPageable(form, user.getId(),pageable);
+		}else {
+			lstHandbook= handbookSeviceImpl.searchHandbookUDeleteAndPageable(form, null,pageable);
+		}
+		model.addAttribute("lstSpecialized", lstSpecialized);
+		model.addAttribute("lstHandbook",lstHandbook);
+		model.addAttribute("formSearch",form);
+		model.addAttribute("currentPage", page);
+		return "admin/views/managerHandbookUDelete";
+	}
+
 }

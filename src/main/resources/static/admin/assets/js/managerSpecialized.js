@@ -66,12 +66,12 @@ $(document)
                             if (stringDesctiption) {
                                 alert("done");
                                 event.preventDefault();
-                                var form = $('#uploadSpecialized')[0];
-                                var urlpath = window.location.origin;
-                                var data = new FormData(form);
+                                let form = $('#uploadSpecialized')[0];
+                                let urlPath = window.location.origin;
+                                let data = new FormData(form);
                                 $
                                     .ajax({
-                                        url: urlpath + "/admin/api/managerSpecialized/add",
+                                        url: urlPath + "/admin/api/managerSpecialized/add",
                                         type: "POST",
                                         enctype: 'multipart/form-data',
                                         data: data,
@@ -88,8 +88,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerSpecialized")
+                                                        window.location.reload()
                                                     }, 1500);
                                             }
                                         },
@@ -103,8 +102,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerSpecialized")
+                                                        window.location.reload()
                                                     }, 1500);
                                             } else {
                                                 alert('Đã có lỗi xảy ra !');
@@ -126,12 +124,12 @@ $(document)
                 function () {
                     $("input[name='checkOne']").not(this).prop('checked',
                         this.checked);
+                    countChecked();
                 });
 
             // checkAnyCheckBox
             var countChecked = function () {
                 count = $("input[name='checkOne']:checked").length
-                console.log(count);
                 if (count < 1) {
                     $("#btnDeleteSpecialized").prop("disabled", true);
                     $("#btnEditSpecialized").prop("disabled", true);
@@ -154,8 +152,8 @@ $(document)
                 function (event) {
                     event.preventDefault();
 
-                    var values = new Array();
-                    var values2 = new Array();
+                    let values = new Array();
+                    let values2 = new Array();
 
                     $.each($("input[name='checkOne']:checked")
                             .closest("td").siblings("td"),
@@ -167,7 +165,6 @@ $(document)
                         function () {
                             values2.push($(this).val());
                         });
-
 
                     $('#id').val($("input[name='checkOne']:checked").val());
                     $('#name').val(values[0]);
@@ -188,33 +185,32 @@ $(document)
                 });
 
 
-            $("#btnDeleteSpecialized").click(
+            $("#btnConfirmDelete").click(
                 function (event) {
-
                     event.preventDefault();
-                    var data = {};
-                    var urlpath = window.location.origin;
-                    var ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                    let data = {};
+                    let urlPath = window.location.origin + "/api/specicalized/uDelete";
+                    let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                         return $(this).val();
                     }).get();
                     data['ids'] = ids;
                     $.ajax({
-                        url: urlpath + "/admin/api/managerHandbok/delete",
+                        url: urlPath,
                         type: "post",
                         contentType: "application/json",
                         data: JSON.stringify(data),
                         cache: false,
                         success: function (result) {
-                            alert("oke lunn");
-                            window.location
-                                .replace(urlpath + "/admin/managerSpecialized");
-
-
+                            alert("Đã xoá thành công");
+                            window.location.reload();
                         },
                         error: function (e) {
-                            alert('Đã có lỗi xảy ra !');
-                            window.location
-                                .replace(urlpath + "/admin/managerSpecialized");
+                            if (!!e.responseText) {
+                                alert(e.responseText);
+                            } else {
+                                alert('Đã có lỗi xảy ra !');
+                            }
+                            window.location.reload();
                         }
                     });
                 });
@@ -229,12 +225,12 @@ $(document)
                             var stringDesctiption = $.trim(jQuery(descriptionHTML).text());
                             if (stringDesctiption) {
                                 event.preventDefault();
-                                var form = $('#uploadSpecialized')[0];
-                                var urlpath = window.location.origin;
-                                var data = new FormData(form);
+                                let form = $('#uploadSpecialized')[0];
+                                let urlPath = window.location.origin + '/api/specialized/update';
+                                let data = new FormData(form);
                                 $
                                     .ajax({
-                                        url: urlpath + "/admin/api/managerSpecialized/edit",
+                                        url: urlPath,
                                         type: "post",
                                         enctype: 'multipart/form-data',
                                         data: data,
@@ -243,14 +239,10 @@ $(document)
                                         cache: false,
                                         success: function (result) {
                                             if (result) {
-
-
                                                 $('#modal').modal('toggle');
-
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerSpecialized")
+                                                        window.location.reload()
                                                     }, 1000);
                                                 $('#ok').modal('show');
 
@@ -266,8 +258,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerSpecialized")
+                                                        window.location.reload()
                                                     }, 1500);
                                             } else {
                                                 alert('Đã có lỗi xảy ra !');
