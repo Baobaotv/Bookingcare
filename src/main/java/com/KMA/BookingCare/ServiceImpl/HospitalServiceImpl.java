@@ -6,9 +6,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Dto.*;
+import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
 import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Repository.CustomRepository.CustomHospitalRepository;
+import com.KMA.BookingCare.Repository.UserRepository;
+import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.document.HospitalDocument;
 import com.KMA.BookingCare.search.HospitalSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,12 @@ public class HospitalServiceImpl implements HospitalService{
 
 	@Autowired
 	private HospitalSearchRepository hospitalSearchRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private UserService userService;
 
 	@Override
 	public List<HospitalDto> findAll() {
@@ -160,8 +169,31 @@ public class HospitalServiceImpl implements HospitalService{
 	}
 
 	@Override
+	public boolean isExistItemRelationWithSpecialIsUsing(List<String> ids) {
+		Long totalUser = userRepository.existsByHospital(ids.stream().map(Long::parseLong).collect(Collectors.toList()));
+		return !Objects.equals(0L, totalUser);
+	}
+
+	@Override
+	public void updateByStatusAndIds(List<String> ids, Integer status) {
+		hospitalRepository.updateStatusByIds(ids.stream()
+						.map(Long::parseLong)
+						.collect(Collectors.toList()),
+				status);
+	}
+
+	@Override
+	public void deleteHospitals(List<String> ids) {
+		List<Long> hospitalIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+		List<UserEntity> userEntities = userRepository.findAllByHospitalIds(hospitalIds);
+		List<String> userIds = userEntities.stream().map(e -> String.valueOf(e.getId())).distinct().collect(Collectors.toList());
+		userService.deleteUser(userIds);
+		hospitalRepository.deleteAllById(hospitalIds);
+	}
+
+	@Override
 	public List<HospitalDto> findAllByStatus(Integer status, Pageable pageable) {
-		List<HospitalEntity> lstEntity = hospitalRepository.findAllByStatus(1,pageable);
+		List<HospitalEntity> lstEntity = hospitalRepository.findAllByStatus(status,pageable);
 		List<HospitalDto> lstDto = new ArrayList<>();
 		for(HospitalEntity entity: lstEntity) {
 			HospitalDto dto = HospitalMapper.convertToDto(entity);

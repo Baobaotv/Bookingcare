@@ -1,10 +1,9 @@
 package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Dto.HospitalDto;
-import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Repository.HospitalRepository;
-import com.KMA.BookingCare.ServiceImpl.HospitalServiceImpl;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.search.HospitalSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
@@ -15,11 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.KMA.BookingCare.Api.form.HospitalForm;
-import com.KMA.BookingCare.Api.form.formDelete;
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Service.HospitalService;
 
 import java.util.List;
@@ -91,7 +89,7 @@ public class HospitalApi {
 	public ResponseEntity<?> deleteAll(@RequestBody List<Long> ids){
 		log.info("Request to delete all by ids {}", ids);
 		hospitalRepository.deleteAllById(ids);
-		hospitalSearchRepository.deleteAllById(ids);
+//		hospitalSearchRepository.deleteAllById(ids);
 		return ResponseEntity.noContent().build();
 	}
 
@@ -127,16 +125,45 @@ public class HospitalApi {
 		return ResponseEntity.ok("true");
 	}
 
-	@PostMapping(value = "/admin/api/managerHospital/delete")
-	public ResponseEntity<?> deleteHospital(@RequestBody formDelete form) {
+	@PostMapping(value = "/api/hospital/delete")
+	public ResponseEntity<?> deleteHospital(@RequestBody DeleteForm form) {
 		try {
-			hospitalRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
-			hospitalSearchRepository.deleteAllById(form.getIds().stream().map(p -> Long.parseLong(p)).collect(Collectors.toList()));
+			hospitalServiceImpl.deleteHospitals(form.getIds());
+			return ResponseEntity.ok("true");
 		} catch (Exception e ) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
 		}
-		return ResponseEntity.ok("true");
+
+	}
+
+	@PostMapping(value = {"/api/hospital/uDelete"})
+	public ResponseEntity<?> uDeleteSpecialzed(@RequestBody DeleteForm form) {
+		log.info("Request to uDelete hospital with ids: {}",form.getIds());
+		boolean isExist = hospitalServiceImpl.isExistItemRelationWithSpecialIsUsing(form.getIds());
+		if (isExist) {
+			return ResponseEntity.badRequest().body("Không thể xoá do vẫn còn người dùng đang đuợc sử dụng");
+		}
+		try {
+			hospitalServiceImpl.updateByStatusAndIds(form.getIds(), Constant.del_flg_on);
+			return ResponseEntity.ok("true");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
+	}
+
+	@PostMapping(value = {"/api/hospital/restore"})
+	public ResponseEntity<?> restoreHandbook(@RequestBody DeleteForm form) {
+		log.info("Request to restore hospital with ids: {}",form.getIds());
+		try {
+			hospitalServiceImpl.updateByStatusAndIds(form.getIds(), Constant.del_flg_off);
+			return ResponseEntity.ok("true");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PostMapping(value = "/admin/api/managerHospital/edit")

@@ -28,8 +28,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE user  SET status = 0 WHERE id in :ids", nativeQuery = true)
-	Integer updateStatus(@Param("ids") List<String> ids);
+	@Query(value = "UPDATE user  SET status = :status WHERE id in :ids", nativeQuery = true)
+	Integer updateStatus(@Param("ids") List<String> ids, @Param("status") Integer status);
 	
 	List<UserEntity> findAllBySpecializedIdAndStatus(Long id, Integer status );
 
@@ -74,10 +74,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 
 		@Query(value = "SELECT u.description,u.id,u.email,u.full_name,u.img,u.location,u.phone_number,u.sex,u.username,"
 				+ "u.password,u.status,u.year_of_birth,u.hospital_id,u.specialized_id,u.short_description,u.peer_id, u.examination_price " +
-				" FROM user u ,user_role ur WHERE u.id= ur.user_id AND ur.role_id in (:roleIds) AND u.status =1 AND u.full_name   LIKE CONCAT('%',:fullName,'%')" +
+				" FROM user u ,user_role ur WHERE u.id= ur.user_id AND ur.role_id in (:roleIds) AND u.status = :status AND u.full_name   LIKE CONCAT('%',:fullName,'%')" +
 				" AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)" + 
 				" AND  ( (:hospitalId IS NOT NULL AND hospital_id =:hospitalId) || :hospitalId IS NULL)",nativeQuery = true)
-		List<UserEntity> searchHandbookAndPageable(@Param("fullName") String fullName,@Param("specializedId") Long specializedId,@Param("hospitalId") Long hospitalId,Pageable page, @Param("roleIds") List<Integer> roleIds);
+		List<UserEntity> searchHandbookAndPageable(@Param("fullName") String fullName,
+												   @Param("specializedId") Long specializedId,
+												   @Param("hospitalId") Long hospitalId,Pageable page,
+												   @Param("roleIds") List<Integer> roleIds,
+												   @Param("status") Integer status);
 
 
 	Boolean existsByUsername(String username);
@@ -116,4 +120,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 			" AND ( (0L != :specializedId AND u.specialized.id = :specializedId) OR (0L = :specializedId)) " +
 			" AND ( (0L != :hospitalId AND u.hospital.id = :hospitalId) OR (0L = :hospitalId))")
 	Page<User> searchDoctorAndPageable(@Param("fullName") String fullName,@Param("specializedId") Long specializedId,@Param("hospitalId") Long hospitalId,Pageable page);
+
+	@Query(value = "SELECT count(u) FROM UserEntity AS u WHERE u.specialized.id in (:ids) AND u.status = 1")
+	Long existsBySpecial(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT count(u) FROM UserEntity AS u WHERE u.hospital.id in (:ids) AND u.status = 1")
+	Long existsByHospital(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT u FROM UserEntity AS u WHERE u.specialized.id in (:ids)")
+	List<UserEntity> findAllBySpecializedIds(@Param("ids") List<Long> ids);
+
+	@Query("SELECT u FROM UserEntity AS u WHERE u.hospital.id in (:ids)")
+	List<UserEntity> findAllByHospitalIds(@Param("ids") List<Long> ids);
 }

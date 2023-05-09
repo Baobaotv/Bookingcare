@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.*;
+import com.KMA.BookingCare.Repository.CommentRepository;
 import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.document.HandbookDocument;
 import com.KMA.BookingCare.search.HandbookingSearchRepository;
@@ -51,6 +53,9 @@ public class HandbookServiceImpl implements HandbookService{
 
 	@Autowired
 	private HandbookingSearchRepository handbookingSearchRepository;
+
+	@Autowired
+	private CommentRepository commentRepository;
 
 	@Override
 	public void saveHandbook(HandbookForm form) throws ParseException {
@@ -109,9 +114,9 @@ public class HandbookServiceImpl implements HandbookService{
 	}
 
 	@Override
-	public void updateHandbookByStatus(List<String> ids) {
-		handbookRepository.updateByStatus(ids);
-		handbookingSearchRepository.deleteAllById(ids);
+	public void updateHandbookByStatus(List<String> ids, Integer status) {
+		handbookRepository.updateByStatus(ids, status);
+//		handbookingSearchRepository.deleteAllById(ids);
 	}
 
 	@Override
@@ -181,12 +186,33 @@ public class HandbookServiceImpl implements HandbookService{
 
 	@Override
 	public List<HandbookDto> searchHandbookAndPageable(searchHandbookForm form,Long userId, Pageable page) {
-
 		if(form.getTitle()==null||form.getTitle().equals("")) {
 			form.setTitle("");
 		}
-		List<HandbookEntity> lstEntities= handbookRepository.searchHandbookAndPageable(form.getTitle(),form.getSpecializedId(),userId,page);
-		List<HandbookDto> lstDto = new ArrayList<HandbookDto>();
+		List<HandbookEntity> lstEntities= handbookRepository.searchHandbookAndPageable(form.getTitle(),
+				form.getSpecializedId(),
+				userId,
+				Constant.del_flg_off,
+				page);
+		List<HandbookDto> lstDto = new ArrayList<>();
+		for(HandbookEntity entity: lstEntities) {
+			HandbookDto dto = HandbookMapper.covertToDto(entity);
+			lstDto.add(dto);
+		}
+		return lstDto;
+	}
+
+	@Override
+	public List<HandbookDto> searchHandbookUDeleteAndPageable(searchHandbookForm form, Long userId, Pageable page) {
+		if(form.getTitle()==null||form.getTitle().equals("")) {
+			form.setTitle("");
+		}
+		List<HandbookEntity> lstEntities= handbookRepository.searchHandbookAndPageable(form.getTitle(),
+				form.getSpecializedId(),
+				userId,
+				Constant.del_flg_on,
+				page);
+		List<HandbookDto> lstDto = new ArrayList<>();
 		for(HandbookEntity entity: lstEntities) {
 			HandbookDto dto = HandbookMapper.covertToDto(entity);
 			lstDto.add(dto);
@@ -240,6 +266,13 @@ public class HandbookServiceImpl implements HandbookService{
 						.tableName("HANDBOOK")
 						.build())
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void deleteHandbook(DeleteForm form) {
+		List<Long> ids = form.getIds().stream().map(Long::parseLong).collect(Collectors.toList());
+		commentRepository.deleteAllByHandbookIds(ids);
+		handbookRepository.deleteAllById(ids);
 	}
 
 	private HandbookDocument convertToDocument(HandbookEntity entity) {

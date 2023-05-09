@@ -1,6 +1,6 @@
 package com.KMA.BookingCare.Api;
 
-import com.KMA.BookingCare.Dto.HandbookDto;
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Repository.SpecializedRepository;
 import com.KMA.BookingCare.common.Constant;
@@ -14,16 +14,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.KMA.BookingCare.Api.form.HospitalForm;
 import com.KMA.BookingCare.Api.form.SpecializedForm;
-import com.KMA.BookingCare.Api.form.formDelete;
-import com.KMA.BookingCare.Service.HospitalService;
 import com.KMA.BookingCare.Service.SpecializedService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -53,8 +50,7 @@ public class SpecialzedApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	@Hidden
-	@PutMapping(value = "/api/specialized")
+	@PostMapping(value = "/specialized/update")
 	public ResponseEntity<?> editHospital(@ModelAttribute SpecializedForm form) {
 		log.info("Request to update specialed");
 		try {
@@ -91,13 +87,37 @@ public class SpecialzedApi {
 		return  ResponseEntity.noContent().build();
 	}
 
-	@Hidden
-	@DeleteMapping(value = "/specicalized/delete")
-	public ResponseEntity<?> deletes(@RequestBody List<Long> ids){
-		log.info("Request to deletes by ids {}", ids);
-		specializedRepository.deleteAllById(ids);
-		specializedRepository.deleteAllById(ids);
+	@PostMapping(value = "/specicalized/delete")
+	public ResponseEntity<?> deletes(@RequestBody DeleteForm form){
+		log.info("Request to deletes by ids {}", form.getIds());
+		specializedServiceImpl.delete(form.getIds());
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping(value = {"/specicalized/restore"})
+	public ResponseEntity<?> restoreHandbook(@RequestBody DeleteForm form) {
+		try {
+			specializedServiceImpl.updateByStatusAndIds(form.getIds(), Constant.del_flg_off);
+			return ResponseEntity.ok("true");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
+	}
+
+	@PostMapping(value = {"/specicalized/uDelete"})
+	public ResponseEntity<?> uDeleteSpecialzed(@RequestBody DeleteForm form) {
+		boolean isExist = specializedServiceImpl.isExistItemRelationWithSpecialIsUsing(form.getIds());
+		if (isExist) {
+			return ResponseEntity.badRequest().body("Không thể xoá do vẫn còn bài viết hoặc người dùng đang đuợc sử dụng");
+		}
+		try {
+			specializedServiceImpl.updateByStatusAndIds(form.getIds(), Constant.del_flg_on);
+			return ResponseEntity.ok("true");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@GetMapping(value = "/specicalized/get-featured-specialty")

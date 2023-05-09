@@ -25,7 +25,7 @@ public interface UserService {
 	public void saveDoctor(UserForm form) throws IllegalStateException, IOException;
 	public List<User> findAll();
 	public List<User> findAllByStatus(Integer status,Pageable pageable);
-	public void updateUserByStatus(List<String> ids);
+	public void updateUserByStatus(List<String> ids, Integer status);
 	public List<User> findAllBySpecializedIdAndStatus(Long id, Integer status);
 	List<User> findAllBySpecialized( String date, Long specialized, Integer status);
 	List<User> findAllByMedical( String date, Long specialized, Integer status);
@@ -37,7 +37,7 @@ public interface UserService {
 	List<User> findAllDoctor();
 	List<User> searchDoctor( searchDoctorForm form);
 
-	List<User> searchDoctorAndPageable( searchDoctorForm form, String roleUser, Pageable page);
+	List<User> searchDoctorAndPageable( searchDoctorForm form, String roleUser, Pageable page, Integer status);
 
 	Page<User> findAllDoctor(Pageable pageable);
 	
@@ -60,4 +60,8 @@ public interface UserService {
 	List<SearchFullTextDto> searchAllByFullText(String query);
 
 	Page<User> searchDoctorForClient(Long hospitalId, Long specialtyId, String doctorName, Pageable pageable);
+
+	boolean isExistItemRelationWithSpecialIsUsing(List<String> ids);
+
+	void deleteUser(List<String> ids);
 }

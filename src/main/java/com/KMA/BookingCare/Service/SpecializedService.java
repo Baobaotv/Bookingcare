@@ -22,4 +22,10 @@ public interface SpecializedService {
 	SpecializedDto findOneById(Long id);
 
 	List<SearchFullTextDto> searchAllByFullText(String query);
+
+	void updateByStatusAndIds(List<String> ids, Integer status);
+
+	boolean isExistItemRelationWithSpecialIsUsing(List<String> ids);
+
+	void delete(List<String> ids);
 }

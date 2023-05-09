@@ -5,11 +5,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Manager Specialized</title>
+    <title>Quản lý chuyên khoa đã xoá</title>
 </head>
 <body>
 <section class="row" layout:fragment="content">
-    <div class="card-group"><h5> Danh sách chuyên khoa</h5></div>
+    <div class="card-group"><h5> Danh sách chuyên khoa đã xoá</h5></div>
     <div class="container-fluid">
         <div class="card shadow mb-4">
             <div class="card-header py-4 d-flex flex-row-reverse">
@@ -17,28 +17,39 @@
                       id="uploadSpecialized">
 
                     <button type="button" style="width: 60px;" class="btn btn-primary"
-                            data-toggle="modal" data-target="#exampleModal" id="btnAddSpecialized">
-							<span> <i class="fa fa-plus-circle bigger-110 purple"></i>
+                            title="Khôi phục chuyên khoatế "
+                            data-toggle="modal" data-target="#dialogConfirmRestore" id="btnRestoreSpecialized">
+							<span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-reply-fill" viewBox="0 0 16 16">
+                                      <path d="M5.921 11.9 1.353 8.62a.719.719 0 0 1 0-1.238L5.921 4.1A.716.716 0 0 1 7 4.719V6c1.5 0 6 0 7 8-2.5-4.5-7-4-7-4v1.281c0 .56-.606.898-1.079.62z"/>
+                                    </svg>
+							    </span>
 							</span>
                     </button>
 
                     <button style="width: 60px;" id="btnEditSpecialized" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
                             data-toggle="modal" data-target="#exampleModal"
-                            title='Sửa sản phẩm'>
-							<span> <i class="far fa-edit"></i>
+                            title='Chi tiết chuyên khoa'>
+							<span>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-info-circle" viewBox="0 0 16 16">
+                                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                      <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                    </svg>
+							    </span>
 							</span>
                     </button>
                     <button style="width: 60px;" id="btnDeleteSpecialized" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                            data-toggle="modal" title='Xóa sản phẩm'
+                            data-toggle="modal" title='Xóa vĩnh viễn'
                             data-target="#dialogConfirmDelete">
 							<span> <i class="far fa-trash-alt"></i>
 							</span>
                     </button>
-
-
-                    <!-- Modal -->
 
                     <div class="modal fade" id="exampleModal" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -59,10 +70,12 @@
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Tên chuyên
-                                                                        khoa</label> <input
-                                                                        type="text" class="form-control"
-                                                                        placeholder="Tên bệnh viện" name="name"
-                                                                        id="name">
+                                                                        khoa</label> <input readonly
+                                                                                            type="text"
+                                                                                            class="form-control"
+                                                                                            placeholder="Tên bệnh viện"
+                                                                                            name="name"
+                                                                                            id="name">
                                                                     <input name="id" type="hidden"
                                                                            id="id">
                                                                 </div>
@@ -70,39 +83,36 @@
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Ảnh đại diện</label>
-                                                                    <input
-                                                                            type="file" class="form-control"
-                                                                            placeholder="" name="img"
-                                                                            id="img">
+                                                                    <div class="col-12 col-lg-6 col-md-6">
+                                                                        <img src="" class="form-control" id="img"/>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Mã chuyên
-                                                                        ngành</label> <input
-                                                                        type="text" class="form-control"
-                                                                        placeholder="Địa chỉ" name="code"
-                                                                        id="code">
+                                                                        ngành</label> <input readonly
+                                                                                             type="text"
+                                                                                             class="form-control"
+                                                                                             placeholder="Địa chỉ"
+                                                                                             name="code"
+                                                                                             id="code">
 
                                                                 </div>
                                                             </div>
-
-
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Mô tả ngắn</label>
-                                                                    <textarea
-                                                                            type="text" class="form-control"
-                                                                            placeholder="Mô tả ngắn" name="description"
-                                                                            id="description"></textarea>
+                                                                    <div readonly
+                                                                         type="text" class="form-control"
+                                                                         placeholder="Mô tả ngắn"
+                                                                         name="description"
+                                                                         id="description"></div>
                                                                 </div>
                                                             </div>
 
-
                                                             <input name="imgOld" type="hidden"
                                                                    id="imgOld">
-
-
                                                         </div>
 
                                                     </div>
@@ -116,21 +126,12 @@
                                     <button type="button" class="btn btn-secondary"
                                             data-dismiss="modal">Close
                                     </button>
-
-
-                                    <button type="button" id="addSpecialized" class="btn btn-primary">Thêm
-                                        bài viết
-                                    </button>
-                                    <button type="button" id="editSpecialized" class="btn btn-primary">Cập
-                                        nhập thông tin
-                                    </button>
                                 </div>
 
                             </div>
                         </div>
 
                     </div>
-
 
                 </form>
             </div>
@@ -215,6 +216,7 @@
 
         </div>
     </div>
+
     <div class="modal fade" id="dialogConfirmDelete" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -223,18 +225,40 @@
                     <h4 class="modal-title">Thông báo</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Bạn chắc chắn muốn xoá chứ</p>
+                    <p>Bạn chắc chắn muốn xoá VĨNH VIỄN bài viết này chứ</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal">Xoá</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal">Xoá
+                    </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <div class="modal fade" id="dialogConfirmRestore" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông báo</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn chắc chắn muốn KHÔI PHỤC bài viết này chứ</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnConfirmRestore" data-dismiss="modal">Khôi phục
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </section>
-<script layout:fragment="js" th:src="@{/admin/assets/js/managerSpecialized.js}"></script>
+<script layout:fragment="js" th:src="@{/admin/assets/js/managerSpecializedUDelete.js}"></script>
 
 </body>
 

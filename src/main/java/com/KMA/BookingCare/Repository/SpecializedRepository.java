@@ -11,8 +11,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Entity.SpecializedEntity;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SpecializedRepository extends JpaRepository<SpecializedEntity, Long>, CustomSpecialtyRepository {
 	SpecializedEntity findOneById(Long Id);
@@ -31,4 +33,9 @@ public interface SpecializedRepository extends JpaRepository<SpecializedEntity, 
 			"FROM bookingCare.specialized " +
 			"WHERE status = 1 AND MATCH(name, description) AGAINST (:query)", nativeQuery = true)
 	List<SpecializedEntity> searchAllByFullText(@Param("query") String query);
+
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE specialized  SET status = :status WHERE id in :ids", nativeQuery = true)
+	void updateByStatusAndIds(@Param("status") Integer status, @Param("ids") List<Long> ids);
 }

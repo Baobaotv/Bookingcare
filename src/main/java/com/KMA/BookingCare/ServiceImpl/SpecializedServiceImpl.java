@@ -4,12 +4,18 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Dto.*;
+import com.KMA.BookingCare.Entity.HandbookEntity;
+import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Mapper.UserMapper;
+import com.KMA.BookingCare.Repository.*;
+import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.document.SpecializedDocument;
 import com.KMA.BookingCare.search.SpecializedSearchRepository;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +27,12 @@ import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Entity.SpecializedEntity;
 import com.KMA.BookingCare.Mapper.HospitalMapper;
 import com.KMA.BookingCare.Mapper.SpecializedMapper;
-import com.KMA.BookingCare.Repository.HospitalRepository;
-import com.KMA.BookingCare.Repository.SpecializedRepository;
 import com.KMA.BookingCare.Service.HospitalService;
 import com.KMA.BookingCare.Service.SpecializedService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import org.springframework.util.CollectionUtils;
+
 @Service
 public class SpecializedServiceImpl implements SpecializedService{
 	
@@ -38,6 +44,19 @@ public class SpecializedServiceImpl implements SpecializedService{
 
 	@Autowired
 	private SpecializedSearchRepository specializedSearchRepository;
+
+	@Autowired
+	private HandbookRepository handbookRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private CommentRepository commentRepository;
+
+	@Autowired
+	private UserService userService;
+
 
 	@Override
 	public List<SpecializedDto> findAll() {
@@ -52,8 +71,8 @@ public class SpecializedServiceImpl implements SpecializedService{
 
 	@Override
 	public List<SpecializedDto> findAllByStatus(Integer status, Pageable pageable) {
-		List<SpecializedEntity> lstEntity = specializedRepository.findAllByStatus(1,pageable);
-		List<SpecializedDto> lstDto = new ArrayList<SpecializedDto>();
+		List<SpecializedEntity> lstEntity = specializedRepository.findAllByStatus(status,pageable);
+		List<SpecializedDto> lstDto = new ArrayList<>();
 		for(SpecializedEntity entity: lstEntity) {
 			SpecializedDto dto = SpecializedMapper.convertToDto(entity);
 			lstDto.add(dto);
@@ -75,7 +94,7 @@ public class SpecializedServiceImpl implements SpecializedService{
 		SpecializedEntity entity= new SpecializedEntity();
 		if(form.getId()!=null) {
 			entity.setId(form.getId());
-			if(form.getImg().getOriginalFilename()==null||form.getImg().getOriginalFilename().equals("")) {
+			if(Strings.isBlank(form.getImg().getOriginalFilename())) {
 				entity.setImg(form.getImgOld());
 			}else {
 				try {
@@ -104,7 +123,7 @@ public class SpecializedServiceImpl implements SpecializedService{
 		entity.setStatus(1);
 		entity = specializedRepository.save(entity);
 		SpecializedDocument document = SpecializedMapper.convertToDocument(entity);
-		specializedSearchRepository.save(document);
+//		specializedSearchRepository.save(document);
 	}
 
 	@Override
@@ -144,6 +163,38 @@ public class SpecializedServiceImpl implements SpecializedService{
 						.tableName("SPECIALZED")
 						.build())
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void updateByStatusAndIds(List<String> ids, Integer status) {
+		specializedRepository.updateByStatusAndIds(status, ids.stream()
+				.map(Long::parseLong)
+				.collect(Collectors.toList()));
+	}
+
+	@Override
+	public boolean isExistItemRelationWithSpecialIsUsing(List<String> ids) {
+		List<Long> specialziedIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+		Long totalHandBook = handbookRepository.existsBySpecial(specialziedIds);
+		Long totalUser = userRepository.existsBySpecial(specialziedIds);
+		return (!Objects.equals(0L, totalUser) || !Objects.equals(0L, totalHandBook));
+	}
+
+	@Override
+	public void delete(List<String> ids) {
+		List<Long> specialedIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+		List<Long> handbookIds = handbookRepository.findAllBySpecializedIds(specialedIds)
+				.stream()
+				.map(HandbookDto::getId)
+				.collect(Collectors.toList());
+		if (!CollectionUtils.isEmpty(handbookIds)) {
+			commentRepository.deleteAllByHandbookIds(handbookIds);
+		}
+		handbookRepository.deleteAllBySpecialized(specialedIds);
+		List<UserEntity> userEntities = userRepository.findAllBySpecializedIds(specialedIds);
+		List<String> userIds = userEntities.stream().map(e -> String.valueOf(e.getId())).collect(Collectors.toList());
+		userService.deleteUser(userIds);
+		specializedRepository.deleteAllById(specialedIds);
 	}
 
 

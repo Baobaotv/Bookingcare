@@ -76,75 +76,37 @@ $(document)
             });
             var count = 0;
 
-            $("#addUser")
+            $("#btnConfirmRestore")
                 .click(
-                    function () {
-
-                        if ($("#uploadUser").valid()) {
-                            event.preventDefault();
-
-                            // Get form
-                            var form = $('#uploadUser')[0];
-                            var urlLocation = window.location.origin;
-                            var urlpath = urlLocation.substring(0, urlLocation.indexOf('?') != -1 ? urlLocation.indexOf('?') : urlLocation.length);
-                            var data = new FormData(form);
-                            $
-                                .ajax({
-                                    url: urlpath
-                                        + "/admin/api/managerUser/add",
-                                    type: "POST",
-                                    enctype: 'multipart/form-data',
-                                    data: data,
-                                    processData: false,
-                                    contentType: false,
-                                    cache: false,
-                                    success: function (
-                                        result) {
-                                        if (result) {
-                                            success: $(
-                                                '#modal')
-                                                .modal(
-                                                    'hide');
-
-                                            complete: $(
-                                                '#ok')
-                                                .modal(
-                                                    'show');
-
-                                            setTimeout(
-                                                function () {
-                                                    window.location
-                                                        .replace(urlpath
-                                                            + "/admin/managerUser")
-                                                }, 1500);
-                                        }
-                                    },
-                                    error: function (e) {
-                                        if (e.status) {
-                                            success: $(
-                                                '#modal')
-                                                .modal(
-                                                    'hide');
-
-                                            complete: $(
-                                                '#ok')
-                                                .modal(
-                                                    'show');
-
-                                            setTimeout(
-                                                function () {
-                                                    window.location
-                                                        .replace(urlpath
-                                                            + "/admin/managerUser")
-                                                }, 1500);
-                                        } else {
-                                            alert('Đã có lỗi xảy ra !');
-                                        }
-                                    }
-                                });
-                        } else {
-                            alert('Bạn cần điền lại thông tin')
-                        }
+                    function (event) {
+                        event.preventDefault();
+                        let data = {};
+                        let urlPath = window.location.origin + '/api/user/restore';
+                        let ids = $(
+                            'tbody input[name="checkOne"]:checked')
+                            .map(function () {
+                                return $(this).val();
+                            }).get();
+                        data['ids'] = ids;
+                        $.ajax({
+                            url: urlPath,
+                            type: "post",
+                            contentType: "application/json",
+                            data: JSON.stringify(data),
+                            cache: false,
+                            success: function (result) {
+                                alert("Đã khôi phục thành công");
+                                window.location.reload();
+                            },
+                            error: function (e) {
+                                if (!!e.responseText) {
+                                    alert(e.responseText);
+                                } else {
+                                    alert('Đã có lỗi xảy ra !');
+                                }
+                                window.location.reload();
+                            }
+                        });
                     });
             $('#uploadUser')
                 .validate(
@@ -251,23 +213,22 @@ $(document)
                 function () {
                     $("input[name='checkOne']").not(this).prop(
                         'checked', this.checked);
+                    countChecked();
                 });
+
             $("#roleName").change(function () {
                 var value = $("#roleName").val();
                 if (value != "ROLE_DOCTOR") {
-                    // alert("hi");
                     $("#hospitalId").hide();
                     $(".checkWorkTime").hide();
                     $("#specializedId").hide();
                     if (value == "ROLE_USER") {
-                        // $('#description').hide();
                         $('#img').hide();
                     }
                 } else {
                     $("#hospitalId").show();
                     $(".checkWorkTime").show();
                     $("#specializedId").show();
-                    // $('#description').show();
                     $('#img').show();
                 }
 
@@ -276,110 +237,61 @@ $(document)
             // checkAnyCheckBox
             var countChecked = function () {
                 count = $("input[name='checkOne']:checked").length
-                console.log(count);
                 if (count < 1) {
-                    $("#btnAddUser").prop("disabled", false);
+                    $("#btnRestore").prop("disabled", true);
                     $("#btnDelete").prop("disabled", true);
-                    $("#btnEdit").prop("disabled", true);
+                    $("#btnDetailUser").prop("disabled", true);
                 } else {
-                    $("#btnAddUser").prop("disabled", true);
+                    $("#btnRestore").prop("disabled", false);
                     $("#btnDelete").prop("disabled", false);
                     if (count == 1) {
-                        $("#btnEdit").prop("disabled", false);
+                        $("#btnDetailUser").prop("disabled", false);
                     } else {
-                        $("#btnEdit").prop("disabled", true);
+                        $("#btnDetailUser").prop("disabled", true);
                     }
                 }
             };
 
-            var checkUsername = function () {
-                $("#username").on("input", function (e) {
-                    $('#msg').hide();
-                    if ($('#username').val() == null || $('#username').val() == "") {
-                        $('#msg').show();
-                        $("#msg").html("Username is a required field.").css("color", "red");
-                        $('#addUser').hide();
-                    } else {
-                        $.ajax({
-                            type: 'post',
-                            url: "/user",
-                            data: JSON.stringify({username: $('#username').val()}),
-                            contentType: 'application/json; charset=utf-8',
-                            cache: false,
-                            beforeSend: function (f) {
-                                $('#msg').show();
-                                $('#msg').html('Checking...');
-                            },
-                            statusCode: {
-                                500: function (xhr) {
-                                    $('#msg').show();
-                                    $("#msg").html("Username available").css("color", "green");
-                                    $('#addUser').show();
-                                }
-                            },
-                            success: function (msg) {
-                                $('#msg').show();
-                                if (msg !== null || msg !== "") {
-                                    $("#msg").html("Username already taken").css("color", "red");
-                                    $('#addUser').hide();
-                                } else {
-                                    $("#msg").html("Username available").css("color", "green");
-                                    $('#addUser').show();
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                                $('#msg').show();
-                                $("#msg").html(textStatus + " " + errorThrown).css("color", "red");
-                            }
-                        });
-                    }
-                });
-            }
             countChecked();
-
             $("input[type=checkbox]").on("click", countChecked);
 
             // editProduct
-            $("#btnEdit").click(
+            $("#btnDetailUser").click(
                 function (event) {
                     event.preventDefault();
 
-                    var values = new Array();
+                    let values = new Array();
+                    let values2 = new Array();
 
                     $.each($("input[name='checkOne']:checked")
                             .closest("td").siblings("td"),
                         function () {
                             values.push($(this).text());
                         });
+                    $.each($("input[name='checkOne']:checked")
+                            .closest("td").siblings("input"),
+                        function () {
+                            values2.push($(this).val());
+                        });
                     console.log(values);
-                    $('#id').val(values[0]);
-                    $('#categoryId').val(values[1]).change();
-                    $('#sizeId').val(values[2]).change();
-                    $('#nameProduct').val(values[3]);
-
-                    $('#codeProduct').val(values[4]);
-                    $('#image').val(values[5]);
-                    $('#price').val(values[6]);
-                    $('#amount').val(values[7]);
-                    $('#memo').val(values[8]);
-
-                    $("#addProduct").css("display", "none");
-                    $("#editProduct").css("display", "block");
+                    $('#fullname').val(values[0]);
+                    $('#username').val(values[1]);
+                    $('#showImage').attr("src", values2[2]);
+                    $('#phoneNumber').val(values[3]);
+                    $('#location').val(values[4]);
+                    $('#specializedId').val(values[5]).change();
+                    $('#yearOfBirth').val(values[6]);
+                    $('#email').val(values[7]);
+                    $('#shortDescription').html(values2[0]);
+                    $('#description').html(values2[1]);
+                    $('#hospitalId').val(values2[3]).change();
                 });
-
-            $("#btnAddUser").click(function (event) {
-                event.preventDefault();
-                $("#addUser").css("display", "block");
-                $("#editUser").css("display", "none");
-                checkUsername();
-
-            });
 
             $("#btnConfirmDelete").click(
                 function (event) {
                     event.preventDefault();
                     let data = {};
-                    let urlPath = window.location.origin + '/api/user/uDelete';
+                    let urlPath = window.location.origin + '/api/user/delete';
                     let ids = $(
                         'tbody input[name="checkOne"]:checked')
                         .map(function () {

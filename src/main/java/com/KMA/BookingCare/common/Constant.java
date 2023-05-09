@@ -58,4 +58,8 @@ public class Constant {
     public static final String group_by_month = "MONTH";
     public static final String group_by_year = "YEAR";
 
+    public static final Integer del_flg_off = 1;
+
+    public static final Integer del_flg_on = 0;
+
 }
