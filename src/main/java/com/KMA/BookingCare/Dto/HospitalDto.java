@@ -1,7 +1,12 @@
 package com.KMA.BookingCare.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
 import javax.persistence.Column;
 
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class HospitalDto {
 	
 	private Long id;
@@ -12,6 +17,8 @@ public class HospitalDto {
 	private Double longitude;
 
 	private Double latitude;
+
+	private Double distance;
 
 	public Double getLongitude() {
 		return longitude;

@@ -12,25 +12,6 @@ $(document)
                     }
                 })
             })();
-//					 (function () {
-//					       contentEditor = new FroalaEditor('#content', {
-//					        events: {
-//					          'image.beforeUpload': function (files) {
-//					            const editor = this
-//					            if (files.length) {
-//					              var reader = new FileReader()
-//					              reader.onload = function (e) {
-//					                var result = e.target.result
-//					                editor.image.insert(result, null, null, editor.image.get())
-//					              }
-//					              reader.readAsDataURL(files[0])
-//					            }
-//					            return false
-//					          },
-////					          contentEditor.image.display ( 'inline' );
-//					        }
-//					      })
-//					    })()
             (function () {
                 var curentPage = parseInt($('#curentPage').val());
 
@@ -81,8 +62,8 @@ $(document)
                     function () {
 
                         if ($("#uploadHospital").valid()) {
-                            var descriptionHTML = descriptionEdittor.html.get();
-                            var stringDesctiption = $.trim(jQuery(descriptionHTML).text());
+                            let descriptionHTML = descriptionEdittor.html.get();
+                            let stringDesctiption = $.trim(jQuery(descriptionHTML).text());
                             if (stringDesctiption) {
                                 event.preventDefault();
                                 var form = $('#uploadHospital')[0];
@@ -198,8 +179,10 @@ $(document)
                     $('#latitude').val(values[5]);
                     $("#addHospital").css("display", "none");
                     $("#editHospital").css("display", "block");
-                    valueViDo = Number(values[5]);
-                    valueKinhDo = Number(values[6]);
+                    console.log("kinh do:", values[5]);
+                    console.log("vi do:", values[6]);
+                    valueKinhDo = Number(values[5]);
+                    valueViDo = Number(values[6]);
                     initMap();
 
                 });

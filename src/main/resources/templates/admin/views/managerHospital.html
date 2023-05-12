@@ -6,6 +6,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Manager Hospital</title>
+    <script src="https://maps.googleapis.com/maps/api/js?client=gme-mitsuifudosanrealty&libraries=places&language=vi&region=VI&callback=initMap"
+            async defer></script>
+<!--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiWTUhadVM3ztGv8imTd9LeMBze7FS8Mk&libraries=places&language=vi&region=VI&callback=initMap"-->
+<!--            async defer></script>-->
+    <style>
+        .pac-container {
+            z-index: 10000 !important;
+        }
+    </style>
 </head>
 <body>
 <section class="row" layout:fragment="content">
@@ -39,7 +48,7 @@
                     <!-- Modal -->
 
                     <div class="modal fade" id="exampleModal" tabindex="-1"
-                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                         aria-labelledby="exampleModalLabel" role="dialog">
                         <div class="modal-dialog modal-xl" role="document">
                             <div class="modal-content">
 
@@ -91,20 +100,37 @@
                                                                     <br>
                                                                     <div id="map" class="form-control"
                                                                          style="min-height: 300px;"></div>
-                                                                    <label for="longitude">Kinh độ</label>
-                                                                    <input type="number" id="longitude" name="longitude"
-                                                                           class="form-control"
-                                                                           placeholder="x.xxx"/>
-                                                                    <label for="latitude">Vĩ độ</label>
-                                                                    <input type="number" id="latitude" name="latitude"
-                                                                           class="form-control"
-                                                                           placeholder="x.xxx"/>
+                                                                    </br>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 col-12">
+                                                                            <div class="form-group">
+                                                                                <label for="longitude">Kinh độ</label>
+                                                                                <input type="number" id="longitude" name="longitude"
+                                                                                       class="form-control "
+                                                                                       placeholder="x.xxx"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-12">
+                                                                            <div class="form-group">
+                                                                                <label for="latitude">Vĩ độ</label>
+                                                                                <input type="number" id="latitude" name="latitude"
+                                                                                       class="form-control "
+                                                                                       placeholder="x.xxx"/>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    </br>
+<!--                                                                    <label for="latitude">Gợi ý địa chỉ</label>-->
+<!--                                                                    <input type="text" id="suggestLocation" name="latitude"-->
+<!--                                                                           class="form-control "-->
+<!--                                                                           placeholder=""/>-->
+
                                                                     <button id="btnSearchLocation"
-                                                                            class="form-control">Tìm kiếm vị trí
+                                                                            class="btn btn-primary" >Tìm kiếm vị trí
                                                                     </button>
                                                                 </div>
                                                             </div>
-
 
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
@@ -115,12 +141,8 @@
                                                                             id="description"></textarea>
                                                                 </div>
                                                             </div>
-
-
                                                             <input name="imgOld" type="hidden"
                                                                    id="imgOld">
-
-
                                                         </div>
 
                                                     </div>
