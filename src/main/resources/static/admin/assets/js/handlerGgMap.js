@@ -36,6 +36,7 @@ function initMap() {
                         "</div>"
                     );
                     infowindow.open(map, marker);
+                    $("#location").val(results[0].formatted_address);
                 } else {
                     console.log("No results found");
                 }
@@ -45,9 +46,51 @@ function initMap() {
         });
     });
 
+    let input = document.getElementById("location");
+    const options = {
+        fields: ["formatted_address", "geometry", "name"],
+        strictBounds: false,
+        types: ["establishment"],
+    };
+    let autocomplete = new google.maps.places.Autocomplete(input, options);
+    // Bind the map's bounds (viewport) property to the autocomplete object,
+    // so that the autocomplete requests use the current map bounds for the
+    // bounds option in the request.
+    autocomplete.bindTo("bounds", map);
+
+    autocomplete.addListener("place_changed", () => {
+        infowindow.close();
+        marker.setVisible(false);
+
+        const place = autocomplete.getPlace();
+
+        if (!place.geometry || !place.geometry.location) {
+            // User entered the name of a Place that was not suggested and
+            // pressed the Enter key, or the Place Details request failed.
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+        }
+
+        // If the place has a geometry, then present it on a map.
+        if (place.geometry.viewport) {
+            map.fitBounds(place.geometry.viewport);
+        } else {
+            map.setCenter(place.geometry.location);
+            map.setZoom(15);
+        }
+
+        marker.setPosition(place.geometry.location);
+        setDataLocation(place.geometry.location)
+        marker.setVisible(true);
+        infowindowContent.children["place-name"].textContent = place.name;
+        infowindowContent.children["place-address"].textContent =
+            place.formatted_address;
+        infowindow.open(map, marker);
+    });
+
     function setDataLocation(location) {
-        kinhDo.value = location.lat();
-        viDo.value = location.lng();
+        viDo.value = location.lat();
+        kinhDo.value = location.lng();
         marker.setPosition(location);
     }
 }

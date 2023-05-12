@@ -33,4 +33,6 @@ public interface HospitalService {
 	void updateByStatusAndIds(List<String> ids, Integer status);
 
 	void deleteHospitals(List<String> ids);
+
+	List<HospitalDto> getNearbyHospital(Double lat, Double lng);
 }

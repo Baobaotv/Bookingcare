@@ -12,6 +12,7 @@ import com.KMA.BookingCare.Mapper.UserMapper;
 import com.KMA.BookingCare.Repository.CustomRepository.CustomHospitalRepository;
 import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Service.UserService;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.document.HospitalDocument;
 import com.KMA.BookingCare.search.HospitalSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,8 +103,8 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setName(form.getName());
 		entity.setLocation(form.getLocation());
 		entity.setDescription(form.getDescription());
-		entity.setLatitude(form.getLongitude());
-		entity.setLongitude(form.getLatitude());
+		entity.setLatitude(form.getLatitude());
+		entity.setLongitude(form.getLongitude());
 		entity.setStatus(1);
 		entity = hospitalRepository.save(entity);
 		HospitalDocument document = HospitalMapper.convertToDocument(entity);
@@ -192,6 +193,20 @@ public class HospitalServiceImpl implements HospitalService{
 	}
 
 	@Override
+	public List<HospitalDto> getNearbyHospital(Double lat, Double lng) {
+		Page<HospitalDto> page = hospitalRepository.findAllByStatusApi(Constant.del_flg_off, Pageable.ofSize(Integer.MAX_VALUE));
+		List<HospitalDto> hospitalDtos = page.getContent();
+		for(HospitalDto dto : hospitalDtos) {
+			Double distance = getDistance(lat, lng,dto.getLongitude(), dto.getLatitude());
+			dto.setDistance(distance);
+		}
+		return hospitalDtos.stream()
+				.sorted(Comparator.comparing(HospitalDto::getDistance))
+				.limit(5)
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public List<HospitalDto> findAllByStatus(Integer status, Pageable pageable) {
 		List<HospitalEntity> lstEntity = hospitalRepository.findAllByStatus(status,pageable);
 		List<HospitalDto> lstDto = new ArrayList<>();
@@ -207,5 +222,20 @@ public class HospitalServiceImpl implements HospitalService{
 		Page<HospitalDto> page = hospitalRepository.findAllByStatusApi(1,pageable);
 		return page;
 	}
+
+	private Double getDistance(double latParam, double lngParam, Double lng, Double lat) {
+
+		lng = lng == null ? 0.0 : lng;
+		lat = lat == null ? 0.0 : lat;
+
+		final double PI = 3.141592;
+		double degree = PI / 180;
+
+		double distance = Math.pow((lngParam * degree - lng * degree) *
+				Math.cos(((latParam * 3600 + lat * 3600) / 2 / 3600) * degree), 2)
+				+ Math.pow(latParam * degree - lat * degree, 2) ;
+		return distance;
+	}
+
 
 }
