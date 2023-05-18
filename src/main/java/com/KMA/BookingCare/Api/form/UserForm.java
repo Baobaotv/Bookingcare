@@ -2,8 +2,12 @@ package com.KMA.BookingCare.Api.form;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserForm {
 	private String fullname;
 	private String username;
@@ -22,6 +26,8 @@ public class UserForm {
 	private String roleName;
 	private Long Id;
 	private String email;
+
+	private Long examinationPrice;
 	
 	public String getShortDescription() {
 		return shortDescription;

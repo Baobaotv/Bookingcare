@@ -171,7 +171,8 @@ public class UserServiceImpl implements UserService {
             entity.setPassword(passwordEncoder.encode(form.getPassword()));
             entity.setUsername(form.getUsername());
             entity.setStatus(1);
-            Set<RoleEntity> role = new HashSet<RoleEntity>(roleRepository.findByName(form.getRoleName()));
+            entity.setExaminationPrice(form.getExaminationPrice());
+            Set<RoleEntity> role = new HashSet<>(roleRepository.findByName(form.getRoleName()));
             entity.setRoles(role);
             try {
                 Map result = cloudinary.uploader().upload(form.getImg().getBytes(),

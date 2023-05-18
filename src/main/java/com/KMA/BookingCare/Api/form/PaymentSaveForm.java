@@ -55,6 +55,9 @@ public class PaymentSaveForm {
 
     private Long medicalId;
 
+    private String paymentReturnUrl;
+
+
     public String getVnpOrderInfo() {
         return vnpOrderInfo;
     }

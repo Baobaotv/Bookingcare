@@ -194,6 +194,12 @@ $(document)
                             },
                             confirmPassword: {
                                 equalTo: "#password"
+                            },
+                            examinationPrice: {
+                                required: true,
+                                number: true,
+                                minlength: 6,
+                                maxlength: 8
                             }
                         },
                         messages: {
@@ -239,6 +245,10 @@ $(document)
                             confirmPassword: {
                                 equalTo: "Mật khẩu không trùng khớp"
                             },
+                            examinationPrice: {
+                                required: "Giá khám không được để trống ",
+                                number: "Chỉ được phép nhập chữ số"
+                            }
                         },
 
                         submitHandler: function (form) {
@@ -253,21 +263,20 @@ $(document)
                         'checked', this.checked);
                 });
             $("#roleName").change(function () {
-                var value = $("#roleName").val();
-                if (value != "ROLE_DOCTOR") {
+                let value = $("#roleName").val();
+                if (value !== "ROLE_DOCTOR") {
                     // alert("hi");
                     $("#hospitalId").hide();
                     $(".checkWorkTime").hide();
                     $("#specializedId").hide();
-                    if (value == "ROLE_USER") {
-                        // $('#description').hide();
+                    $('#examinationPrice').hide();
+                    if (value === "ROLE_USER") {
                         $('#img').hide();
                     }
                 } else {
                     $("#hospitalId").show();
                     $(".checkWorkTime").show();
                     $("#specializedId").show();
-                    // $('#description').show();
                     $('#img').show();
                 }
 

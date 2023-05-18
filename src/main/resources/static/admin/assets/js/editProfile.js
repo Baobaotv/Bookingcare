@@ -128,6 +128,12 @@ $(document).ready(function () {
                     },
                     confirmPassword: {
                         equalTo: "#password"
+                    },
+                    examinationPrice : {
+                        required: true,
+                        number: true,
+                        minlength: 6,
+                        maxlength: 8
                     }
 
                 },
@@ -169,6 +175,12 @@ $(document).ready(function () {
                     },
                     confirmPassword: {
                         equalTo: "Mật khẩu không trùng khớp"
+                    },
+                    examinationPrice : {
+                        required: "Giá khám không được để trống",
+                        number: "Bạn chỉ được phép nhập số",
+                        minlength: "Bạn đã nhập sai giá khám",
+                        maxlength: "Bạn đã nhập sai giá khám"
                     }
                 },
 

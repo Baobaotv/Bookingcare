@@ -48,6 +48,7 @@ public class UserMapper {
 			List<WorkTimeDto> targetList = new ArrayList<>(wkDtoLst);
 			dto.setLstWorkTime( targetList);
 		}
+		dto.setExaminationPrice(entity.getExaminationPrice());
 		return dto;
 	}
 
