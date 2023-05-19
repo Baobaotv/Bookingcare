@@ -1,8 +1,10 @@
 $(document)
     .ready(
         function () {
+            let editorDescription;
+            let editorShortDescription;
             (function () {
-                const editorInstance = new FroalaEditor(
+                editorDescription = new FroalaEditor(
                     '#description',
                     {
                         events: {
@@ -24,7 +26,7 @@ $(document)
                     })
             })();
             (function () {
-                const editorshortDescription = new FroalaEditor(
+                editorShortDescription = new FroalaEditor(
                     '#shortDescription',
                     {
                         events: {
@@ -47,7 +49,7 @@ $(document)
             })();
 
             (function () {
-                var curentPage = parseInt($('#curentPage').val());
+                let curentPage = parseInt($('#curentPage').val());
 
                 window.pagObj = $('#pagination').twbsPagination({
                     totalPages: 10,
@@ -56,7 +58,7 @@ $(document)
                     onPageClick: function (event, page) {
                         if (page != parseInt($('#curentPage').val())) {
                             $('#page').val(page);
-                            var url = window.location.pathname;
+                            let url = window.location.pathname;
                             $('#formPagination').attr('action', url)
                             $('#formPagination').submit();
                         }
@@ -194,6 +196,12 @@ $(document)
                             },
                             confirmPassword: {
                                 equalTo: "#password"
+                            },
+                            examinationPrice: {
+                                required: true,
+                                number: true,
+                                minlength: 6,
+                                maxlength: 8
                             }
                         },
                         messages: {
@@ -239,6 +247,10 @@ $(document)
                             confirmPassword: {
                                 equalTo: "Mật khẩu không trùng khớp"
                             },
+                            examinationPrice: {
+                                required: "Giá khám không được để trống ",
+                                number: "Chỉ được phép nhập chữ số"
+                            }
                         },
 
                         submitHandler: function (form) {
@@ -253,21 +265,20 @@ $(document)
                         'checked', this.checked);
                 });
             $("#roleName").change(function () {
-                var value = $("#roleName").val();
-                if (value != "ROLE_DOCTOR") {
+                let value = $("#roleName").val();
+                if (value !== "ROLE_DOCTOR") {
                     // alert("hi");
                     $("#hospitalId").hide();
                     $(".checkWorkTime").hide();
                     $("#specializedId").hide();
-                    if (value == "ROLE_USER") {
-                        // $('#description').hide();
+                    $('#examinationPrice').hide();
+                    if (value === "ROLE_USER") {
                         $('#img').hide();
                     }
                 } else {
                     $("#hospitalId").show();
                     $(".checkWorkTime").show();
                     $("#specializedId").show();
-                    // $('#description').show();
                     $('#img').show();
                 }
 
@@ -280,14 +291,14 @@ $(document)
                 if (count < 1) {
                     $("#btnAddUser").prop("disabled", false);
                     $("#btnDelete").prop("disabled", true);
-                    $("#btnEdit").prop("disabled", true);
+                    $("#btnDetail").prop("disabled", true);
                 } else {
                     $("#btnAddUser").prop("disabled", true);
                     $("#btnDelete").prop("disabled", false);
                     if (count == 1) {
-                        $("#btnEdit").prop("disabled", false);
+                        $("#btnDetail").prop("disabled", false);
                     } else {
-                        $("#btnEdit").prop("disabled", true);
+                        $("#btnDetail").prop("disabled", true);
                     }
                 }
             };
@@ -340,35 +351,80 @@ $(document)
             $("input[type=checkbox]").on("click", countChecked);
 
             // editProduct
-            $("#btnEdit").click(
+            $("#btnDetail").click(
                 function (event) {
                     event.preventDefault();
-
-                    var values = new Array();
+                    let values = new Array();
+                    let values2 = new Array();
 
                     $.each($("input[name='checkOne']:checked")
                             .closest("td").siblings("td"),
                         function () {
                             values.push($(this).text());
                         });
+                    $.each($("input[name='checkOne']:checked")
+                            .closest("td").siblings("input"),
+                        function () {
+                            values2.push($(this).val());
+                        });
                     console.log(values);
-                    $('#id').val(values[0]);
-                    $('#categoryId').val(values[1]).change();
-                    $('#sizeId').val(values[2]).change();
-                    $('#nameProduct').val(values[3]);
-
-                    $('#codeProduct').val(values[4]);
-                    $('#image').val(values[5]);
-                    $('#price').val(values[6]);
-                    $('#amount').val(values[7]);
-                    $('#memo').val(values[8]);
-
-                    $("#addProduct").css("display", "none");
-                    $("#editProduct").css("display", "block");
+                    $('#fullname').val(values[0]);
+                    $('#username').val(values[1]);
+                    $('#phoneNumber').val(values[3]);
+                    $('#hospitalId').val(values[5]).change();
+                    $('#specializedId').val(values[4]).change();
+                    $('#email').val(values[6]);
+                    $('#showImage').attr("src", values[7]);
+                    $('#yearOfBirth').val(values[8]);
+                    $('#location').val(values[9]);
+                    $('#sex').val(values[10]).change();
+                    $('#examinationPrice').val(values[11]);
+                    $('#roleName').val(values[12]).change();
+                    if (values[12] === 'ROLE_DOCTOR') {
+                        $('.workTimeIdHidden').each(function( index ) {
+                            let itemWkIdOfUser = $(this).val();
+                            $('.checkWorkTime').each(function( index ) {
+                                if ($( this ).val() === itemWkIdOfUser) {
+                                    $(this).attr('checked', 'checked');
+                                }
+                            });
+                        });
+                    }
+                    $( "#roleName" ).trigger( "change" );
+                    editorShortDescription.html.set(values2[0]);
+                    editorDescription.html.set(values2[0]);
+                    $("#addUser").css("display", "none");
+                    $('#uploadUser *').attr('readonly', true);
+                    $('#uploadUser select').prop( "disabled", true );
                 });
+
+
+            function resetData() {
+                $('#fullname').val("");
+                $('#username').val("");
+                $('#phoneNumber').val("");
+                $('#hospitalId').val("").change();
+                $('#specializedId').val("").change();
+                $('#email').val("");
+                $('#showImage').attr("src", "");
+                $('#yearOfBirth').val("");
+                $('#location').val("");
+                $('#sex').val("").change();
+                $('#examinationPrice').val("");
+                $('#roleName').val("").change();
+                $('.checkWorkTime').each(function( index ) {
+                    $(this).prop('checked', false);
+                });
+                $( "#roleName" ).trigger( "change" )
+                editorShortDescription.html.set("");
+                editorDescription.html.set("");
+                $('#uploadUser *').attr("readonly", false);
+                $('#uploadUser select').prop( "disabled", false );
+            }
 
             $("#btnAddUser").click(function (event) {
                 event.preventDefault();
+                resetData();
                 $("#addUser").css("display", "block");
                 $("#editUser").css("display", "none");
                 checkUsername();

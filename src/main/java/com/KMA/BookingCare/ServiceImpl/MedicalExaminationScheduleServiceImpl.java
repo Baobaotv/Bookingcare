@@ -81,7 +81,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public List<MedicalExaminationScheduleDto> findAllByStatus(Integer status) {
 		List<MedicalExaminationScheduleEntity> lstEntity = medicalRepository.findAllByStatus(status);
-		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<MedicalExaminationScheduleDto>();
+		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<>();
 		for(MedicalExaminationScheduleEntity entity : lstEntity) {
 			MedicalExaminationScheduleDto dto = MedicalMapper.convertToDto(entity);
 			lstDto.add(dto);
@@ -246,6 +246,23 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public void cancelMedical(Long medicalId) {
 		medicalRepository.updateByStatus(Constant.MEDICAL_SCHEDULE_IS_CANCEL, List.of(String.valueOf(medicalId)));
+	}
+
+	@Override
+	public void completePayment(List<String> ids) {
+		medicalRepository.updateByStatusPayment(Constant.payment_paid, ids);
+	}
+
+	@Override
+	public boolean isMedicalCompletePayment(List<String> ids) {
+		Long total = medicalRepository.isMedicalCompletePayment(Constant.payment_paid, ids);
+		return total > 0;
+	}
+
+	@Override
+	public boolean isAllMedicalCompletePayment(List<String> ids) {
+		Long total = medicalRepository.isMedicalCompletePayment(Constant.payment_paid, ids);
+		return Objects.equals(Long.valueOf(ids.size()), total);
 	}
 
 	public String plusDate(String date) {

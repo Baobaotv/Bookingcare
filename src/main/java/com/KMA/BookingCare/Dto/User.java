@@ -3,6 +3,7 @@ package com.KMA.BookingCare.Dto;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.Mapper.WorkTimeMapper;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 	
 	private Long id;
@@ -45,6 +47,8 @@ public class User {
 	private String shortDescription;
 	private String hospitalName;
 	private String hospitalLocation;
+
+	private Long examinationPrice;
 	public String getHospitalName() {
 		return hospitalName;
 	}

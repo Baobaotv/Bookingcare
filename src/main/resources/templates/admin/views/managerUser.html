@@ -21,14 +21,14 @@
 
                             <div class="col-md-4 col-12">
                                 <div class="form-group">
-                                    <label for="company-column">Tên người dùng</label> <input
+                                    <label for="fullName">Tên người dùng</label> <input
                                         type="text" id="fullName" class="form-control"
                                         name="name" placeholder="Tên người dùng" th:value="${formSearch.name}">
                                 </div>
                             </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-group">
-                                    <label for="company-column">Bệnh viện</label> <select
+                                    <label for="searchHospitalId">Bệnh viện</label> <select
                                         name="hospitalId" class="form-control"
                                         id="searchHospitalId">
                                     <option value="" selected>Chọn Bệnh viện</option>
@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-group">
-                                    <label for="company-column">Chọn chuyên khoa</label> <select
+                                    <label for="searchSpecializedId">Chọn chuyên khoa</label> <select
                                         name="specializedId" class="form-control"
                                         id="searchSpecializedId">
                                     <option value="" selected>Chọn chuyên khoa</option>
@@ -92,8 +92,16 @@
                       id="uploadUser">
 
                     <button type="button" style="width: 60px;" class="btn btn-primary"
+                            title="Thêm mới người dùng"
                             data-toggle="modal" data-target="#exampleModal" id="btnAddUser">
 							<span> <i class="fa fa-plus-circle bigger-110 purple"></i>
+							</span>
+                    </button>
+
+                    <button type="button" style="width: 60px;" class="btn btn-primary"
+                            title="Chi tiết người dùng"
+                            data-toggle="modal" data-target="#exampleModal" id="btnDetail">
+                        <span> <i class="bi bi-eye"></i>
 							</span>
                     </button>
 
@@ -123,7 +131,7 @@
                                                         <div class="row">
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="first-name-column">Họ và tên</label>
+                                                                    <label for="fullname">Họ và tên</label>
                                                                     <input
                                                                             type="text" class="form-control"
                                                                             placeholder="First Name" name="fullname"
@@ -133,7 +141,7 @@
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="last-name-column">Ảnh đại diện</label>
+                                                                    <label for="showImage">Ảnh đại diện</label>
                                                                     <img
                                                                             style="display: block; margin-left: auto; width: 25%; margin-right: auto;"
                                                                             class="product__item-img" id="showImage"
@@ -142,15 +150,15 @@
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="city-column">Tài khoản</label> <input
+                                                                    <label for="username">Tài khoản</label> <input
                                                                         type="text" id="username" class="form-control"
-                                                                        placeholder="Email" name="username">
+                                                                        placeholder="Tài khoản" name="username">
                                                                     <div id="msg"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="last-name-column">Ảnh đại diện</label>
+                                                                    <label for="img">Ảnh đại diện</label>
                                                                     <input
                                                                             type="file" id="img" class="form-control"
                                                                             placeholder="Last Name" name="img">
@@ -158,7 +166,7 @@
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="company-column">Mật khẩu</label> <input
+                                                                    <label for="password">Mật khẩu</label> <input
                                                                         type="password" id="password"
                                                                         class="form-control"
                                                                         name="password" placeholder="Mật khẩu">
@@ -166,7 +174,7 @@
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="country-floating">Số điện thoại</label>
+                                                                    <label for="phoneNumber">Số điện thoại</label>
                                                                     <input
                                                                             type="text" id="phoneNumber"
                                                                             class="form-control"
@@ -176,7 +184,7 @@
                                                             </div>
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Xác thực mật
+                                                                    <label for="confirmPassword">Xác thực mật
                                                                         khẩu</label>
                                                                     <input type="password" id="confirmPassword"
                                                                            class="form-control" name="confirmPassword"
@@ -186,14 +194,14 @@
 
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Địa chỉ</label> <input
+                                                                    <label for="location">Địa chỉ</label> <input
                                                                         type="text" id="location" class="form-control"
                                                                         name="location" placeholder="Địa chỉ">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3 col-4">
                                                                 <div class="form-group">
-                                                                    <label for="company-column">Giới tính</label>
+                                                                    <label for="sex">Giới tính</label>
                                                                     <select
                                                                             name="sex" class="form-control required"
                                                                             id="sex">
@@ -206,7 +214,7 @@
                                                             </div>
                                                             <div class="col-md-3 col-4">
                                                                 <div class="form-group">
-                                                                    <label for="company-column">Chọn chuyên khoa</label>
+                                                                    <label for="specializedId">Chọn chuyên khoa</label>
                                                                     <select
                                                                             name="specializedId" class="form-control"
                                                                             id="specializedId">
@@ -223,16 +231,16 @@
                                                             </div>
                                                             <div class="col-md-3 col-14">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Ngày sinh</label>
+                                                                    <label for="yearOfBirth">Ngày sinh</label>
                                                                     <input
-                                                                            type="date" id=" "
+                                                                            type="date" id="yearOfBirth"
                                                                             class="form-control"
                                                                             name="yearOfBirth" placeholder="Ngày sinh">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3 col-14">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Chức năng</label>
+                                                                    <label for="roleName">Chức năng</label>
                                                                     <select
                                                                             name="roleName" class="form-control"
                                                                             id="roleName">
@@ -250,15 +258,15 @@
 
                                                             <div class="col-md-6 col-14">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Email</label> <input
+                                                                    <label for="email">Email</label> <input
                                                                         type="email" id="email" class="form-control"
-                                                                        name="email" placeholder="Địa chỉ" required
+                                                                        name="email" placeholder="Email" required
                                                                         pattern="[^@]+@[^@]+\.[a-zA-Z]{2,6}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-14">
                                                                 <div class="form-group">
-                                                                    <label for="company-column">Bệnh viện</label>
+                                                                    <label for="hospitalId">Bệnh viện</label>
                                                                     <select
                                                                             name="hospitalId" class="form-control"
                                                                             id="hospitalId">
@@ -274,10 +282,21 @@
                                                                     </select>
                                                                 </div>
                                                             </div>
+                                                            <div class="col-md-6 col-14">
+                                                                <div class="form-group">
+                                                                    <label for="examinationPrice">Giá khám</label>
+                                                                    <input
+                                                                            type="number" id="examinationPrice"
+                                                                            class="form-control"
+                                                                            name="examinationPrice"
+                                                                            placeholder="Giá khám" required
+                                                                    >
+                                                                </div>
+                                                            </div>
 
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Chọn ca khám</label>
+                                                                    <label for="inlineCheckbox1">Chọn ca khám</label>
                                                                     <th:block
                                                                             th:each="itemlstWorkTime : ${lstWorkTime}">
                                                                         <div class="form-check form-check-inline">
@@ -296,7 +315,7 @@
 
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Mô tả ngắn</label>
+                                                                    <label for="shortDescription">Mô tả ngắn</label>
                                                                     <textarea rows="12" cols="auto" class="form-control"
                                                                               name="shortDescription"
                                                                               id="shortDescription"></textarea>
@@ -306,7 +325,7 @@
 
                                                             <div class="col-md-12 col-24">
                                                                 <div class="form-group">
-                                                                    <label for="email-id-column">Mô tả</label>
+                                                                    <label for="description">Mô tả</label>
                                                                     <textarea rows="12" cols="auto" class="form-control"
                                                                               name="description"
                                                                               id="description"></textarea>
@@ -329,12 +348,8 @@
                                             data-dismiss="modal">Close
                                     </button>
 
-
                                     <button type="button" id="addUser" class="btn btn-primary">Thêm
                                         người dùng
-                                    </button>
-                                    <button type="button" id="editUser" class="btn btn-primary">Cập
-                                        nhập thông tin
                                     </button>
                                 </div>
 
@@ -374,10 +389,6 @@
                             <th><label class="d-flex justify-content-center">Số
                                 điện thoại</label></th>
 
-                            <!-- <th><label class="d-flex justify-content-center">Chức
-                                    năng</label></th> -->
-
-
                         </tr>
                         </thead>
 
@@ -400,6 +411,35 @@
 
                                 <td style="text-align: center;"
                                     th:utext="${itemlstUser.phone}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.hospitalId}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.specializedId}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.email}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.img}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.yearOfBirth}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.location}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.sex}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.examinationPrice}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.role}"></td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemlstUser.getLstWorkTime()}"></td>
+                                <input name="id" type="hidden" id="shortDescriptionHtml"
+                                       th:value="${itemlstUser.shortDescription}">
+                                <input name="id" type="hidden" id="descriptionHtml"
+                                       th:value="${itemlstUser.description}">
+                                <th:block th:each="itemWk : ${itemlstUser.getLstWorkTime()}">
+                                    <input name="id" type="hidden" class="workTimeIdHidden"
+                                           th:value="${itemWk.id}">
+                                </th:block>
+
                             </tr>
                         </th:block>
                         </tbody>
@@ -445,7 +485,8 @@
                     <p>Bạn chắc chắn muốn xoá chứ</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal">Xoá</button>
+                    <button type="button" class="btn btn-primary" id="btnConfirmDelete" data-dismiss="modal">Xoá
+                    </button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
                 </div>
             </div>

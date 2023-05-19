@@ -8,14 +8,13 @@ import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.common.PaymentUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -101,6 +100,18 @@ public class PaymentApi {
     @PostMapping("api/payment/save")
     public ResponseEntity<?> returnUrl(@RequestBody PaymentSaveForm form) {
         return ResponseEntity.ok(paymentService.save(form));
+    }
+
+    @PostMapping("api/payment/return")
+    public ResponseEntity<?> paymentReturn(@RequestBody PaymentSaveForm form) throws MalformedURLException, UnsupportedEncodingException {
+        System.out.println("Return payment");
+        Map<String, Object> response = new HashMap<>();
+        int status = paymentService.isStatusPaymentReturn(form);
+        response.put("status", status);
+        if (Objects.equals(1, status)) {
+            response.put("data", paymentService.save(form));
+        }
+        return ResponseEntity.ok(response);
     }
 
 

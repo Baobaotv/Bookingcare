@@ -95,9 +95,8 @@ function myFunction() {
 				contentType: "application/json",
 				cache: false,
 				success: function(result) {
-			
-						window.location.replace(urlpath+"/home")
-						alert('Đăng kí thành công');
+					window.location.replace(urlpath+"/home")
+					alert('Cập nhật thành công');
 				},
 				error: function(error) {
 					alert('Đã có lỗi xảy ra !');

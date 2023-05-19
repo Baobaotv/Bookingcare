@@ -90,6 +90,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setLocation(user.getLocation());
         userEntity.setSex(user.getSex());
         userEntity.setPhoneNumber(user.getPhone());
+        userEntity.setFullName(user.getName());
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (nameRole.equals("admin")) {
@@ -171,7 +172,7 @@ public class UserServiceImpl implements UserService {
             entity.setPassword(passwordEncoder.encode(form.getPassword()));
             entity.setUsername(form.getUsername());
             entity.setStatus(1);
-            Set<RoleEntity> role = new HashSet<RoleEntity>(roleRepository.findByName(form.getRoleName()));
+            Set<RoleEntity> role = new HashSet<>(roleRepository.findByName(form.getRoleName()));
             entity.setRoles(role);
             try {
                 Map result = cloudinary.uploader().upload(form.getImg().getBytes(),
@@ -182,6 +183,7 @@ public class UserServiceImpl implements UserService {
                 System.out.println("upload img fail");
             }
         }
+        entity.setExaminationPrice(form.getExaminationPrice());
         entity.setShortDescription(form.getShortDescription());
         entity.setDescription(form.getDescription());
         entity.setEmail(form.getEmail());

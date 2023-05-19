@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.KMA.BookingCare.Dto.WorkTimeDto;
 import com.KMA.BookingCare.Service.WorkTimeService;
+import com.KMA.BookingCare.common.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +30,9 @@ public class MedicalExaminationSheduleEntityController {
         List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
         List<MedicalExaminationScheduleDto> lstMedical;
         if (user.getRoles().contains("ROLE_DOCTOR")) {
-            lstMedical = medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), 1);
+            lstMedical = medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), Constant.MEDICAL_SCHEDULE_IS_WAITING);
         } else {
-            lstMedical = medicalServiceImpl.findAllByStatus(1);
+            lstMedical = medicalServiceImpl.findAllByStatus(Constant.MEDICAL_SCHEDULE_IS_WAITING);
         }
 
         model.addAttribute("lstMedical", lstMedical);
@@ -52,5 +53,19 @@ public class MedicalExaminationSheduleEntityController {
 
         model.addAttribute("lstMedical", lstMedical);
         return "admin/views/managerMedicalComplete";
+    }
+
+    @GetMapping(value = {"/admin/managerMedicalCancel", "/doctor/managerMedicalCancel"})
+    public String medicalCancelPage(Model model, HttpSession session) {
+        MyUser user = (MyUser) session.getAttribute("userDetails");
+        List<MedicalExaminationScheduleDto> lstMedical;
+        if (user.getRoles().contains("ROLE_DOCTOR")) {
+            lstMedical = medicalServiceImpl.findAllByDoctorIdAndStatus(user.getId(), Constant.MEDICAL_SCHEDULE_IS_CANCEL);
+        } else {
+            lstMedical = medicalServiceImpl.findAllByStatus(Constant.MEDICAL_SCHEDULE_IS_CANCEL);
+        }
+
+        model.addAttribute("lstMedical", lstMedical);
+        return "admin/views/managerMedicalCancel";
     }
 }

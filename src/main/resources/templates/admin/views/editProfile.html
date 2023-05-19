@@ -93,45 +93,12 @@
 							</div>
 							<div class="col-md-6 col-12">
 								<div class="form-group">
-									<label for="company-column">Chọn chuyên khoa</label> <select
-										name="specializedId" class="form-control" id="specializedId">
-
-										<th:block th:each="itemSpecialized : ${lstSpecialized}">
-											<option th:value="${itemSpecialized.id}"
-												th:utext="${itemSpecialized.name}"></option>
-										</th:block>
-
-									</select>
-								</div>
-							</div>
-							<div class="col-md-6 col-12">
-								<div class="form-group">
 									<label for="email-id-column">Ngày sinh</label> <input
 										type="date" id="yearOfBirth" class="form-control"
 										name="yearOfBirth" placeholder="Ngày sinh" th:value="${userDto.yearOfBirth}">
 								</div>
 							</div>
 
-							<div class="col-md-6 col-14">
-								<div class="form-group">
-									<label for="company-column">Bệnh viện</label> <select
-										name="hospitalId" class="form-control" id="hospitalId">
-										<option selected value="" >Chọn Bệnh viện</option>
-										<th:block th:each="itemHospital : ${lstHospital}">
-											<th:block th:if="${userDto.hospitalId}==${itemHospital.id}">
-											<option th:value="${itemHospital.id}"
-												th:utext="${itemHospital.name}" selected></option>
-										</th:block>
-										<th:block th:unless="${userDto.hospitalId}==${itemHospital.id}">
-											<option th:value="${itemHospital.id}"
-												th:utext="${itemHospital.name}"></option>
-										</th:block>
-											
-										</th:block>
-
-									</select>
-								</div>
-							</div>
 							
 							<div class="col-md-12 col-12">
 								<div class="form-group">
@@ -142,6 +109,40 @@
 							</div>
 <!--  -->
 				<th:block th:if="${#session.getAttribute('userDetails').roles.contains('ROLE_DOCTOR')}">
+					<div class="col-md-6 col-12">
+						<div class="form-group">
+							<label for="company-column">Chọn chuyên khoa</label> <select
+								name="specializedId" class="form-control" id="specializedId">
+
+							<th:block th:each="itemSpecialized : ${lstSpecialized}">
+								<option th:value="${itemSpecialized.id}"
+										th:utext="${itemSpecialized.name}"></option>
+							</th:block>
+
+						</select>
+						</div>
+					</div>
+
+					<div class="col-md-6 col-14">
+						<div class="form-group">
+							<label for="company-column">Bệnh viện</label> <select
+								name="hospitalId" class="form-control" id="hospitalId">
+							<option selected value="" >Chọn Bệnh viện</option>
+							<th:block th:each="itemHospital : ${lstHospital}">
+								<th:block th:if="${userDto.hospitalId}==${itemHospital.id}">
+									<option th:value="${itemHospital.id}"
+											th:utext="${itemHospital.name}" selected></option>
+								</th:block>
+								<th:block th:unless="${userDto.hospitalId}==${itemHospital.id}">
+									<option th:value="${itemHospital.id}"
+											th:utext="${itemHospital.name}"></option>
+								</th:block>
+
+							</th:block>
+
+						</select>
+						</div>
+					</div>
 							<div class="col-md-12 col-24">
 								<div class="form-group">
 									<label for="email-id-column">Chọn ca khám </label>
@@ -182,6 +183,15 @@
 									</th:block>
 								</div>
 							</div>
+
+					<div class="col-md-12 col-12">
+						<div class="form-group">
+							<label for="examinationPrice">Giá khám (VNĐ)</label> <input type="number"
+																			  id="examinationPrice" class="form-control" name="examinationPrice"
+																			  placeholder="Email" th:value="${userDto.examinationPrice}">
+						</div>
+					</div>
+
 							<!--  -->
 							</th:block>
 							

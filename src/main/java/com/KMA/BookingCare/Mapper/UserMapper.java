@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Dto.MyUser;
+import com.KMA.BookingCare.Dto.Role;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Dto.WorkTimeDto;
+import com.KMA.BookingCare.Entity.RoleEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.common.GetUtils;
 import com.KMA.BookingCare.document.UserDocument;
 
 public class UserMapper {
@@ -48,6 +52,17 @@ public class UserMapper {
 			List<WorkTimeDto> targetList = new ArrayList<>(wkDtoLst);
 			dto.setLstWorkTime( targetList);
 		}
+		if (entity.getRoles() != null) {
+			Set<RoleEntity> roleEntities = entity.getRoles();
+			Set<Role> roles = roleEntities.stream().map(item -> Role.builder()
+					.id(item.getId())
+					.name(item.getName())
+					.build())
+					.collect(Collectors.toSet());
+			dto.setRoles(roles);
+			dto.setRole(GetUtils.getRole(roles));
+		}
+		dto.setExaminationPrice(entity.getExaminationPrice());
 		return dto;
 	}
 
