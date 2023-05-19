@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Manager User</title>
+    <title>Danh sách ca khám đã </title>
 </head>
 <body>
 <section class="row" layout:fragment="content">
@@ -13,60 +13,17 @@
         <div class="card shadow mb-4">
             <div class="card-header py-4 d-flex flex-row-reverse">
                 <form method="POST" action="" enctype="multipart/form-data"
-                      id="uploadMedical">
+                      id="uploadMedicalRecords">
 
                     <button style="width: 60px;" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
                             data-toggle="modal" data-target="#exampleModal"
-                            title='Xem chi tiết' id="btnInforMedia">
-							<span> <i class="bi bi-eye"></i>
-							</span>
-                    </button>
-                    <button type="button" style="width: 60px;" class="btn btn-primary"
-                            id="btnComplete" title='Hoàn thành lịch khám'>
-							<span> <i class="bi bi-check2-square"></i>
+                            title='Xem chi tiêt' id="btnInforMedia">
+							<span>  <i class="bi bi-eye"></i>
 							</span>
                     </button>
 
-                    <button style="width: 60px;" type="button"
-                            class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                            data-toggle="modal" data-target="#updateTimeClose"
-                            title='Thay đổi thời gian kết thúc' id="btnUpdateTimeClose">
-							<span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-plus" viewBox="0 0 16 16">
-                                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
-                                  <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM8 8a.5.5 0 0 1 .5.5V10H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V11H6a.5.5 0 0 1 0-1h1.5V8.5A.5.5 0 0 1 8 8z"/>
-                                </svg>
-							</span>
-                    </button>
-
-                    <button type="button" style="width: 60px;" class="btn btn-primary"
-                            data-toggle="modal" data-target="#dialogConfirmPayment"
-                            id="btnPayment" title='Thanh toán'>
-							<span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card-2-back" viewBox="0 0 16 16">
-                                  <path d="M11 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z"/>
-                                  <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2zm13 2v5H1V4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1zm-1 9H2a1 1 0 0 1-1-1v-1h14v1a1 1 0 0 1-1 1z"/>
-                                </svg>
-							</span>
-                    </button>
-
-                    <button style="width: 60px;" id="btnDeleteMedical" type="button"
-                            class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
-                            data-target="#dialogConfirmCancel" data-toggle="modal"
-                            title='Huỷ lịch khám'>
-							<span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-x" viewBox="0 0 16 16">
-                                  <path d="M6.146 8.146a.5.5 0 0 1 .708 0L8 9.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 10l1.147 1.146a.5.5 0 0 1-.708.708L8 10.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 10 6.146 8.854a.5.5 0 0 1 0-.708z"/>
-                                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/>
-                                  <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/>
-                                </svg>
-							</span>
-                    </button>
-
-
-                    <!-- Modal -->
-
+                    <!-- Modal Infomation -->
                     <div class="modal fade" id="exampleModal" tabindex="-1"
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl" role="document">
@@ -77,7 +34,7 @@
                                         <div class="col-12">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <h4 class="card-title">Quản lý lịch khám</h4>
+                                                    <h4 class="card-title">Quản lịch khám</h4>
                                                 </div>
                                                 <div class="card-content">
                                                     <div class="card-body">
@@ -182,17 +139,7 @@
                                                                 </div>
                                                             </div>
                                                             <br></br>
-
-                                                            <div class="col-md-6 col-12">
-                                                                <div class="form-group">
-                                                                    <label for="first-name-column">Bệnh viện
-                                                                        khám: </label>
-
-                                                                    <label for="first-name-column"
-                                                                           id="hospitalName"></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6 col-12">
+                                                            <div class="col-md-12 col-24">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Hình thức
                                                                         khám: </label>
@@ -212,12 +159,11 @@
                                                             <div class="col-md-6 col-12">
                                                                 <div class="form-group">
                                                                     <label for="first-name-column">Trạng thái thanh toán:
-                                                                        </label>
+                                                                    </label>
 
                                                                     <label for="first-name-column" id="statusPayment"></label>
                                                                 </div>
                                                             </div>
-
                                                         </div>
 
                                                     </div>
@@ -238,86 +184,66 @@
                         </div>
                     </div>
 
-
-                </form>
-            </div>
-
-            <div class="modal fade" id="updateTimeClose" tabindex="-1"
-                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl" role="document">
-                    <div class="modal-content">
-
-                        <div class="modal-body">
-                            <div class="row match-height">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h4 class="card-title">Thay đổi thời gian kết thúc khám</h4>
-                                        </div>
-                                        <div class="card-content">
-                                            <div class="card-body">
-
-                                                <div class="row">
-                                                    </br>
-                                                    <div class="col-md-6 col-12">
-                                                        <div class="form-group">
-                                                            <label for="first-name-column">Tên bệnh nhân: </label>
-
-                                                            <label for="first-name-column" id="namePatientTime"></label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-12">
-                                                        <div class="form-group">
-                                                            <div class="form-group">
-                                                                <label for="first-name-column">Ca khám hiện
-                                                                    tại: </label>
-
-                                                                <label for="first-name-column"
-                                                                       id="wordTimeTimeOld"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <br></br>
-
-
-                                                    <div class="col-md-12 col-24">
-                                                        <div class="form-group">
-                                                            <label for="email-id-column">Chọn ca khám muốn kết
-                                                                thúc</label>
-                                                            <th:block th:each="itemlstWorkTime : ${lstWorkTime}">
-                                                                <div class="form-check form-check-inline">
-                                                                    <input class="form-check-input checkWorkTime"
-                                                                           type="radio" name="workTimeId"
-                                                                           id="inlineCheckbox1"
-                                                                           th:value="${itemlstWorkTime.id}"> <label
-                                                                        th:utext="${itemlstWorkTime.time}"
-                                                                        class="form-check-label "
-                                                                        for="inlineCheckbox1"></label>
-                                                                </div>
-                                                            </th:block>
-                                                        </div>
-                                                        <input type="hidden" id="idMedicalChange" value="">
-                                                    </div>
-
+                    <!-- Modal send Medical Records -->
+                    <div class="modal fade" id="sendMedicalRecordsModal" tabindex="-1"
+                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <!--									<form method="POST" action="" enctype="multipart/form-data"-->
+                                <!--										  id="uploadMedicalRecords">-->
+                                <div class="modal-body">
+                                    <div class="row match-height">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Gửi kết quả khám bệnh</h4>
                                                 </div>
+                                                <div class="card-content">
+                                                    <div class="card-body">
 
+                                                        <div class="row">
+                                                            </br>
+                                                            <div class="col-md-6 col-12">
+                                                                <div class="form-group">
+                                                                    <label for="medicalRecords">File đính kèm: </label>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-12">
+                                                                <div class="form-group">
+                                                                    <input
+                                                                            type="file" class="form-control"
+                                                                            id="medicalRecords"
+                                                                            name="medicalRecords">
+
+                                                                </div>
+                                                            </div>
+                                                            <input type="hidden" name="medicalId" id="medicalId">
+                                                            <br>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
+
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close
+                                    </button>
+                                    <button type="button" id="sendMedical" class="btn btn-primary">Gửi kết quả</button>
+                                </div>
+
+                                <!--									</form>-->
                             </div>
-
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">Close
-                            </button>
-                            <button type="button" id="changeTime" class="btn btn-primary">Xác nhận</button>
-                        </div>
-
                     </div>
-                </div>
+
+
+                </form>
             </div>
 
 
@@ -366,7 +292,7 @@
                                 <td style="text-align: center;" th:utext="${itemMedical.wordTimeTime}"></td>
                                 <td style="text-align: center;" th:utext="${itemMedical.namePatient}"></td>
                                 <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
-                                        th:utext="${itemMedical.phonePatient}"></td>
+                                    th:utext="${itemMedical.phonePatient}"></td>
                                 <td style="text-align: center;" th:utext="${itemMedical.date}"></td>
                                 <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
                                     th:utext="${itemMedical.phoneScheduer}"></td>
@@ -422,46 +348,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal fade" id="dialogConfirmPayment" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Thông báo</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn chắc chắn muốn hoàn thành việc thanh toán chứ</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnConfirmPayment" data-dismiss="modal">Xác nhận
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="modal fade" id="dialogConfirmCancel" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Thông báo</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn chắc chắn muốn huỷ ca khám chứ</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnConfirmCancel" data-dismiss="modal">Xác nhận
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
                 </div>
             </div>
 

@@ -78,7 +78,7 @@ public class AuthApi {
     @PostMapping(value = "/signup")
     public ResponseEntity<?> signup(@RequestBody User user){
         if(userRepository.existsByUsername(user.getUsername())){
-            return ResponseEntity.badRequest().body("Error: username is already taken!");
+            return ResponseEntity.badRequest().body("Username is already taken!");
         }
         userServiceImpl.add(user, "user");
         return ResponseEntity.ok(HttpStatus.OK);

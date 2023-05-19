@@ -31,4 +31,10 @@ public interface MedicalExaminationScheduleService {
 	Optional<MedicalExaminationScheduleEntity> findOneByIdAndUserId(Long medicalId, Long userId);
 
 	void cancelMedical(Long medicalId);
+
+	void completePayment(List<String> ids);
+
+	boolean isMedicalCompletePayment(List<String> ids);
+
+	boolean isAllMedicalCompletePayment(List<String> ids);
 }

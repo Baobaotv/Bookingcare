@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Mapper.UserMapper;
@@ -87,6 +88,19 @@ public class UserManagerController {
         return "admin/views/managerUserUDelete";
     }
 
+    @GetMapping(value = {"/admin/editProfile", "/doctor/editProfile"})
+    public String profilePage(Model model, HttpSession session) {
+        MyUser userDetails = (MyUser) session.getAttribute("userDetails");
+        User userDto = userServiceImpl.findOneById(userDetails.getId());
+        model.addAttribute("userDto", userDto);
+        List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
+        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
+        List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
+        model.addAttribute("lstWorkTime", lstWorkTime);
+        model.addAttribute("lstHospital", lstHospital);
+        model.addAttribute("lstSpecialized", lstSpecialized);
+        return "admin/views/editProfile";
+    }
     @PostMapping(value = {"/admin/editProfile", "/doctor/editProfile"})
     public ResponseEntity<?> editProfilePage(Model model, @ModelAttribute UserForm form) {
         try {

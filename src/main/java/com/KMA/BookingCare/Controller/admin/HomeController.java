@@ -55,17 +55,5 @@ public class HomeController {
         return "admin/views/home";
     }
 
-    @GetMapping(value = {"/admin/editProfile", "/doctor/editProfile"})
-    public String profilePage(Model model, HttpSession session) {
-        MyUser userDetails = (MyUser) session.getAttribute("userDetails");
-        User userDto = userServiceImpl.findOneById(userDetails.getId());
-        model.addAttribute("userDto", userDto);
-        List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
-        List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
-        List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
-        model.addAttribute("lstWorkTime", lstWorkTime);
-        model.addAttribute("lstHospital", lstHospital);
-        model.addAttribute("lstSpecialized", lstSpecialized);
-        return "admin/views/editProfile";
-    }
+
 }

@@ -22,8 +22,36 @@ $(document)
                                 alert("Đã hoàn thành ca khám");
                                 window.location.reload();
                             },
-                            error: function (e) {
-                                alert('Đã có lỗi xảy ra, xin vui lòng thử lại!');
+                            error: function (xhr, status, error) {
+                                alert(xhr.responseText);
+                                window.location.reload();
+                            }
+                        });
+
+                    });
+
+            $("#btnConfirmPayment")
+                .click(
+                    function (event) {
+                        event.preventDefault();
+                        let data = {};
+                        let urlPath = window.location.origin + "/api/medical/complete-payment";
+                        let ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                            return $(this).val();
+                        }).get();
+                        data['ids'] = ids;
+                        $.ajax({
+                            url: urlPath,
+                            type: "post",
+                            contentType: "application/json",
+                            data: JSON.stringify(data),
+                            cache: false,
+                            success: function (result) {
+                                alert("Thanh toán thành công");
+                                window.location.reload();
+                            },
+                            error: function (xhr, status, error) {
+                                alert(xhr.responseText);
                                 window.location.reload();
                             }
                         });
@@ -48,10 +76,12 @@ $(document)
                     $("#btnSendMedicalRecords").prop("disabled", true);
                     $("#btnComplete").prop("disabled", true);
                     $("#btnUpdateTimeClose").prop("disabled", true);
+                    $("#btnPayment").prop("disabled", true);
                 } else {
 
                     $("#btnComplete").prop("disabled", false);
                     $("#btnDeleteMedical").prop("disabled", false);
+                    $("#btnPayment").prop("disabled", false);
                     if (count == 1) {
                         $("#btnInforMedia").prop("disabled", false);
                         $("#btnSendMedicalRecords").prop("disabled", false);
@@ -73,14 +103,14 @@ $(document)
                 function (event) {
                     event.preventDefault();
 
-                    var values = new Array();
-
-
+                    let values = new Array();
                     $.each($("input[name='checkOne']:checked")
                             .closest("td").siblings("td"),
                         function () {
                             values.push($(this).text());
                         });
+                    console.log(values);
+
                     $('#id').val($("input[name='checkOne']:checked").val());
                     $("#namePatient").text(values[2]);
                     $("#phonePatient").text(values[3]);
@@ -99,6 +129,17 @@ $(document)
                         $('#type').text("Khám tại cơ sở");
                     }
                     $("#hospitalName").text(values[12])
+                    if (window.location.href.includes('/managerMedicalComplete')) {
+                        $("#statusPayment").text(values[13])
+                        let price = Number(values[14]);
+                        price = price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                        $("#priceMedical").text(price)
+                    } else {
+                        $("#statusPayment").text(values[15])
+                        let price = Number(values[16]);
+                        price = price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+                        $("#priceMedical").text(price)
+                    }
 
                 });
             // btnSendMedicalRecords
@@ -119,11 +160,15 @@ $(document)
             $("#sendMedical").click(
                 function (event) {
                     event.preventDefault();
-                    var form = $('#uploadMedicalRecords')[0];
-                    var urlpath = window.location.href;
-                    var data = new FormData(form);
+                    if (!document.getElementById('medicalRecords').files[0]) {
+                        alert('Vui lòng chọn file để gửi');
+                        window.location.reload();
+                    }
+                    let form = $('#uploadMedicalRecords')[0];
+                    let urlPath = window.location.origin + '/api/medical/uploadMedicalRecords';
+                    let data = new FormData(form);
                     $.ajax({
-                        url: urlpath + "/uploadMedicalRecords",
+                        url: urlPath,
                         type: "POST",
                         enctype: 'multipart/form-data',
                         data: data,
@@ -132,14 +177,11 @@ $(document)
                         cache: false,
                         success: function (result) {
                             alert("Gửi thành công");
-                            window.location
-                                .replace(urlpath + "/admin/managerMedicalComplete");
-
+                            window.location.reload();
                         },
                         error: function (e) {
                             alert('Đã có lỗi xảy ra !');
-                            window.location
-                                .replace(urlpath + "/admin/managerMedicalComplete");
+                            window.location.reload();
                         }
                     });
                 });
@@ -195,11 +237,11 @@ $(document)
                         cache: false,
                         success: function (result) {
 
-                            window.location.replace(urlpath + "/admin/managerMedical")
+                            window.location.reload()
                             alert('Thay đổi thành công');
                         },
                         error: function (error) {
-                            window.location.replace(urlpath + "/admin/managerMedical")
+                            window.location.reload();
                             alert('Đã có lỗi xảy ra ! Bạn chưa chọn thời gian (hoặc thời gian không thoả mãn)');
                         }
                     });
@@ -214,12 +256,12 @@ $(document)
                 });
 
 
-            $("#btnDeleteMedical").click(
+            $("#btnConfirmCancel").click(
                 function (event) {
                     event.preventDefault();
-                    var data = {};
-                    var urlpath = window.location.origin;
-                    var ids = $('tbody input[name="checkOne"]:checked').map(function () {
+                    let data = {};
+                    let urlpath = window.location.origin;
+                    let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                         return $(this).val();
                     }).get();
                     data['ids'] = ids;

@@ -88,8 +88,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerHospital")
+                                                        window.location.reload()
                                                     }, 1500);
                                             }
                                         },
@@ -103,8 +102,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerHospital")
+                                                        window.location.reload();
                                                     }, 1500);
                                             } else {
                                                 alert('Đã có lỗi xảy ra !');
@@ -255,8 +253,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerHospital")
+                                                        window.location.reload();
                                                     }, 1000);
                                                 $('#ok').modal('show');
 
@@ -272,8 +269,7 @@ $(document)
 
                                                 setTimeout(
                                                     function () {
-                                                        window.location
-                                                            .replace(urlpath + "/admin/managerHospital")
+                                                        window.location.reload();
                                                     }, 1500);
                                             } else {
                                                 alert('Đã có lỗi xảy ra !');

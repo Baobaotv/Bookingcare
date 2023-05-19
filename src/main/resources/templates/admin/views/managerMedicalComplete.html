@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Manager User</title>
+    <title>Danh sách ca khám đã hoàn thành</title>
 </head>
 <body>
 <section class="row" layout:fragment="content">
@@ -155,7 +155,23 @@
                                                                     <label for="first-name-column" id="type"></label>
                                                                 </div>
                                                             </div>
+                                                            <br></br>
+                                                            <div class="col-md-6 col-12">
+                                                                <div class="form-group">
+                                                                    <label for="first-name-column">Giá khám:
+                                                                    </label>
 
+                                                                    <label for="first-name-column" id="priceMedical"></label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-12">
+                                                                <div class="form-group">
+                                                                    <label for="first-name-column">Trạng thái thanh toán:
+                                                                    </label>
+
+                                                                    <label for="first-name-column" id="statusPayment"></label>
+                                                                </div>
+                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -268,6 +284,8 @@
                             </label></th>
                             <th><label class="d-flex justify-content-center">Hình thức khám
                             </label></th>
+                            <th><label class="d-flex justify-content-center">Trạng thái thanh toán
+                            </label></th>
 
 
                         </tr>
@@ -305,6 +323,14 @@
                                 <th:block th:unless="${itemMedical.type}=='on'">
                                     <td style="text-align: center;">Khám tại cơ sở y tế</td>
                                 </th:block>
+                                <td style="text-align: center;"
+                                    th:utext="${itemMedical.statusPayment == 1 ? 'Đã thanh toán' : 'Chưa thanh toán'}"
+                                >
+                                </td>
+                                <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
+                                    th:utext="${itemMedical.examinationPrice}"
+                                >
+                                </td>
                             </tr>
                         </th:block>
                         </tbody>

@@ -160,8 +160,9 @@ public class MedicalApi {
 		}
 	}
 
-	@PostMapping(value = "/admin/managerMedicalComplete/uploadMedicalRecords")
+	@PostMapping(value = "/api/medical/uploadMedicalRecords")
 	public ResponseEntity<?> uploadMedicalRecords(@ModelAttribute UploadMedicalRecordsForm form) {
+		medicalServiceImpl.handleSendMedicalRecords(form);
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
@@ -176,10 +177,15 @@ public class MedicalApi {
 	}
 	@PostMapping(value = {"/admin/managerMedical/complete","/doctor/managerMedical/complete"})
 	public ResponseEntity<?> completeMedical(@RequestBody DeleteForm form) {
+		boolean isAllCompletePayment = medicalServiceImpl.isAllMedicalCompletePayment(form.getIds());
+		if (!isAllCompletePayment) {
+			return ResponseEntity.badRequest().body("Có ca khám chưa được thanh toán. Vui lòng thanh toán trước khi hoàn thành ca khám");
+		}
 		try {
-			medicalServiceImpl.updateMedicalByStatus(2, form.getIds());
+			medicalServiceImpl.updateMedicalByStatus(Constant.MEDICAL_SCHEDULE_IS_COMPLETE, form.getIds());
 		} catch (Exception e ) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e.getStackTrace());
+			return ResponseEntity.badRequest().body("Có lỗi xảy ra xin vui lòng thử lại");
 		}
 		return ResponseEntity.ok("true");
 	}
@@ -211,6 +217,21 @@ public class MedicalApi {
 		if (!optional.isPresent()) return ResponseEntity.noContent().build();
 		MedicalExaminationScheduleDto dto = MedicalMapper.convertToDto(optional.get());
 		return ResponseEntity.ok(dto);
+	}
+
+	@PostMapping(value ="/api/medical/complete-payment")
+	public ResponseEntity<?> completePaymentMedical(@RequestBody DeleteForm form) {
+		log.info("Request to update medical complete {}", form.getIds());
+		boolean isCompletedPayment = medicalServiceImpl.isMedicalCompletePayment(form.getIds());
+		if (isCompletedPayment)
+			return ResponseEntity.badRequest().body("Vui lòng chọn ca khám chưa thanh toán để thực hiện giao dịch");
+		try {
+			medicalServiceImpl.completePayment(form.getIds());
+		} catch (Exception e ) {
+			log.error(e.getMessage(), e.getStackTrace());
+			return ResponseEntity.badRequest().body("Có lỗi xảy ra, vui lòng thử lại");
+		}
+		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
 }

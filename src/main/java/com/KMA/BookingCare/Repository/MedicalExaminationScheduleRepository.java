@@ -127,4 +127,12 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 	@Modifying
 	@Query(value = "DELETE FROM MedicalExaminationScheduleEntity AS m WHERE m.doctor.id in (:ids) ")
 	void deleteAllByDoctorIds(@Param("ids") List<Long> ids);
+
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE medical_examination_schedule SET status_payment = :status WHERE id in :ids", nativeQuery = true)
+	Integer updateByStatusPayment(@Param("status") Integer status,@Param("ids") List<String> ids);
+
+	@Query(value = "SELECT count(*) FROM medical_examination_schedule WHERE status_payment = :status AND id in :ids", nativeQuery = true)
+	Long isMedicalCompletePayment(@Param("status") Integer status,@Param("ids") List<String> ids);
 }
