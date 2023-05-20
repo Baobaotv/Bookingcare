@@ -1,9 +1,6 @@
 package com.KMA.BookingCare.Api;
 
-import com.KMA.BookingCare.Api.form.UpdateCientForm;
-import com.KMA.BookingCare.Api.form.UserForm;
-import com.KMA.BookingCare.Api.form.DeleteForm;
-import com.KMA.BookingCare.Api.form.searchDoctorForm;
+import com.KMA.BookingCare.Api.form.*;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Dto.UserInput;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
@@ -14,6 +11,7 @@ import com.KMA.BookingCare.ServiceImpl.MedicalExaminationScheduleServiceImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsServiceImpl;
 import com.KMA.BookingCare.common.Constant;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,12 +88,16 @@ public class UserApi {
 
     @PostMapping(value = {"/api/user/restore"})
     public ResponseEntity<?> restoreUser(@RequestBody DeleteForm form) {
+        boolean isValid = userServiceImpl.isValidSpecialtyAndHospital(form);
+        if(!isValid) {
+            return ResponseEntity.badRequest().body("Vẫn còn \"Chuyên khoa\" hoặc \"Cơ sở y tế\" đang trong trạng thái không sẵn sàng, vui lòng kiểm tra lại dữ liệu");
+        }
         try {
             userServiceImpl.updateUserByStatus(form.getIds(), Constant.del_flg_off);
             return ResponseEntity.ok("true");
         } catch (Exception e ) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Có lỗi xảy ra xin vui lòng thử lại");
         }
     }
 
@@ -221,5 +223,29 @@ public class UserApi {
                                           @PageableDefault(page = 0, size = 8) Pageable pageable) {
         log.info("Request to search Doctor by hospitalid {}, specialtyId {}, doctorName {}", hospitalId, specialtyId, doctorName);
         return ResponseEntity.ok(userServiceImpl.searchDoctorForClient(hospitalId, specialtyId, doctorName, pageable));
+    }
+
+    @PostMapping("/api/user/create-url-reset-pass")
+    public ResponseEntity<?> createUrl(@RequestBody ResetPasswordForm form) throws JsonProcessingException {
+        log.info("Request to createUrl to resetPassword with username: {}", form.getUserName());
+        boolean isExistUser = userServiceImpl.isExistUserNameAndEmail(form.getUserName(), form.getEmail());
+        if (!isExistUser) return ResponseEntity.badRequest().body("UserName hoặc Email không đúng, xin vòng lòng nhập lại");
+        userServiceImpl.sendMessageResetPassword(form.getUserName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/user/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordForm form) {
+        boolean isValidUserName = userServiceImpl.verifyUserName(form.getUserName(), form.getKey());
+        if (!isValidUserName)
+            return ResponseEntity.badRequest().body("Đường dẫn không đúng, vui lòng kiểm tra lại đường dẫn trong email");
+        userServiceImpl.changPassword(form.getUserName(), form.getPassword());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/user/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ResetPasswordForm form) {
+        userServiceImpl.changPassword(form.getUserName(), form.getPassword());
+        return ResponseEntity.ok(true);
     }
 }

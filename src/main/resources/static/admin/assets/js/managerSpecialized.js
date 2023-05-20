@@ -61,17 +61,16 @@ $(document)
                     function () {
 
                         if ($("#uploadSpecialized").valid()) {
-                            var descriptionHTML = descriptionEdittor.html.get();
-                            var stringDesctiption = $.trim(jQuery(descriptionHTML).text());
+                            let descriptionHTML = descriptionEdittor.html.get();
+                            let stringDesctiption = $.trim(jQuery(descriptionHTML).text());
                             if (stringDesctiption) {
-                                alert("done");
                                 event.preventDefault();
                                 let form = $('#uploadSpecialized')[0];
                                 let urlPath = window.location.origin;
                                 let data = new FormData(form);
                                 $
                                     .ajax({
-                                        url: urlPath + "/admin/api/managerSpecialized/add",
+                                        url: urlPath + "/api/specialized",
                                         type: "POST",
                                         enctype: 'multipart/form-data',
                                         data: data,

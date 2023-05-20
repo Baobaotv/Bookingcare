@@ -4,8 +4,14 @@ var valueKinhDo = Number(21.017254034683987);
 var valueViDo = Number(105.7899284362793);
 var marker;
 initMap();
-function initMap() {
-    var latLng = { lat: valueKinhDo, lng: valueViDo };
+function initMap(latInput, lngInput) {
+    var latLng
+    if(!latInput) {
+          latLng= { lat: valueViDo, lng: valueKinhDo };
+    } else {
+        latLng= { lat: latInput, lng: lngInput };
+    }
+
     var map = new google.maps.Map(document.getElementById("map"), {
         center: latLng,
         zoom: 15,
@@ -89,6 +95,7 @@ function initMap() {
     });
 
     function setDataLocation(location) {
+        console.log('lat:' + location.lat() +'-long:' + location.lng());
         viDo.value = location.lat();
         kinhDo.value = location.lng();
         marker.setPosition(location);
@@ -96,8 +103,10 @@ function initMap() {
 }
 
 document.getElementById('btnSearchLocation').addEventListener("click", changeLocation);
-function changeLocation() {
+function changeLocation(e) {
+    e.preventDefault()
     valueKinhDo = Number(kinhDo.value);
-    valueViDo = Number(viDo.value);
-    initMap();
+    valueViDo= Number(viDo.value);
+    console.log(valueKinhDo + '-' + valueViDo);
+    initMap(valueKinhDo, valueViDo);
 }

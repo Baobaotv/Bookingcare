@@ -260,28 +260,24 @@ $(document)
                 function (event) {
                     event.preventDefault();
                     let data = {};
-                    let urlpath = window.location.origin;
+                    let urlPath = window.location.origin + "/api/managerMedical/delete";
                     let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                         return $(this).val();
                     }).get();
                     data['ids'] = ids;
                     $.ajax({
-                        url: urlpath + "/api/media/deletes",
-                        type: "delete",
+                        url: urlPath,
+                        type: "POST",
                         contentType: "application/json",
                         data: JSON.stringify(ids),
                         cache: false,
                         success: function (result) {
-                            alert("Đã xoá thành công");
-                            window.location
-                                .replace(urlpath + "/admin/managerMedical");
-
-
+                            alert("Đã huỷ thành công");
+                            window.location.reload();
                         },
                         error: function (e) {
                             alert('Đã có lỗi xảy ra !');
-                            window.location
-                                .replace(urlpath + "/admin/managerMedical");
+                            window.location.reload();
                         }
                     });
                 });
@@ -328,8 +324,7 @@ $(document)
 
                                         setTimeout(
                                             function () {
-                                                window.location
-                                                    .replace(urlpath + "/admin/managerMedical")
+                                                window.location.reload()
                                             }, 1500);
                                     } else {
                                         alert('Đã có lỗi xảy ra !');

@@ -50,4 +50,6 @@ public interface HandbookService {
 	List<SearchFullTextDto> searchAllByFullText(String query);
 
 	void deleteHandbook(DeleteForm form);
+
+	boolean isValidSpecicalty(DeleteForm form);
 }

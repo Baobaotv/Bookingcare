@@ -38,7 +38,7 @@ public class SpecialzedApi {
 	private SpecializedSearchRepository specializedSearchRepository;
 
 	@Hidden
-	@PostMapping(value = "/api/specialized")
+	@PostMapping(value = "/specialized")
 	public ResponseEntity<?> addHospital(@ModelAttribute SpecializedForm form) {
 		log.info("Request to add specialed {}");
 		try {

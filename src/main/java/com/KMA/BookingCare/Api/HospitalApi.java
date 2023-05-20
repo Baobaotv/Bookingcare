@@ -99,7 +99,7 @@ public class HospitalApi {
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		hospitalRepository.deleteById(id);
-		hospitalSearchRepository.deleteById(id);
+//		hospitalSearchRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 

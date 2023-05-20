@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -87,4 +86,7 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity AS h WHERE h.specialized.id in (:ids)")
 	List<HandbookDto> findAllBySpecializedIds(@Param("ids") List<Long> ids);
+
+	@Query(value = "SELECT count(h) FROM HandbookEntity AS h WHERE h.id in (:ids) AND h.specialized.status = :status")
+	Long getTotalByStatusOfSpecialty(@Param("ids") List<Long> ids, @Param("status") Integer status);
 }

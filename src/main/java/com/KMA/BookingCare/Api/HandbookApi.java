@@ -157,12 +157,15 @@ public class HandbookApi {
 
 	@PostMapping(value = {"/api/handbook/restore"})
 	public ResponseEntity<?> restoreHandbook(@RequestBody DeleteForm form) {
+		boolean isValid = handbookServiceImpl.isValidSpecicalty(form);
+		if(!isValid)
+			return ResponseEntity.badRequest().body("Vẫn còn chuyên khoa đang trong trong thái không sẵn sàng, vui lòng kiểm tra lại");
 		try {
 			handbookServiceImpl.updateHandbookByStatus(form.getIds(), Constant.del_flg_off);
 			return ResponseEntity.ok("true");
 		} catch (Exception e ) {
 			e.printStackTrace();
-			return ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body("Có lỗi xảy ra xin vui lòng thử lại");
 		}
 	}
 
