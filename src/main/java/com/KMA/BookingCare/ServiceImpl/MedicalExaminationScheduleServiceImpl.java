@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
 import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
+import com.KMA.BookingCare.Dto.NotificationChangeTimeDTO;
+import com.KMA.BookingCare.Dto.NotificationResetPasswordDTO;
 import com.KMA.BookingCare.Dto.NotificationScheduleDTO;
 import com.KMA.BookingCare.common.Constant;
 import com.cloudinary.Cloudinary;
-import com.cloudinary.api.exceptions.BadRequest;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -103,6 +104,14 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public void updateMedicalByStatus(Integer status,List<String> ids) {
 		medicalRepository.updateByStatus(status,ids);
+		NotificationScheduleDTO dto = new NotificationScheduleDTO();
+		dto.setIds(ids.stream().map(Long::parseLong).collect(Collectors.toList()));
+		dto.setTypeNotification(Constant.NOTIFICATION_TYPE_CANCEL_MEDICAL);
+		try {
+			sendKafkaNotificationCancel(dto);
+		} catch (JsonProcessingException e) {
+			System.err.println("Cannot send message kafka when cancel medical");
+		}
 	}
 
 	@Override
@@ -228,14 +237,47 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public void updateTime(BookingForm form) {
 		MedicalExaminationScheduleEntity entity = medicalRepository.findById(form.getId()).get();
-		if(form.getIdDoctor() != null) {
-			UserEntity doctor = new UserEntity();
-			doctor.setId(form.getIdDoctor());
-			entity.setDoctor(doctor);
-		}
+		UserEntity user = userRepository.findOneById(form.getIdDoctor());
+		NotificationChangeTimeDTO dto = createNotification(entity, user, form.getDate(), form.getIdWorktime());
+		entity.setDoctor(user);
+		entity.setExaminationPrice(user.getExaminationPrice());
 		entity.setDate(form.getDate());
 		entity.setWorkTimeID(form.getIdWorktime());
+		entity.setHospitalName(user.getHospital().getName());
 		medicalRepository.save(entity);
+		sendNotification(dto);
+	}
+
+	private NotificationChangeTimeDTO createNotification(MedicalExaminationScheduleEntity medical, UserEntity doctorNew, String date, Long idWorktime) {
+		NotificationChangeTimeDTO dto = new NotificationChangeTimeDTO();
+		dto.setDate(date);
+		dto.setNewDoctorName(doctorNew.getFullName());
+		dto.setNewDoctorEmail(doctorNew.getEmail());
+		dto.setOldDoctorName(medical.getDoctor().getFullName());
+		dto.setOlrDoctorEmail(medical.getDoctor().getEmail());
+		String wk = doctorNew.getWorkTimeEntity()
+				.stream()
+				.filter(e -> Objects.equals(e.getId(), idWorktime))
+				.findFirst()
+				.get()
+				.getName();
+		dto.setWorkTime(wk);
+		dto.setUserName(medical.getUser().getFullName());
+		dto.setUserEmail(medical.getUser().getEmail());
+		dto.setHospitalName(doctorNew.getHospital().getName());
+		return dto;
+	}
+
+	private void sendNotification(NotificationChangeTimeDTO dto) {
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json ;
+		try {
+			json = ow.writeValueAsString(dto);
+			kafkaTemplate.send(Constant.NOTIFICATION_CHANGE_TIME_TOPIC, json);
+		} catch (JsonProcessingException e) {
+			System.out.println("Convert to json to send kafka error");
+		}
+
 	}
 
 	@Override
@@ -246,6 +288,14 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public void cancelMedical(Long medicalId) {
 		medicalRepository.updateByStatus(Constant.MEDICAL_SCHEDULE_IS_CANCEL, List.of(String.valueOf(medicalId)));
+		NotificationScheduleDTO dto = new NotificationScheduleDTO();
+		dto.setIds(List.of(medicalId));
+		dto.setTypeNotification(Constant.NOTIFICATION_TYPE_CANCEL_MEDICAL);
+		try {
+			sendKafkaNotificationCancel(dto);
+		} catch (JsonProcessingException e) {
+			System.err.println("Cannot send message kafka when cancel medical");
+		}
 	}
 
 	@Override
@@ -323,6 +373,12 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	}
 
 	private void sendKafkaNotification(NotificationScheduleDTO dto) throws JsonProcessingException {
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = ow.writeValueAsString(dto);
+		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);
+	}
+
+	private void sendKafkaNotificationCancel(NotificationScheduleDTO dto) throws JsonProcessingException {
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		String json = ow.writeValueAsString(dto);
 		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);

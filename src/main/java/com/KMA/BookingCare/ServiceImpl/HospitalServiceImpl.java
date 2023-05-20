@@ -107,8 +107,8 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setLongitude(form.getLongitude());
 		entity.setStatus(1);
 		entity = hospitalRepository.save(entity);
-		HospitalDocument document = HospitalMapper.convertToDocument(entity);
-		hospitalSearchRepository.save(document);
+//		HospitalDocument document = HospitalMapper.convertToDocument(entity);
+//		hospitalSearchRepository.save(document);
 		
 	}
 

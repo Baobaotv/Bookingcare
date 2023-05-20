@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.KMA.BookingCare.Entity.HandbookEntity;
@@ -132,4 +133,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 
 	@Query("SELECT u FROM UserEntity AS u WHERE u.hospital.id in (:ids)")
 	List<UserEntity> findAllByHospitalIds(@Param("ids") List<Long> ids);
+
+	UserEntity findByUsernameAndEmail(String userName, String email);
+
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE user SET password = :password WHERE username = :username", nativeQuery = true)
+	void updatePasswordByUsername(@Param("password") String password, @Param("username") String username);
+
+	@Query(value = "SELECT count(u) FROM UserEntity AS u WHERE u.id in (:ids) AND (u.hospital.status = :status OR u.specialized.status = :status)")
+	Long getTotalUserBySpecialStatusOrHospitalStatus(@Param("ids") List<Long> ids, @Param("status") Integer status);
 }

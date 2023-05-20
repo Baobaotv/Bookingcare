@@ -55,7 +55,6 @@ public class MedicalApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	@Hidden
 	@PostMapping(value ="/api/medical/complete")
 	public ResponseEntity<?> completeMedical(@RequestBody List<String> ids) {
 		log.info("Request to update medical complete {}", ids);
@@ -166,10 +165,10 @@ public class MedicalApi {
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
-	@PostMapping(value = {"/admin/managerMedical/delete","/doctor/managerMedical/delete"})
+	@PostMapping(value = {"/api/managerMedical/delete"})
 	public ResponseEntity<?> deleteMedical(@RequestBody DeleteForm form) {
 		try {
-			medicalServiceImpl.updateMedicalByStatus(0, form.getIds());
+			medicalServiceImpl.updateMedicalByStatus(Constant.MEDICAL_SCHEDULE_IS_CANCEL, form.getIds());
 		} catch (Exception e ) {
 			e.printStackTrace();
 		}

@@ -121,8 +121,7 @@ $(document)
 
                                                     setTimeout(
                                                         function () {
-                                                            window.location
-                                                                .replace(urlpath + "/admin/managerHandbook")
+                                                            window.location.reload()
                                                         }, 1500);
                                                 } else {
                                                     alert('Đã có lỗi xảy ra !');
@@ -292,8 +291,7 @@ $(document)
 
                                                     setTimeout(
                                                         function () {
-                                                            window.location
-                                                                .replace(urlpath + "/admin/managerHandbook")
+                                                            window.location.reload()
                                                         }, 1500);
                                                 } else {
                                                     alert('Đã có lỗi xảy ra !');

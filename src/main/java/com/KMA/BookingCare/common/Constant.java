@@ -19,6 +19,12 @@ public class Constant {
 
     public static final String NOTIFICATION_TOPIC = "notification";
 
+    public static final String NOTIFICATION_RESET_PASS_TOPIC = "notification_reset_pass";
+
+    public static final String NOTIFICATION_CHANGE_TIME_TOPIC = "notification_change_time";
+
+    public static final String NOTIFICATION_TYPE_CANCEL_MEDICAL = "notification_cancel_medical";
+
     public static final Integer LIMIT_DEFAULT = 6;
 
     public static final Integer OFFSET_DEFAULT = 0;
@@ -61,5 +67,7 @@ public class Constant {
     public static final Integer del_flg_off = 1;
 
     public static final Integer del_flg_on = 0;
+
+    public static final String secret = "PBKDF2WithHmacSHA256";
 
 }

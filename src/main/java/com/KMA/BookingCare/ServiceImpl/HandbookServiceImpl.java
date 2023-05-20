@@ -275,6 +275,13 @@ public class HandbookServiceImpl implements HandbookService{
 		handbookRepository.deleteAllById(ids);
 	}
 
+	@Override
+	public boolean isValidSpecicalty(DeleteForm form) {
+		List<Long> ids = form.getIds().stream().map(Long::parseLong).collect(Collectors.toList());
+		Long total = handbookRepository.getTotalByStatusOfSpecialty(ids, Constant.del_flg_on);
+		return total == 0L;
+	}
+
 	private HandbookDocument convertToDocument(HandbookEntity entity) {
 		HandbookDocument document = new HandbookDocument();
 		document.setId(entity.getId());

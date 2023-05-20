@@ -3,14 +3,13 @@ package com.KMA.BookingCare.Service;
 import java.io.IOException;
 import java.util.List;
 
+import com.KMA.BookingCare.Api.form.*;
 import com.KMA.BookingCare.Dto.SearchFullTextDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
-import com.KMA.BookingCare.Api.form.UpdateCientForm;
-import com.KMA.BookingCare.Api.form.UserForm;
-import com.KMA.BookingCare.Api.form.searchDoctorForm;
 import com.KMA.BookingCare.Dto.Role;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Entity.UserEntity;
@@ -64,4 +63,16 @@ public interface UserService {
 	boolean isExistItemRelationWithSpecialIsUsing(List<String> ids);
 
 	void deleteUser(List<String> ids);
+
+	boolean isExistUserNameAndEmail(String userName, String email);
+
+	String createUrlResetPassword(String userName);
+
+	void sendMessageResetPassword(String userName) throws JsonProcessingException;
+
+	void changPassword(String userName, String password);
+
+	boolean verifyUserName(String userName, String key);
+
+	boolean isValidSpecialtyAndHospital(DeleteForm form);
 }

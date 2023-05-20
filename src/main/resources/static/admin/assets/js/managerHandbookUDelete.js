@@ -64,8 +64,8 @@ $(document)
                                 alert("Đã khôi phục thành công");
                                 window.location.reload();
                             },
-                            error: function (e) {
-                                alert('Đã có lỗi xảy ra !');
+                            error: function (xhr, status, error) {
+                                alert(xhr.responseText);
                                 window.location.reload();
                             }
                         });

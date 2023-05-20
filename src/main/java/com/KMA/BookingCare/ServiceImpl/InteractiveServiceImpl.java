@@ -21,67 +21,63 @@ import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Service.InteractiveService;
 
 @Service
-public class InteractiveServiceImpl implements InteractiveService{
+public class InteractiveServiceImpl implements InteractiveService {
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private InteractiveRepository interactiveRepository;
-	
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	public void saveOrUpdate(MessageDto chatMessage) {
-		// TODO Auto-generated method stub
-//		UserEntity userEntity=userRepository.findOneById(chatMessage.getReceiverId());
-//		UserEntity you=userRepository.findOneById(chatMessage.getSenderId());
-		InteractiveEntity entity= new InteractiveEntity();
-		InteractiveEntity entityOld;
-		
-//		UserEntity userEntity1=userRepository.findOneById(chatMessage.getSenderId());
-//		UserEntity you1=userRepository.findOneById(chatMessage.getReceiverId());
-	
-		entity.setCreatedDate(new Date());
-		entity.setUserId(chatMessage.getReceiverId());
-		entity.setYouId(chatMessage.getSenderId());
-		
-		entity.setStatus(0);
-		 entityOld = interactiveRepository.findOneByUserIdAndYouId(entity.getUserId(),entity.getYouId());
-		 if(entityOld!=null) {
-			 entity.setId(entityOld.getId());
-		 }
-		 entity.setLastMessage(chatMessage.getContent());
-		interactiveRepository.save(entity);
-		
-		entity.setUserId(chatMessage.getSenderId());
-		entity.setYouId(chatMessage.getReceiverId());
-//		entity.setYou(you1);
-//		entity.setUser(userEntity1);
-		entityOld=interactiveRepository.findOneByUserIdAndYouId(entity.getUserId(),entity.getYouId());
-		 if(entityOld!=null) {
-			 entity.setId(entityOld.getId());
-		 }
-		 entity.setLastMessage(chatMessage.getContent());
-		interactiveRepository.save(entity);
-		
-	}
+    @Autowired
+    private InteractiveRepository interactiveRepository;
 
 
-	@Override
-	public List<InteractiveDto> findAll(MyUser userDetails) {
-		List<InteractiveEntity> lstEntity = new ArrayList<>();
-		if(userDetails.getRoles().contains("ROLE_ADMIN")) {
-			lstEntity= interactiveRepository.findAllByYouId((long) 0);
-		}else {
-			lstEntity= interactiveRepository.findAllByYouId(userDetails.getId());
-		}
-		List<InteractiveDto> lstDto = new ArrayList<>();
-		for(InteractiveEntity entity: lstEntity) {
-			UserEntity userEntity=userRepository.findOneById(entity.getUserId());
-			InteractiveDto dto = InteractiveMapper.convertToDto(entity,userEntity);
-			lstDto.add(dto);
-		}
-		return lstDto;
-	}
+    @Override
+    public void saveOrUpdate(MessageDto chatMessage) {
+        // TODO Auto-generated method stub
+        InteractiveEntity entity = new InteractiveEntity();
+        InteractiveEntity entityOld;
+
+        entity.setCreatedDate(new Date());
+        entity.setUserId(chatMessage.getReceiverId());
+        entity.setYouId(chatMessage.getSenderId());
+
+        entity.setStatus(0);
+        entityOld = interactiveRepository.findOneByUserIdAndYouId(entity.getUserId(), entity.getYouId());
+        if (entityOld != null) {
+            entity.setId(entityOld.getId());
+        }
+        entity.setLastMessage(chatMessage.getContent());
+        interactiveRepository.save(entity);
+
+        InteractiveEntity entity2 = new InteractiveEntity();
+        InteractiveEntity entityOld2;
+        entity2.setUserId(chatMessage.getSenderId());
+        entity2.setYouId(chatMessage.getReceiverId());
+        entity2.setStatus(0);
+        entityOld2 = interactiveRepository.findOneByUserIdAndYouId(entity2.getUserId(), entity2.getYouId());
+        if (entityOld != null) {
+            entity2.setId(entityOld2.getId());
+        }
+        entity2.setLastMessage(chatMessage.getContent());
+        interactiveRepository.save(entity2);
+
+    }
+
+
+    @Override
+    public List<InteractiveDto> findAll(MyUser userDetails) {
+        List<InteractiveEntity> lstEntity = new ArrayList<>();
+        if (userDetails.getRoles().contains("ROLE_ADMIN")) {
+            lstEntity = interactiveRepository.findAllByYouId((long) 0);
+        } else {
+            lstEntity = interactiveRepository.findAllByYouId(userDetails.getId());
+        }
+        List<InteractiveDto> lstDto = new ArrayList<>();
+        for (InteractiveEntity entity : lstEntity) {
+            UserEntity userEntity = userRepository.findOneById(entity.getUserId());
+            InteractiveDto dto = InteractiveMapper.convertToDto(entity, userEntity);
+            lstDto.add(dto);
+        }
+        return lstDto;
+    }
 
 }

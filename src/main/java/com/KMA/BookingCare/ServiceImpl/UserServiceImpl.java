@@ -1,5 +1,6 @@
 package com.KMA.BookingCare.ServiceImpl;
 
+import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Api.form.UpdateCientForm;
 import com.KMA.BookingCare.Api.form.UserForm;
 import com.KMA.BookingCare.Api.form.searchDoctorForm;
@@ -10,15 +11,22 @@ import com.KMA.BookingCare.Mapper.WorkTimeMapper;
 import com.KMA.BookingCare.Repository.*;
 import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.Service.WorkTimeService;
+import com.KMA.BookingCare.common.AESUtils;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.document.UserDocument;
 import com.KMA.BookingCare.search.UserSearchRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +36,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -79,6 +91,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MessageRepository messageRepository;
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Value("${booking_care.ui.domain}")
+    private String domain;
+
     @Override
     public void add(User user, String nameRole) {
         UserEntity userEntity = new UserEntity();
@@ -105,7 +123,7 @@ public class UserServiceImpl implements UserService {
         }
         userEntity = userRepository.save(userEntity);
         UserDocument document = UserMapper.convertToDocument(userEntity);
-        userSearchRepository.save(document);
+//        userSearchRepository.save(document);
     }
 
     @Override
@@ -204,7 +222,7 @@ public class UserServiceImpl implements UserService {
         }
         entity = userRepository.save(entity);
         UserDocument document = UserMapper.convertToDocument(entity);
-        userSearchRepository.save(document);
+//        userSearchRepository.save(document);
     }
 
     @Override
@@ -585,6 +603,63 @@ public class UserServiceImpl implements UserService {
         interactiveRepository.deleteAllByUserIdOrYouId(userIds);
         medicalRepository.deleteAllByDoctorIds(userIds);
         userRepository.deleteAllById(userIds);
+    }
+
+    @Override
+    public boolean isExistUserNameAndEmail(String userName, String email) {
+        UserEntity user = userRepository.findByUsernameAndEmail(userName, email);
+        return user != null;
+    }
+
+    @Override
+    public String createUrlResetPassword(String userName) {
+        String userNameEncrypt = AESUtils.encrypt(userName, Constant.secret);
+        String query = null;
+        try {
+            query = "username=" + userName + "&key=" + URLEncoder.encode(userNameEncrypt, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            query = "username=" + userName + "&key=" + userNameEncrypt;
+        }
+        String url = domain + "/reset-mat-khau?" + query;
+        return url;
+    }
+
+    @Override
+    public void sendMessageResetPassword(String userName) throws JsonProcessingException {
+        String url = this.createUrlResetPassword(userName);
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        UserEntity user = userRepository.findByUsername(userName);
+        NotificationResetPasswordDTO notification = new NotificationResetPasswordDTO();
+        notification.setFullName(user.getFullName());
+        notification.setEmail(user.getEmail());
+        notification.setUrl(url);
+        String json = ow.writeValueAsString(notification);
+        kafkaTemplate.send(Constant.NOTIFICATION_RESET_PASS_TOPIC, json);
+    }
+
+    @Override
+    public void changPassword(String userName, String password) {
+       String newPassword = passwordEncoder.encode(password);
+       userRepository.updatePasswordByUsername(newPassword, userName);
+    }
+
+    @Override
+    public boolean verifyUserName(String userName, String key) {
+        String decodeKey = "";
+        try {
+            decodeKey = URLDecoder.decode(key, StandardCharsets.UTF_8.name());
+        } catch (UnsupportedEncodingException e) {
+            decodeKey = key;
+        }
+        String decrypt = AESUtils.decrypt(decodeKey, Constant.secret);
+        return userName.equals(decrypt);
+    }
+
+    @Override
+    public boolean isValidSpecialtyAndHospital(DeleteForm form) {
+        List<Long> ids = form.getIds().stream().map(Long::parseLong).collect(Collectors.toList());
+        Long total = userRepository.getTotalUserBySpecialStatusOrHospitalStatus(ids, Constant.del_flg_on);
+        return total == 0L;
     }
 
     @Override
