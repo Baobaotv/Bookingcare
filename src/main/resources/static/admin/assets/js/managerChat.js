@@ -13,7 +13,7 @@ var stompClient = null;
 var username = null;
 
 // Variable call video
-const PORT = 8443;
+const PORT = 8080;
 const MAPPING = "/room";
 const peerConnectionConfig = {
 	'iceServers': [
@@ -70,7 +70,7 @@ function  sendMessage(event) {
         messageInputServer.value = '';
     }
     event.preventDefault();
-    var scroll = document.querySelector('.chat-history');
+    let scroll = document.querySelector('.chat-history');
     scroll.scrollTop = scroll.scrollHeight;
 }
 
@@ -125,7 +125,7 @@ function onMessageReceived(payload) {
     	    	   type: 'POST'
     	    	});
     }
-    var scroll = document.querySelector('.chat-history');
+    let scroll = document.querySelector('.chat-history');
     scroll.scrollTop = scroll.scrollHeight;
 }
 
@@ -159,13 +159,10 @@ function messageUser(event) {
     			   elementChat.innerHTML=elementChat.innerHTML+insertElement;
     			   
     		   });
-    	     console.log("oke");
+			   document.querySelector('.chat-history').scrollTop= document.querySelector('.chat-history').scrollHeight
     	   },
     	   type: 'POST'
     	});
-/*    .scrollHeight;*/
-    var scroll = document.querySelector('.chat-history');
-    scroll.scrollTop = scroll.scrollHeight;
 }
 
 messageFormServer.addEventListener('submit', sendMessage, true);
@@ -184,7 +181,7 @@ selectUser();
 //Start handle call video
 connectToWss();
 function connectToWss() {
-	ws = new WebSocket('wss://' + window.location.hostname + ':' + PORT + MAPPING);
+	ws = new WebSocket('ws://' + window.location.hostname + ':' + PORT + MAPPING);
 	ws.onmessage = processWsMessage;
 	ws.onopen = handleWhenOpenWs;
 	ws.onclose = logMessage;
@@ -309,6 +306,16 @@ function handleExit(signal) {
 	if (signal.data) {
 		console.log('Handle exit');
 		remoteVideo.srcObject = null;
+		if(!!localStream.getTracks()) {
+			localStream.getTracks().forEach(function (track) {
+				track.stop();
+			});
+		}
+		modal.style.display = 'none';
+		document.getElementById('modal-notification').style.display = 'block';
+		document.getElementById('modal-video').style.display = 'none';
+		connections[peerIdRTC].close();
+		delete connections[peerIdRTC];
 	}
 }
 
@@ -375,7 +382,20 @@ function handleWhenOpenWs() {
 }
 
 function handleCancel(signal) {
-	alert('da bi huy');
+	remoteVideo.srcObject = null;
+	if(!!localStream && !!localStream.getTracks()) {
+		localStream.getTracks().forEach(function (track) {
+			track.stop();
+		});
+	}
+	modal.style.display = 'none';
+	document.getElementById('modal-notification').style.display = 'none';
+	document.getElementById('modal-video').style.display = 'none';
+	if (!!connections && !!connections[peerIdRTC]) {
+		connections[peerIdRTC].close();
+		delete connections[peerIdRTC];
+	}
+	alert('Cuộc gọi đã bị từ chối');
 }
 
 function handleCallToUser(signal) {
@@ -418,14 +438,18 @@ function eventCallOff() {
 		sender: userLoginId,
 		data: peerIdRTC + 'exit',
 	});
-	localStream.getTracks().forEach(function (track) {
-		track.stop();
-	});
+	if(!!localStream && !!localStream.getTracks()) {
+		localStream.getTracks().forEach(function (track) {
+			track.stop();
+		});
+	}
 	modal.style.display = 'none';
-	document.getElementById('modal-notification').style.display = 'block';
+	document.getElementById('modal-notification').style.display = 'none';
 	document.getElementById('modal-video').style.display = 'none';
-	connections[peerIdRTC].close();
-	delete connections[peerIdRTC];
+	if (!!connections && !!connections[peerIdRTC]) {
+		connections[peerIdRTC].close();
+		delete connections[peerIdRTC];
+	}
 }
 
 function changStatusCam() {
