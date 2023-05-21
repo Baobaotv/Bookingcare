@@ -13,14 +13,12 @@ import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Repository.CommentRepository;
 import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.document.HandbookDocument;
-import com.KMA.BookingCare.search.HandbookingSearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.KMA.BookingCare.Api.form.HandbookForm;
@@ -50,9 +48,6 @@ public class HandbookServiceImpl implements HandbookService{
 	
 	@Autowired
 	private Cloudinary cloudinary;
-
-	@Autowired
-	private HandbookingSearchRepository handbookingSearchRepository;
 
 	@Autowired
 	private CommentRepository commentRepository;
@@ -91,9 +86,6 @@ public class HandbookServiceImpl implements HandbookService{
 		entity.setModifiedBy(userDetails.getUsername());
 		entity.setModifiedDate(new Date());
 		entity = handbookRepository.save(entity);
-		HandbookDocument document = convertToDocument(entity);
-		handbookingSearchRepository.save(document);
-		
 	}
 
 	@Override
@@ -116,7 +108,6 @@ public class HandbookServiceImpl implements HandbookService{
 	@Override
 	public void updateHandbookByStatus(List<String> ids, Integer status) {
 		handbookRepository.updateByStatus(ids, status);
-//		handbookingSearchRepository.deleteAllById(ids);
 	}
 
 	@Override
@@ -229,12 +220,6 @@ public class HandbookServiceImpl implements HandbookService{
 	@Override
 	public List<HandbookEntity> getAll() {
 		List<HandbookEntity> handbookEntities = handbookRepository.findAll();
-		List<HandbookDocument> documentList = new ArrayList<>();
-		for(HandbookEntity entity : handbookEntities) {
-			HandbookDocument document = this.convertToDocument(entity);
-			documentList.add(document);
-		}
-		handbookingSearchRepository.saveAll(documentList);
 		return handbookEntities;
 	}
 
@@ -281,20 +266,4 @@ public class HandbookServiceImpl implements HandbookService{
 		Long total = handbookRepository.getTotalByStatusOfSpecialty(ids, Constant.del_flg_on);
 		return total == 0L;
 	}
-
-	private HandbookDocument convertToDocument(HandbookEntity entity) {
-		HandbookDocument document = new HandbookDocument();
-		document.setId(entity.getId());
-		document.setContent(entity.getContent());
-		document.setImg(entity.getImg());
-		document.setDescription(entity.getDescription());
-		document.setCreatedBy(entity.getCreatedBy());
-		document.setStatus(entity.getStatus());
-		document.setTitle(entity.getTitle());
-		document.setModifiedBy(entity.getModifiedBy());
-		return document;
-	}
-
-
-
 }

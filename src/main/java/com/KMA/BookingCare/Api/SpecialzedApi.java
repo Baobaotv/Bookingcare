@@ -1,10 +1,11 @@
 package com.KMA.BookingCare.Api;
 
 import com.KMA.BookingCare.Api.form.DeleteForm;
+import com.KMA.BookingCare.Api.form.SpecializedForm;
 import com.KMA.BookingCare.Dto.SpecializedDto;
 import com.KMA.BookingCare.Repository.SpecializedRepository;
+import com.KMA.BookingCare.Service.SpecializedService;
 import com.KMA.BookingCare.common.Constant;
-import com.KMA.BookingCare.search.SpecializedSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.KMA.BookingCare.Api.form.SpecializedForm;
-import com.KMA.BookingCare.Service.SpecializedService;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -33,9 +30,6 @@ public class SpecialzedApi {
 
 	@Autowired
 	private SpecializedRepository specializedRepository;
-
-	@Autowired
-	private SpecializedSearchRepository specializedSearchRepository;
 
 	@Hidden
 	@PostMapping(value = "/specialized")
@@ -83,7 +77,6 @@ public class SpecialzedApi {
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		log.info("Request to delete {}", id);
 		specializedRepository.deleteById(id);
-		specializedSearchRepository.deleteById(String.valueOf(id));
 		return  ResponseEntity.noContent().build();
 	}
 

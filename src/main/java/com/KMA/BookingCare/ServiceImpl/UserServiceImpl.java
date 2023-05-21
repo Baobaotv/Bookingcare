@@ -13,8 +13,6 @@ import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.Service.WorkTimeService;
 import com.KMA.BookingCare.common.AESUtils;
 import com.KMA.BookingCare.common.Constant;
-import com.KMA.BookingCare.document.UserDocument;
-import com.KMA.BookingCare.search.UserSearchRepository;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -77,9 +75,6 @@ public class UserServiceImpl implements UserService {
     private WorkTimeRepository wkRepository;
 
     @Autowired
-    private UserSearchRepository userSearchRepository;
-
-    @Autowired
     private HandbookRepository handbookRepository;
 
     @Autowired
@@ -122,8 +117,6 @@ public class UserServiceImpl implements UserService {
             userEntity.setRoles(role);
         }
         userEntity = userRepository.save(userEntity);
-        UserDocument document = UserMapper.convertToDocument(userEntity);
-//        userSearchRepository.save(document);
     }
 
     @Override
@@ -221,8 +214,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         entity = userRepository.save(entity);
-        UserDocument document = UserMapper.convertToDocument(entity);
-//        userSearchRepository.save(document);
     }
 
     @Override
