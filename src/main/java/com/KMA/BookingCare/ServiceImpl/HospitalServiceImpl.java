@@ -1,40 +1,30 @@
 package com.KMA.BookingCare.ServiceImpl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import com.KMA.BookingCare.Dto.*;
+import com.KMA.BookingCare.Api.form.HospitalForm;
+import com.KMA.BookingCare.Dto.HospitalDto;
+import com.KMA.BookingCare.Dto.HospitalFeaturedDto;
+import com.KMA.BookingCare.Dto.MyUser;
+import com.KMA.BookingCare.Dto.SearchFullTextDto;
+import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
-import com.KMA.BookingCare.Mapper.SpecializedMapper;
+import com.KMA.BookingCare.Mapper.HospitalMapper;
 import com.KMA.BookingCare.Mapper.UserMapper;
-import com.KMA.BookingCare.Repository.CustomRepository.CustomHospitalRepository;
+import com.KMA.BookingCare.Repository.HospitalRepository;
 import com.KMA.BookingCare.Repository.UserRepository;
+import com.KMA.BookingCare.Service.HospitalService;
 import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.common.Constant;
-import com.KMA.BookingCare.document.HospitalDocument;
-import com.KMA.BookingCare.search.HospitalSearchRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.KMA.BookingCare.Api.form.HandbookForm;
-import com.KMA.BookingCare.Api.form.HospitalForm;
-import com.KMA.BookingCare.Entity.HandbookEntity;
-import com.KMA.BookingCare.Entity.HospitalEntity;
-import com.KMA.BookingCare.Entity.SpecializedEntity;
-import com.KMA.BookingCare.Mapper.HospitalMapper;
-import com.KMA.BookingCare.Repository.HospitalRepository;
-import com.KMA.BookingCare.Service.HospitalService;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import java.text.ParseException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class HospitalServiceImpl implements HospitalService{
@@ -44,9 +34,6 @@ public class HospitalServiceImpl implements HospitalService{
 
 	@Autowired
 	private Cloudinary cloudinary;
-
-	@Autowired
-	private HospitalSearchRepository hospitalSearchRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -107,9 +94,6 @@ public class HospitalServiceImpl implements HospitalService{
 		entity.setLongitude(form.getLongitude());
 		entity.setStatus(1);
 		entity = hospitalRepository.save(entity);
-//		HospitalDocument document = HospitalMapper.convertToDocument(entity);
-//		hospitalSearchRepository.save(document);
-		
 	}
 
 	@Override

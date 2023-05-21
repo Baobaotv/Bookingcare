@@ -1,37 +1,33 @@
 package com.KMA.BookingCare.ServiceImpl;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
+import com.KMA.BookingCare.Api.form.SpecializedForm;
 import com.KMA.BookingCare.Dto.*;
-import com.KMA.BookingCare.Entity.HandbookEntity;
+import com.KMA.BookingCare.Entity.SpecializedEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
+import com.KMA.BookingCare.Mapper.SpecializedMapper;
 import com.KMA.BookingCare.Mapper.UserMapper;
-import com.KMA.BookingCare.Repository.*;
+import com.KMA.BookingCare.Repository.CommentRepository;
+import com.KMA.BookingCare.Repository.HandbookRepository;
+import com.KMA.BookingCare.Repository.SpecializedRepository;
+import com.KMA.BookingCare.Repository.UserRepository;
+import com.KMA.BookingCare.Service.SpecializedService;
 import com.KMA.BookingCare.Service.UserService;
-import com.KMA.BookingCare.document.SpecializedDocument;
-import com.KMA.BookingCare.search.SpecializedSearchRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import com.KMA.BookingCare.Api.form.SpecializedForm;
-import com.KMA.BookingCare.Entity.HospitalEntity;
-import com.KMA.BookingCare.Entity.SpecializedEntity;
-import com.KMA.BookingCare.Mapper.HospitalMapper;
-import com.KMA.BookingCare.Mapper.SpecializedMapper;
-import com.KMA.BookingCare.Service.HospitalService;
-import com.KMA.BookingCare.Service.SpecializedService;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import org.springframework.util.CollectionUtils;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SpecializedServiceImpl implements SpecializedService{
@@ -41,9 +37,6 @@ public class SpecializedServiceImpl implements SpecializedService{
 
 	@Autowired
 	private Cloudinary cloudinary;
-
-	@Autowired
-	private SpecializedSearchRepository specializedSearchRepository;
 
 	@Autowired
 	private HandbookRepository handbookRepository;
@@ -122,8 +115,6 @@ public class SpecializedServiceImpl implements SpecializedService{
 		entity.setDescription(form.getDescription());
 		entity.setStatus(1);
 		entity = specializedRepository.save(entity);
-		SpecializedDocument document = SpecializedMapper.convertToDocument(entity);
-//		specializedSearchRepository.save(document);
 	}
 
 	@Override

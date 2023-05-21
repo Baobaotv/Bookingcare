@@ -1,10 +1,12 @@
 package com.KMA.BookingCare.Api;
 
+import com.KMA.BookingCare.Api.form.DeleteForm;
+import com.KMA.BookingCare.Api.form.HospitalForm;
 import com.KMA.BookingCare.Dto.HospitalDto;
 import com.KMA.BookingCare.Entity.HospitalEntity;
 import com.KMA.BookingCare.Repository.HospitalRepository;
+import com.KMA.BookingCare.Service.HospitalService;
 import com.KMA.BookingCare.common.Constant;
-import com.KMA.BookingCare.search.HospitalSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.KMA.BookingCare.Api.form.HospitalForm;
-import com.KMA.BookingCare.Api.form.DeleteForm;
-import com.KMA.BookingCare.Service.HospitalService;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 //@RequestMapping("")
@@ -36,8 +33,6 @@ public class HospitalApi {
 	@Autowired
 	private HospitalRepository hospitalRepository;
 
-	@Autowired
-	private HospitalSearchRepository hospitalSearchRepository;
 
 	@PostMapping(value = "/api/hospital")
 	public ResponseEntity<?> addHospital(@RequestBody HospitalForm form) {

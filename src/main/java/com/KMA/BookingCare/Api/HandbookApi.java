@@ -1,12 +1,11 @@
 package com.KMA.BookingCare.Api;
 
-import com.KMA.BookingCare.Api.form.HandbookForm;
 import com.KMA.BookingCare.Api.form.DeleteForm;
+import com.KMA.BookingCare.Api.form.HandbookForm;
 import com.KMA.BookingCare.Dto.HandbookDto;
 import com.KMA.BookingCare.Repository.HandbookRepository;
 import com.KMA.BookingCare.Service.HandbookService;
 import com.KMA.BookingCare.common.Constant;
-import com.KMA.BookingCare.search.HandbookingSearchRepository;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +33,6 @@ public class HandbookApi {
 
 	@Autowired
 	private HandbookRepository handbookRepository;
-	
-	@Autowired
-	private HandbookingSearchRepository handbookingSearchRepository;
 
 	@PostMapping(value = "/api/handbook")
 	public ResponseEntity<?> addHandbookApi(@RequestBody HandbookForm form) {
