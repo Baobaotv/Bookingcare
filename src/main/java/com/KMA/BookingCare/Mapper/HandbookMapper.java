@@ -3,9 +3,7 @@ package com.KMA.BookingCare.Mapper;
 import java.text.SimpleDateFormat;
 
 import com.KMA.BookingCare.Dto.HandbookDto;
-import com.KMA.BookingCare.Dto.SearchFullTextDto;
 import com.KMA.BookingCare.Entity.HandbookEntity;
-import com.KMA.BookingCare.document.HandbookDocument;
 
 public class HandbookMapper {
 	public static HandbookDto covertToDto(HandbookEntity entity) {
@@ -28,16 +26,4 @@ public class HandbookMapper {
 		return dto;
 	}
 
-	public static HandbookDocument convertToDocument(HandbookEntity entity) {
-		HandbookDocument document = new HandbookDocument();
-		document.setId(entity.getId());
-		document.setContent(entity.getContent());
-		document.setImg(entity.getImg());
-		document.setDescription(entity.getDescription());
-		document.setCreatedBy(entity.getCreatedBy());
-		document.setStatus(entity.getStatus());
-		document.setTitle(entity.getTitle());
-		document.setModifiedBy(entity.getModifiedBy());
-		return document;
-	}
 }

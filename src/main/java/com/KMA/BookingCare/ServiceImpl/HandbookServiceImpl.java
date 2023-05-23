@@ -12,7 +12,6 @@ import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Repository.CommentRepository;
 import com.KMA.BookingCare.common.Constant;
-import com.KMA.BookingCare.document.HandbookDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

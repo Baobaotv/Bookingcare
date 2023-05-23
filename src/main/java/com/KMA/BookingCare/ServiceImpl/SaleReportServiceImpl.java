@@ -11,7 +11,6 @@ import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Repository.WorkTimeRepository;
 import com.KMA.BookingCare.Service.SaleReportService;
 import com.KMA.BookingCare.common.Constant;
-import org.apache.lucene.util.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
