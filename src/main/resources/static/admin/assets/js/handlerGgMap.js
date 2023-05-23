@@ -1,7 +1,7 @@
 var kinhDo = document.getElementById("longitude");
 var viDo = document.getElementById("latitude");
-var valueKinhDo = Number(21.017254034683987);
-var valueViDo = Number(105.7899284362793);
+var valueKinhDo = Number(105.7899284362793);
+var valueViDo = Number( 21.017254034683987);
 var marker;
 initMap();
 function initMap(latInput, lngInput) {

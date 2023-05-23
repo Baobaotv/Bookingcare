@@ -54,7 +54,6 @@ $(document)
                         },
 
                         submitHandler: function (form) {
-                            alert('oke');
                         }
                     });
             $("#addHospital")
