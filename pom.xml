@@ -145,11 +145,6 @@
 		</dependency>
 		<!--spring mail-->
 
-        <!--Elasticsearch-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-		</dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

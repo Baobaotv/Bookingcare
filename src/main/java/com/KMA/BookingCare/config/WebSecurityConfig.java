@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().configurationSource(request -> {
                     var cors = new CorsConfiguration();
-                    cors.setAllowedOrigins(List.of("*", "http://192.168.1.5:3000", "http://127.0.0.1:3000","http://localhost:3000","http://165.232.161.206/:3000"));
+                    cors.setAllowedOrigins(List.of("http://192.168.1.5:3000", "http://127.0.0.1:3000","http://localhost:3000","http://165.232.161.206:3000"));
                     cors.setAllowedMethods(List.of("*"));
                     cors.setAllowedHeaders(List.of("*"));
                     return cors;
