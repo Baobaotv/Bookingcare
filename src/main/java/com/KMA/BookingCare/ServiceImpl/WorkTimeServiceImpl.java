@@ -1,10 +1,12 @@
 package com.KMA.BookingCare.ServiceImpl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.common.GetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +45,13 @@ public class WorkTimeServiceImpl implements WorkTimeService {
     @Override
     public List<WorkTimeDto> findByDateAndDoctorId(String date, Long id) {
         List<WorkTimeEntity> lstEntity = workTimeRepository.findByDateAndDoctorId(date, id);
+        Calendar calendar = Calendar.getInstance();
         List<WorkTimeDto> lstDto = new ArrayList<>();
         for (WorkTimeEntity entity : lstEntity) {
-            WorkTimeDto dto = WorkTimeMapper.convertToDto(entity);
-            lstDto.add(dto);
+            if (GetUtils.isValidWorkTime(entity.getTime(), calendar)) {
+                WorkTimeDto dto = WorkTimeMapper.convertToDto(entity);
+                lstDto.add(dto);
+            }
         }
         return lstDto;
     }

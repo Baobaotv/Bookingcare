@@ -75,4 +75,6 @@ public interface UserService {
 	boolean verifyUserName(String userName, String key);
 
 	boolean isValidSpecialtyAndHospital(DeleteForm form);
+
+	boolean isValidWorkTime(Long workTimeId);
 }

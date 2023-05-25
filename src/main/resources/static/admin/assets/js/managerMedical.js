@@ -191,7 +191,7 @@ $(document)
                 function (event) {
                     event.preventDefault();
 
-                    var values = new Array();
+                    let values = new Array();
 
 
                     $.each($("input[name='checkOne']:checked")
@@ -224,10 +224,9 @@ $(document)
             $("#changeTime").click(
                 function (event) {
                     event.preventDefault();
-                    var idMedicalChange = $("#idMedicalChange").val();
-                    var idWkChange = $("input[name='workTimeId']:checked").val();
-                    var values = {idWk: idWkChange, idMedical: idMedicalChange};
-                    var urlpath = window.location.origin;
+                    let idMedicalChange = $("#idMedicalChange").val();
+                    let idWkChange = $("input[name='workTimeId']:checked").val();
+                    let values = {idWk: idWkChange, idMedical: idMedicalChange};
                     $.ajax({
                         url: '/api/media/change-time-close',
                         type: "post",
@@ -240,9 +239,13 @@ $(document)
                             window.location.reload()
                             alert('Thay đổi thành công');
                         },
-                        error: function (error) {
+                        error: function (e) {
+                            if (!!e.responseText) {
+                                alert(e.responseText);
+                            } else {
+                                alert('Đã có lỗi xảy ra !');
+                            }
                             window.location.reload();
-                            alert('Đã có lỗi xảy ra ! Bạn chưa chọn thời gian (hoặc thời gian không thoả mãn)');
                         }
                     });
 

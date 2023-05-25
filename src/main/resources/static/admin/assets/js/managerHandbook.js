@@ -180,8 +180,8 @@ $(document)
                 function (event) {
                     event.preventDefault();
 
-                    var values = new Array();
-                    var values2 = new Array();
+                    let values = new Array();
+                    let values2 = new Array();
 
                     $.each($("input[name='checkOne']:checked")
                             .closest("td").siblings("td"),
@@ -212,6 +212,15 @@ $(document)
             $("#btnAddHandbook").click(
                 function (event) {
                     event.preventDefault();
+                    $('#id').val('');
+                    $('#title').val('');
+                    $('#specializedId').val('').change();
+                    descriptionEdittor.html.set('');
+                    $('#description').val('')
+                    contentEditor.html.set('');
+                    $('#content').val('')
+                    $('#createdBy').val('')
+                    $('#createdDate').val('')
                     $("#addHandbook").css("display", "block");
                     $("#editHandbook").css("display", "none");
                 });

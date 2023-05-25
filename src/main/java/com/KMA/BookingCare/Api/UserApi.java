@@ -206,7 +206,7 @@ public class UserApi {
         return ResponseEntity.ok(userServiceImpl.getFeaturedDoctor());
     }
 
-    @GetMapping(value = "/api/user/get-all-by specialty-workTimeId")
+    @GetMapping(value = "/api/user/get-all-by-specialty-workTimeId")
     public ResponseEntity<List<User>> getALlBySpecialzedId(@RequestParam("specialtyId") Long specialtyId,
                                                            @RequestParam("workTimeId") Long workTimeId,
                                                            @RequestParam("date") String date) {

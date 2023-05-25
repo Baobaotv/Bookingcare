@@ -187,6 +187,17 @@ $(document)
             $("#btnAddHospital").click(
                 function (event) {
                     event.preventDefault();
+                    $('#id').val('');
+                    $('#name').val('');
+                    $('#location').val('')
+                    descriptionEdittor.html.set('');
+                    $('#description').val('')
+                    $('#imgOld').val('');
+                    $('#longitude').val('');
+                    $('#latitude').val('');
+                    valueKinhDo = Number(105.7899284362793);
+                    valueViDo = Number( 21.017254034683987);
+                    initMap();
                     $("#addHospital").css("display", "block");
                     $("#editHospital").css("display", "none");
                 });

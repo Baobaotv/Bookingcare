@@ -3,7 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{admin/masterLayout.html}">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Manager Chat</title>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <link
@@ -33,10 +33,12 @@
                 <div class="card chat-app">
                     <div id="plist" class="people-list">
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-search"></i></span>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <p class="form-control">Danh sách tin nhắn</p>
+<!--                            <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text"><i class="fa fa-search"></i></span>-->
+<!--                            </div>-->
+<!--                            <p class="form-control">Danh sách tin nhắn</p>-->
+<!--                            <input type="text" class="form-control" placeholder="Search...">-->
                         </div>
                         <ul class="list-unstyled chat-list mt-2 mb-0" id="showLstUser">
 
@@ -62,7 +64,7 @@
                                 <div class="col-lg-6">
                                     <a href="javascript:void(0);" data-toggle="modal"
                                        data-target="#view_info"> <img
-                                            src="https://bootdey.com/img/Content/avatar/avatar2.png" id="avatar"
+                                            th:src="@{/client/img/avatarDefault.jpeg}" id="avatar"
                                             alt="avatar">
                                     </a>
                                     <div class="chat-about">
@@ -135,7 +137,7 @@
 
     <div class="modal" id="modal-wrapper">
         <div class='modal-notification' id='modal-notification'>
-            <p class='modal-notification-title'>Nguy?n Xu�n B?o ?ang g?i cho b?n'</p>
+            <p class='modal-notification-title'>Nguy?n Xuân B?o ?ang g?i cho b?n'</p>
             <p class='modal-notification-desc'>'Cu?c g?i s? b?t ??u ngay khi b?n ch?p nh?n'</p>
             <div class='modal-notification-icon'>
                 <div class='wrapper-icon-cancel' id='btnCancel'>

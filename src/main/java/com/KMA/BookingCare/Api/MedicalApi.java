@@ -151,11 +151,19 @@ public class MedicalApi {
 	public ResponseEntity<?> changTimeClose(@RequestBody ChangeTimeCloseForm changeTimeCloseForm) throws JsonProcessingException {
 		log.info("Request to changTimeClose {}");
 		System.out.println(changeTimeCloseForm.getIdWk()+"-"+ changeTimeCloseForm.getIdMedical());
+		boolean isValidDateChangeTimeClose = medicalServiceImpl.isValidDateChangeTimeClose(changeTimeCloseForm);
+		if(!isValidDateChangeTimeClose) {
+			return ResponseEntity.badRequest().body("Ca khám đã quá hạn hoặc chưa đến thời gian thực hiện ca khám, xin vui lòng kiểm tra lại");
+		}
+		boolean isValidTimeChangeTimeClose = medicalServiceImpl.isValidTimeChangeTimeClose(changeTimeCloseForm);
+		if(!isValidTimeChangeTimeClose) {
+			return ResponseEntity.badRequest().body("Chưa đến thời gian bắt đầu ca khám, không thể thay đổi thời gian kết thúc");
+		}
 		boolean result = medicalServiceImpl.changTimeClose(changeTimeCloseForm);
 		if (result) {
-			return  ResponseEntity.ok(HttpStatus.OK);
+			return ResponseEntity.ok(HttpStatus.OK);
 		} else {
-			return  ResponseEntity.badRequest().build();
+			return ResponseEntity.badRequest().body("Thời gian kết thúc không hợp lệ, xin vui lòng chọn lại");
 		}
 	}
 

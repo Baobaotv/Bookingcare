@@ -37,4 +37,7 @@ public interface MedicalExaminationScheduleService {
 	boolean isMedicalCompletePayment(List<String> ids);
 
 	boolean isAllMedicalCompletePayment(List<String> ids);
+
+	boolean isValidTimeChangeTimeClose(ChangeTimeCloseForm changeTimeCloseForm);
+	boolean isValidDateChangeTimeClose(ChangeTimeCloseForm changeTimeCloseForm);
 }

@@ -55,17 +55,21 @@ function onError(error) {
 }
 
 function  sendMessage(event) {
-    var messageContent = messageInputServer.value.trim();
+	if(!idUser) {
+		event.preventDefault();
+		return;
+	}
+    let messageContent = messageInputServer.value.trim();
     if(messageContent && stompClient) {
     	username = document.querySelector('#userName').innerText.trim();
-        var chatMessage = {
+        let chatMessage = {
             receiver: username,
             senderId: myId.defaultValue,
             receiverId: idUser,
             content: messageInputServer.value,
         };
         stompClient.send("/app/sendToUSer", {}, JSON.stringify(chatMessage));
-        var insertElement='<li class="clearfix">'+'<div class="message-data text-right">'+'<span class="message-data-time">10:10 AM, Today</span>'+'<img src="https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-hand-drawn-cartoon-male-doctor-elements-element-png-image_602590.jpg" alt="avatar">'+'</div> <div class="message other-message float-right">'+messageContent +' </div>'+'</li>'
+        let insertElement='<li class="clearfix">'+'<div class="message-data text-right">'+'<span class="message-data-time">Today</span>'+'<img src="https://png.pngtree.com/png-vector/20190130/ourlarge/pngtree-hand-drawn-cartoon-male-doctor-elements-element-png-image_602590.jpg" alt="avatar">'+'</div> <div class="message other-message float-right">'+messageContent +' </div>'+'</li>'
         elementChat.innerHTML=elementChat.innerHTML+insertElement;
         messageInputServer.value = '';
     }

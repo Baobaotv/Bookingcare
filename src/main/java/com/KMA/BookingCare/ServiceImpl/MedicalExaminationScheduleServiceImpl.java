@@ -1,5 +1,6 @@
 package com.KMA.BookingCare.ServiceImpl;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -7,8 +8,9 @@ import java.util.stream.Collectors;
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
 import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
 import com.KMA.BookingCare.Dto.NotificationChangeTimeDTO;
-import com.KMA.BookingCare.Dto.NotificationResetPasswordDTO;
 import com.KMA.BookingCare.Dto.NotificationScheduleDTO;
+import com.KMA.BookingCare.Entity.WorkTimeEntity;
+import com.KMA.BookingCare.Repository.WorkTimeRepository;
 import com.KMA.BookingCare.common.Constant;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -30,6 +32,7 @@ import com.KMA.BookingCare.Mapper.MedicalMapper;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
 import com.KMA.BookingCare.Repository.UserRepository;
 import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
+import org.springframework.util.CollectionUtils;
 
 @Service
 public class MedicalExaminationScheduleServiceImpl implements MedicalExaminationScheduleService {
@@ -48,6 +51,9 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 
 	@Autowired
 	private Cloudinary cloudinary;
+
+	@Autowired
+	private WorkTimeRepository workTimeRepository;
 	
 	@Override
 	public Long  save(BookingForm form) throws JsonProcessingException {
@@ -131,6 +137,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		MedicalExaminationScheduleEntity itemUpdate = medicalRepository.findById(changeTimeCloseForm.getIdMedical()).get();
 		if(!validateChangTimeClose(changeTimeCloseForm, itemUpdate)) return false;
 		String date = "";
+		String dateOld = "";
 		Long count = medicalRepository.countMedicalWhenChangeWk(
 				itemUpdate.getDate(),itemUpdate.getDoctor().getId(), itemUpdate.getWorkTimeID(), idWk
 		);
@@ -143,26 +150,34 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			sendKafkaNotification(itemUpdate, Constant.NOTIFICATION_TYPE_CHANGE_SCHEDULE);
 		} else {
 			// lst medical, id > changTimeClose.idMedical
+			boolean isDataOfNewDate = false;
 			do {
-				List<MedicalExaminationScheduleEntity> lst = new ArrayList<>();
+				List<MedicalExaminationScheduleEntity> lst;
 				if (Strings.isEmpty(date)) {
 					// lst get theo id
-					lst = medicalRepository.findAllByDateAnđoctorId(itemUpdate.getDate(), itemUpdate.getDoctor().getId());
+					lst = medicalRepository.findAllByDateAndDoctorId(itemUpdate.getDate(), itemUpdate.getDoctor().getId(), itemUpdate.getWorkTimeID());
 				}else {
 					// lst get theo id va date
-					lst = medicalRepository.findAllByDateAnđoctorId(date, itemUpdate.getDoctor().getId());
+					if (date.equals(dateOld)) break;
+					lst = medicalRepository.findAllByDateAndDoctorId(date, itemUpdate.getDoctor().getId());
+					dateOld = date;
+					isDataOfNewDate = true;
 				}
 
+				if(CollectionUtils.isEmpty(lst)) break;
 				for (MedicalExaminationScheduleEntity item : lst) {
+					if (item.getWorkTimeID() == idWk) {
+						break;
+					}
 					if (item.getWorkTimeID() < idWk ) {
-						if (idWk <= 16 ) {
+						if (idWk <= 4 ) {
 							// truong hop tang nhưng chua vuot qua ca cuoi ngay
 							item.setWorkTimeID(idWk);
 							idWk = idWk +1;
-
 						} else {
 							// truong hop vuot qua ca cuoi ngay
 							//cong ngay
+							isDataOfNewDate = false;
 							if(Strings.isEmpty(date) || Strings.isBlank(date)) {
 								date = plusDate(itemUpdate.getDate());
 							} else {
@@ -174,9 +189,12 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 							idWk ++;
 						}
 						lstUpdate.add(item);
-					} else {
-						if(!date.equals(itemUpdate.getDate()) && !Strings.isEmpty(date)) {
+					}
+					else {
+						if(isDataOfNewDate) break;
+						if(!Strings.isEmpty(date)) {
 							item.setWorkTimeID(idWk);
+							item.setDate(date);
 							idWk = idWk +1;
 						} else {
 							date = "";
@@ -184,10 +202,11 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 						}
 					}
 				}
-			} while (Strings.isEmpty(date) || Strings.isBlank(date));
-			medicalRepository.saveAll(lstUpdate);
-			sendKafkaNotification(lstUpdate, Constant.NOTIFICATION_TYPE_CHANGE_SCHEDULE);
-//			sendMail(lstUpdate);
+			} while (!Strings.isBlank(date));
+			if (!CollectionUtils.isEmpty(lstUpdate)) {
+				medicalRepository.saveAll(lstUpdate);
+				sendKafkaNotification(lstUpdate, Constant.NOTIFICATION_TYPE_CHANGE_SCHEDULE);
+			}
 		}
 		return  true;
 	}
@@ -315,6 +334,28 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		return Objects.equals(Long.valueOf(ids.size()), total);
 	}
 
+	@Override
+	public boolean isValidTimeChangeTimeClose(ChangeTimeCloseForm changeTimeCloseForm) {
+		MedicalExaminationScheduleEntity medical = medicalRepository.findById(changeTimeCloseForm.getIdMedical()).get();
+		WorkTimeEntity workTime = workTimeRepository.findById(medical.getWorkTimeID()).get();
+		Calendar calendar = Calendar.getInstance();
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		String timeStart = workTime.getTime().split("-")[0];
+		int hourStart = Integer.parseInt(timeStart.split("h")[0]);
+		String timeEnd = workTime.getTime().split("-")[1];
+		int hourEnd = Integer.parseInt(timeEnd.split("h")[0]);
+		return ((hourStart <= hour && hour <= hourEnd) || hourEnd <= hour);
+	}
+
+	@Override
+	public boolean isValidDateChangeTimeClose(ChangeTimeCloseForm changeTimeCloseForm) {
+		MedicalExaminationScheduleEntity medical = medicalRepository.findById(changeTimeCloseForm.getIdMedical()).get();
+		Date currentDate = new Date();
+		SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+		String dateToString = sp.format(currentDate);
+		return medical.getDate().equals(dateToString);
+	}
+
 	public String plusDate(String date) {
 		String[] arr = date.split("-");
 		LocalDate l = LocalDate.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
@@ -383,5 +424,33 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		String json = ow.writeValueAsString(dto);
 		kafkaTemplate.send(Constant.NOTIFICATION_TOPIC, json);
 	}
+
+//	public static void main(String[] args) {
+
+//
+//		boolean isValid = false;
+//		WorkTimeEntity workTime = new WorkTimeEntity();
+//		workTime.setTime("9h-10h");
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.set(2023, 05, 26, 8, 0);
+//		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+//		int minus = calendar.get(Calendar.MINUTE);
+//		int hourCheckBook = hour;
+//		if (minus > 0) {
+//			hourCheckBook = hour + 1;
+//		}
+//		String timeStart = workTime.getTime().split("-")[0];
+//		int hourStart = Integer.parseInt(timeStart.split("h")[0]);
+//		String timeEnd = workTime.getTime().split("-")[1];
+//		int hourEnd = Integer.parseInt(timeEnd.split("h")[0]);
+//		if ( (hourStart<= hour && hour <= hourEnd) || hourStart - 1 < hourCheckBook) {
+//			isValid= false;
+//		} else {
+//			isValid= true;
+//		}
+//
+//
+//		System.out.println(isValid);
+//	}
 
 }

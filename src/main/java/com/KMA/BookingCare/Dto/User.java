@@ -206,6 +206,7 @@ public class User {
 		this.setSex(entity.getSex());
 		this.setPhone(entity.getPhoneNumber());
 		this.setLocation(entity.getLocation());
+		this.setExaminationPrice(entity.getExaminationPrice());
 		if(entity.getHospital()!=null) {
 			this.setHospitalId(entity.getHospital().getId());
 		}

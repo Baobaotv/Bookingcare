@@ -43,7 +43,8 @@
                     </a>
                         <ul class="submenu ">
                             <li class="submenu-item "><a href="managerSpecialized">Danh sách chuyên khoa</a></li>
-                            <li class="submenu-item "><a href="managerUDeleteSpecialized">Danh sách chuyên khoa đã xoá</a></li>
+                            <li class="submenu-item "><a href="managerUDeleteSpecialized">Danh sách chuyên khoa đã
+                                xoá</a></li>
                         </ul>
                     </li>
                 </th:block>
@@ -65,7 +66,8 @@
                     </a>
                         <ul class="submenu ">
                             <li class="submenu-item "><a href="managerHospital">Danh sách cơ sở y tế</a></li>
-                            <li class="submenu-item "><a href="managerUDeleteHospital">Danh sách cơ sở y tế đã xoá</a></li>
+                            <li class="submenu-item "><a href="managerUDeleteHospital">Danh sách cơ sở y tế đã xoá</a>
+                            </li>
                         </ul>
                     </li>
                 </th:block>
@@ -90,14 +92,16 @@
                         <li class="submenu-item "><a href="managerMedicalCancel">Lịch khám đã huỷ </a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item  has-sub"><a href="#"
-                                                     class='sidebar-link'> <i class="bi bi-graph-up"></i></i>
-                    <span>Báo cáo</span>
-                </a>
-                    <ul class="submenu ">
-                        <li class="submenu-item "><a href="salesReport">Báo cáo doanh thu </a></li>
-                    </ul>
-                </li>
+                <th:block th:if="${#session.getAttribute('userDetails').roles.contains('ROLE_ADMIN')}">
+                    <li class="sidebar-item  has-sub"><a href="#"
+                                                         class='sidebar-link'> <i class="bi bi-graph-up"></i></i>
+                        <span>Báo cáo</span>
+                    </a>
+                        <ul class="submenu ">
+                            <li class="submenu-item "><a href="salesReport">Báo cáo doanh thu </a></li>
+                        </ul>
+                    </li>
+                </th:block>
 
                 <li class="sidebar-item  has-sub"><a href="#"
                                                      class='sidebar-link'><i class="bi bi-person-fill"></i><span>Thông tin cá nhân
@@ -106,7 +110,7 @@
                     <ul class="submenu ">
                         <li class="submenu-item "><a href="editProfile">Chỉnh sửa thông tin cá nhân</a></li>
                         <li class="submenu-item "><a href="/logout">Đăng xuất</a></li>
-                        <li class="submenu-item "><a href="/home">Chuyển tới giao diện người dùng</a></li>
+<!--                        <li class="submenu-item "><a href="/home">Chuyển tới giao diện người dùng</a></li>-->
 
                     </ul>
                 </li>

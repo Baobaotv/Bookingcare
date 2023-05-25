@@ -32,9 +32,15 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 								  @Param("startId") Long startId, @Param("endId") Long endId);
 
 	@Query(value = "select * from medical_examination_schedule m \n" +
-			"where m.date = :date and m.doctor_id =:doctorId \n" +
+			"where m.date = :date and m.doctor_id =:doctorId AND status = 1 " +
 			"order by work_time_id asc", nativeQuery = true)
-	List<MedicalExaminationScheduleEntity> findAllByDateAnđoctorId(@Param("date") String date,@Param("doctorId")Long doctorId);
+	List<MedicalExaminationScheduleEntity> findAllByDateAndDoctorId(@Param("date") String date, @Param("doctorId")Long doctorId);
+
+	@Query(value = "select * from medical_examination_schedule m \n" +
+			"where m.date = :date and m.doctor_id =:doctorId AND status = 1 AND m.work_time_id >= :currentWkId " +
+			"order by work_time_id asc", nativeQuery = true)
+	List<MedicalExaminationScheduleEntity> findAllByDateAndDoctorId(@Param("date") String date, @Param("doctorId")Long doctorId,
+																	@Param("currentWkId") Long currentWkId);
 
 	@Query(value = "SELECT DATE_FORMAT(m.createdDate, :formatTime) as time, sum(m.examinationPrice) as price " +
 			"FROM MedicalExaminationScheduleEntity m " +

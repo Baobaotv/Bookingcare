@@ -13,6 +13,7 @@ import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.Service.WorkTimeService;
 import com.KMA.BookingCare.common.AESUtils;
 import com.KMA.BookingCare.common.Constant;
+import com.KMA.BookingCare.common.GetUtils;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -390,11 +391,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private void getWorkTimesOfDoctor(Page<User> userPage) {
+        Calendar calendar = Calendar.getInstance();
         for (User doctor : userPage.getContent()) {
             List<Long> workTimeScheduled = medicalRepository.findAllWorkTimeIdByDateAndDoctorIdAndStatus(doctor.getId(), String.valueOf(new Date()));
             List<WorkTimeDto> lstWk = new ArrayList<>(doctor.getLstWorkTime());
             for (WorkTimeDto wk : doctor.getLstWorkTime()) {
-                if (workTimeScheduled.contains(wk.getId())) {
+                if (workTimeScheduled.contains(wk.getId()) || !GetUtils.isValidWorkTime(wk.getTime(), calendar)) {
                     lstWk.remove(wk);
                 }
             }
@@ -484,7 +486,12 @@ public class UserServiceImpl implements UserService {
         UserEntity entity = userRepository.findOneById(id);
         List<WorkTimeEntity> lstWkEntity = wkRepository.findByDateAndDoctorId(date, id);
         Set<WorkTimeEntity> workTimeEntities = new HashSet<>(lstWkEntity);
-        List<WorkTimeDto> dtos = workTimeEntities.stream().map(WorkTimeMapper::convertToDto).collect(Collectors.toList());
+        Calendar calendar = Calendar.getInstance();
+        List<WorkTimeEntity> lstWkValid = workTimeEntities
+                .stream()
+                .filter((e) -> GetUtils.isValidWorkTime(e.getTime(), calendar))
+                .collect(Collectors.toList());
+        List<WorkTimeDto> dtos = lstWkValid.stream().map(WorkTimeMapper::convertToDto).collect(Collectors.toList());
         User dto = UserMapper.convertToDto(entity);
         dto.setLstWorkTime(dtos);
         return dto;
@@ -651,6 +658,13 @@ public class UserServiceImpl implements UserService {
         List<Long> ids = form.getIds().stream().map(Long::parseLong).collect(Collectors.toList());
         Long total = userRepository.getTotalUserBySpecialStatusOrHospitalStatus(ids, Constant.del_flg_on);
         return total == 0L;
+    }
+
+    @Override
+    public boolean isValidWorkTime(Long workTimeId) {
+        WorkTimeEntity wk = wkRepository.findById(workTimeId).get();
+
+        return false;
     }
 
     @Override

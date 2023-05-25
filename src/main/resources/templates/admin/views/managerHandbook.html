@@ -6,6 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Quản lý bài viết</title>
+    <style>
+        .limit-line * {
+            font-size: 1rem !important;
+            font-weight: 400 !important;
+            font-family: Nunito !important;
+        }
+    </style>
 </head>
 <body>
 <section class="row" layout:fragment="content">
@@ -250,10 +257,10 @@
                                 <td class="d-flex justify-content-center get "><input
                                         id="checkOne" name="checkOne" type="checkbox" th:value="${itemHandbook.id}"
                                 ></td>
-                                <td style="text-align: center;" th:utext="${itemHandbook.title}"></td>
+                                <td style="text-align: center;" class="limit-line" th:utext="${itemHandbook.title}"></td>
                                 <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
                                     th:utext="${itemHandbook.specializedId}"></td>
-                                <td style="text-align: center;" th:utext="${itemHandbook.description}"></td>
+                                <td style="text-align: center;" th:utext="${itemHandbook.description}" class="limit-line"></td>
                                 <td style="display: none; visibility: hidden; width: 0px !important; height: 0px !important;"
                                     th:utext="${itemHandbook.content}"></td>
                                 <td style="text-align: center;" th:utext="${itemHandbook.specialized}"></td>
