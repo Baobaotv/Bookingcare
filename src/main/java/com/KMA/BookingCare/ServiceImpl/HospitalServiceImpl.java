@@ -202,6 +202,12 @@ public class HospitalServiceImpl implements HospitalService{
 	}
 
 	@Override
+	public Integer getTotalByStatus(Integer status, Pageable pageable) {
+		Page<HospitalEntity> page = hospitalRepository.findAllByStatusPage(status,pageable);
+		return page.getTotalPages();
+	}
+
+	@Override
 	public Page<HospitalDto> findAllByStatusApi(Integer status, Pageable pageable) {
 		Page<HospitalDto> page = hospitalRepository.findAllByStatusApi(1,pageable);
 		return page;

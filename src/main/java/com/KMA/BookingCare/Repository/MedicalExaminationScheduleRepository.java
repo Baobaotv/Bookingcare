@@ -3,6 +3,8 @@ package com.KMA.BookingCare.Repository;
 import java.time.LocalDate;
 import java.util.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +18,16 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 	@Query(value = "SELECT work_time_id FROM medical_examination_schedule where doctor_id=:id and date=:date and status =1",nativeQuery = true)
 	List<Long> findAllWorkTimeIdByDateAndDoctorIdAndStatus(@Param("id") Long id,@Param("date") String date);
 	List<MedicalExaminationScheduleEntity> findAllByStatus(Integer status);
+
+	@Query("SELECT m FROM MedicalExaminationScheduleEntity AS m WHERE m.status = :status")
+	Page<MedicalExaminationScheduleEntity> findAllByStatusPage(@Param("status") Integer status, Pageable pageable);
+
 	List<MedicalExaminationScheduleEntity> findAllByDoctorIdAndStatus(Long doctorID,Integer Status);
+
+	@Query("SELECT m FROM MedicalExaminationScheduleEntity AS m WHERE m.doctor.id = :doctorId AND m.status = :status")
+	Page<MedicalExaminationScheduleEntity> findAllByDoctorIdAndStatusAndPage(@Param("doctorId") Long doctorId,
+																			 @Param("status") Integer status,
+																			 Pageable pageable);
 	List<MedicalExaminationScheduleEntity> findAllByUserIdAndStatus(Long userId, Integer status);
 	
 	@Transactional
@@ -141,4 +152,7 @@ public interface MedicalExaminationScheduleRepository extends JpaRepository<Medi
 
 	@Query(value = "SELECT count(*) FROM medical_examination_schedule WHERE status_payment = :status AND id in :ids", nativeQuery = true)
 	Long isMedicalCompletePayment(@Param("status") Integer status,@Param("ids") List<String> ids);
+
+	@Query(value = "SELECT work_time_id FROM medical_examination_schedule where doctor_id=:id and date=:date and status =1 and work_time_id in (:wkIds)",nativeQuery = true)
+	List<Long> findAllWorkTimeIdByDateAndDoctorIdAndWorkTimeIdAndStatus(@Param("id") Long id,@Param("date") String date, @Param("wkIds") List<Long> wkIds);
 }

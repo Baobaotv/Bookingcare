@@ -1,6 +1,25 @@
 $(document)
     .ready(
         function () {
+            (function () {
+                let currentPage = parseInt($('#currentPage').val());
+                currentPage = !!currentPage ? currentPage : 1;
+
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: $('#totalPage').val(),
+                    visiblePages: 4,
+                    startPage: parseInt(currentPage),
+                    onPageClick: function (event, page) {
+                        if (page != parseInt($('#currentPage').val())) {
+                            $('#page').val(page);
+                            let url = window.location.pathname;
+                            $('#formPagination').attr('action', url)
+                            $('#formPagination').submit();
+                        }
+                    }
+
+                });
+            })();
             var count = 0;
             $("#btnComplete")
                 .click(

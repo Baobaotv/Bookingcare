@@ -23,9 +23,11 @@ public class SpecializedController {
     public String specializedPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 3);
         List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAllByStatus(Constant.del_flg_off, pageable);
+        Integer totalPage = specializedServiceImpl.getTotalByStatus(Constant.del_flg_off, pageable);
         model.addAttribute("lstSpecialized", lstSpecialized);
         Integer curentPage = page;
         model.addAttribute("curentPage", curentPage);
+        model.addAttribute("totalPage", totalPage);
         return "admin/views/managerSpecialized";
     }
 
@@ -33,9 +35,11 @@ public class SpecializedController {
     public String uDeleteSpecializedPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 3);
         List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAllByStatus(Constant.del_flg_on, pageable);
+        Integer totalPage = specializedServiceImpl.getTotalByStatus(Constant.del_flg_on, pageable);
         model.addAttribute("lstSpecialized", lstSpecialized);
         Integer curentPage = page;
         model.addAttribute("curentPage", curentPage);
+        model.addAttribute("totalPage", totalPage);
         return "admin/views/managerSpecializedUDelete";
     }
 }

@@ -55,6 +55,7 @@ public class UserManagerController {
                                  @ModelAttribute searchDoctorForm form) {
         Pageable pageable = PageRequest.of(page - 1, 3);
         List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable, Constant.del_flg_off);
+        Integer totalPage = userServiceImpl.searchTotalPageDoctorAndPageable(form, "ADMIN", pageable, Constant.del_flg_off);
         List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
         List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
         List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
@@ -66,6 +67,7 @@ public class UserManagerController {
         model.addAttribute("lstUser", lstUser);
         model.addAttribute("formSearch", form);
         model.addAttribute("curentPage", page);
+        model.addAttribute("totalPage", totalPage);
         return "admin/views/managerUser";
     }
 
@@ -74,6 +76,7 @@ public class UserManagerController {
                                  @ModelAttribute searchDoctorForm form) {
         Pageable pageable = PageRequest.of(page - 1, 3);
         List<User> lstUser = userServiceImpl.searchDoctorAndPageable(form, "ADMIN", pageable, Constant.del_flg_on);
+        Integer totalPage = userServiceImpl.searchTotalPageDoctorAndPageable(form, "ADMIN", pageable, Constant.del_flg_on);
         List<HospitalDto> lstHospital = hospitalServiceImpl.findAll();
         List<SpecializedDto> lstSpecialized = specializedServiceImpl.findAll();
         List<WorkTimeDto> lstWorkTime = workTimeServiceImpl.findAll();
@@ -85,6 +88,7 @@ public class UserManagerController {
         model.addAttribute("lstUser", lstUser);
         model.addAttribute("formSearch", form);
         model.addAttribute("curentPage", page);
+        model.addAttribute("totalPage", totalPage);
         return "admin/views/managerUserUDelete";
     }
 

@@ -39,6 +39,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -92,6 +93,9 @@ public class UserServiceImpl implements UserService {
 
     @Value("${booking_care.ui.domain}")
     private String domain;
+
+    @Autowired
+    private HolidayRepository holidayRepository;
 
     @Override
     public void add(User user, String nameRole) {
@@ -353,7 +357,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<User> findAllDoctorOfSpecializedApi(Long specialized, Integer status, Pageable pageable) {
         Page<User> userPage = userRepository.findAllBySpecializedApi(specialized, status, pageable);
-        SimpleDateFormat sf = new SimpleDateFormat();
         getWorkTimesOfDoctor(userPage);
         return userPage;
     }
@@ -393,10 +396,15 @@ public class UserServiceImpl implements UserService {
     private void getWorkTimesOfDoctor(Page<User> userPage) {
         Calendar calendar = Calendar.getInstance();
         for (User doctor : userPage.getContent()) {
+            List<Long> wkInHolidays = holidayRepository.getWorkTimeIdByDateAndDoctorId(doctor.getId(), new Date());
             List<Long> workTimeScheduled = medicalRepository.findAllWorkTimeIdByDateAndDoctorIdAndStatus(doctor.getId(), String.valueOf(new Date()));
             List<WorkTimeDto> lstWk = new ArrayList<>(doctor.getLstWorkTime());
             for (WorkTimeDto wk : doctor.getLstWorkTime()) {
-                if (workTimeScheduled.contains(wk.getId()) || !GetUtils.isValidWorkTime(wk.getTime(), calendar)) {
+                if (workTimeScheduled.contains(wk.getId())
+                        ||
+                        !GetUtils.isValidWorkTime(wk.getTime(), calendar)
+                        || wkInHolidays.contains(wk.getId())
+                ) {
                     lstWk.remove(wk);
                 }
             }
@@ -478,18 +486,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findOneDoctorAndWorktime(Long id, String date) {
+    public User findOneDoctorAndWorktime(Long id, String date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         if (Strings.isBlank(date)) {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             date = formatter.format(new Date());
         }
+        Date currentDate = new Date();
+        boolean isSameDate = date.equals(formatter.format(currentDate));
         UserEntity entity = userRepository.findOneById(id);
         List<WorkTimeEntity> lstWkEntity = wkRepository.findByDateAndDoctorId(date, id);
+        List<Long> wkInHolidays = holidayRepository.getWorkTimeIdByDateAndDoctorId(id, formatter.parse(date));
         Set<WorkTimeEntity> workTimeEntities = new HashSet<>(lstWkEntity);
         Calendar calendar = Calendar.getInstance();
         List<WorkTimeEntity> lstWkValid = workTimeEntities
                 .stream()
-                .filter((e) -> GetUtils.isValidWorkTime(e.getTime(), calendar))
+                .filter((e) ->
+                        !wkInHolidays.contains(e.getId())
+                        &&
+                        (!isSameDate || GetUtils.isValidWorkTime(e.getTime(), calendar)))
                 .collect(Collectors.toList());
         List<WorkTimeDto> dtos = lstWkValid.stream().map(WorkTimeMapper::convertToDto).collect(Collectors.toList());
         User dto = UserMapper.convertToDto(entity);
@@ -539,6 +553,14 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAllBySpecialtyIdAndWorkTimeId(specialtyId, workTimeId);
         List<Long> userIds = users.stream().map(User::getId).collect(Collectors.toList());
         List<MedicalExaminationScheduleEntity> medicalExaminationSchedule = medicalRepository.findAllByDoctorIdsAndDate(userIds, date);
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateSearch = new Date();
+        try {
+             dateSearch = sp.parse(date);
+        } catch (Exception e) {
+
+        }
+        List<HolidayEntity> holidays = holidayRepository.getAllByDateAndDoctorIdAndWkId(userIds, dateSearch);
         List<Long> userIdsRemove = new ArrayList<>();
         for (User user : users) {
             for (MedicalExaminationScheduleEntity medical : medicalExaminationSchedule) {
@@ -550,6 +572,20 @@ public class UserServiceImpl implements UserService {
                 List<WorkTimeDto> workTimeDto = user.getLstWorkTime()
                         .stream()
                         .filter(e -> !Objects.equals(e.getId(), medical.getWorkTimeID()))
+                        .collect(Collectors.toList());
+                user.setLstWorkTime(workTimeDto);
+            }
+
+            for (HolidayEntity holiday : holidays) {
+                if (!Objects.equals(user.getId(), holiday.getUser().getId())) continue;
+                List<Long> ids = holiday.getWorkTimes().stream().map(WorkTimeEntity::getId).collect(Collectors.toList());
+                if (ids.contains(workTimeId)) {
+                    userIdsRemove.add(holiday.getUser().getId());
+                    continue;
+                }
+                List<WorkTimeDto> workTimeDto = user.getLstWorkTime()
+                        .stream()
+                        .filter(e -> !ids.contains(e.getId()))
                         .collect(Collectors.toList());
                 user.setLstWorkTime(workTimeDto);
             }
@@ -683,6 +719,16 @@ public class UserServiceImpl implements UserService {
             lstDto.add(dto);
         }
         return lstDto;
+    }
+
+    @Override
+    public Integer searchTotalPageDoctorAndPageable(searchDoctorForm form, String roleUser, Pageable page, Integer status) {
+        List<Integer> roleIds;
+        if ("ADMIN".equals(roleUser)) roleIds = List.of(1, 2);
+        else roleIds = List.of(2);
+        Integer totalElement = userRepository.searchToTalHandbookAndPageable(form.getName(), form.getSpecializedId(), form.getHospitalId(), roleIds, status);
+        Integer remainder = totalElement % page.getPageSize();
+        return remainder > 0 ? (totalElement / page.getPageSize()) + 1 : totalElement / page.getPageSize();
     }
 
     @Override

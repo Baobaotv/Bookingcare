@@ -6,10 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Manager Hospital</title>
-<!--    <script src="https://maps.googleapis.com/maps/api/js?client=gme-mitsuifudosanrealty&libraries=places&language=vi&region=VI&callback=initMap"-->
-<!--            async defer></script>-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj66MWiAybK9pgxDBNSC3-rf5BrO5oV2o&libraries=places&language=vi&region=VI&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?client=gme-mitsuifudosanrealty&libraries=places&language=vi&region=VI&callback=initMap"
             async defer></script>
+<!--    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCj66MWiAybK9pgxDBNSC3-rf5BrO5oV2o&libraries=places&language=vi&region=VI&callback=initMap"-->
+<!--            async defer></script>-->
     <style>
         .pac-container {
             z-index: 10000 !important;
@@ -284,6 +284,7 @@
 
         </div>
     </div>
+    <input type="hidden" th:value="${totalPage}" id="totalPage"/>
 </section>
 <script layout:fragment="js" th:src="@{/admin/assets/js/managerHospital.js}"></script>
 <script layout:fragment="jsMap" th:src="@{/admin/assets/js/handlerGgMap.js}"></script>

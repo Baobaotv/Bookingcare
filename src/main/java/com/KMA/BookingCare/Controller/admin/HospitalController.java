@@ -23,7 +23,9 @@ public class HospitalController {
     public String hospitalPage(Model model, @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 3);
         List<HospitalDto> lstHospital = hospitalServiceImpl.findAllByStatus(Constant.del_flg_off, pageable);
+        Integer totalPage = hospitalServiceImpl.getTotalByStatus(Constant.del_flg_off, pageable);
         model.addAttribute("lstHospital", lstHospital);
+        model.addAttribute("totalPage", totalPage);
         Integer curentPage = page;
         model.addAttribute("curentPage", curentPage);
         return "admin/views/managerHospital";
@@ -34,7 +36,9 @@ public class HospitalController {
                                       @RequestParam(required = false, name = "page", defaultValue = "1") Integer page) {
         Pageable pageable = PageRequest.of(page - 1, 3);
         List<HospitalDto> lstHospital = hospitalServiceImpl.findAllByStatus(Constant.del_flg_on, pageable);
+        Integer totalPage = hospitalServiceImpl.getTotalByStatus(Constant.del_flg_on, pageable);
         model.addAttribute("lstHospital", lstHospital);
+        model.addAttribute("totalPage", totalPage);
         Integer curentPage = page;
         model.addAttribute("curentPage", curentPage);
         return "admin/views/managerHospitalUDelete";

@@ -27,6 +27,9 @@ public interface HospitalRepository extends JpaRepository<HospitalEntity, Long>,
 
 	List<HospitalEntity> findAllByStatus(Integer status,Pageable pageable);
 
+	@Query("SELECT h FROM HospitalEntity AS h WHERE h.status = :status")
+	Page<HospitalEntity> findAllByStatusPage(@Param("status") Integer status,Pageable pageable);
+
 	@Query(value = "select * from hospital where status =:status limit 5", nativeQuery = true)
 	List<HospitalEntity> findRandomSpecicalized(@Param("status") Integer status);
 

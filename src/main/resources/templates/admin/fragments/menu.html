@@ -92,6 +92,25 @@
                         <li class="submenu-item "><a href="managerMedicalCancel">Lịch khám đã huỷ </a></li>
                     </ul>
                 </li>
+
+                <li class="sidebar-item  has-sub"><a href="#"
+                                                     class='sidebar-link'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-calendar" viewBox="0 0 16 16">
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                    </svg>
+                    <span>Cài đặt ngày nghỉ</span>
+                </a>
+                    <ul class="submenu ">
+                        <th:block th:if="${#session.getAttribute('userDetails').roles.contains('ROLE_DOCTOR')}">
+                            <li class="submenu-item "><a href="managerHoliday">Ngày nghỉ của tôi </a></li>
+                        </th:block>
+                        <th:block th:if="${#session.getAttribute('userDetails').roles.contains('ROLE_ADMIN')}">
+                            <li class="submenu-item "><a href="managerHoliday">Danh sách ngày nghỉ</a></li>
+                        </th:block>
+                    </ul>
+                </li>
+
                 <th:block th:if="${#session.getAttribute('userDetails').roles.contains('ROLE_ADMIN')}">
                     <li class="sidebar-item  has-sub"><a href="#"
                                                          class='sidebar-link'> <i class="bi bi-graph-up"></i></i>
@@ -110,7 +129,7 @@
                     <ul class="submenu ">
                         <li class="submenu-item "><a href="editProfile">Chỉnh sửa thông tin cá nhân</a></li>
                         <li class="submenu-item "><a href="/logout">Đăng xuất</a></li>
-<!--                        <li class="submenu-item "><a href="/home">Chuyển tới giao diện người dùng</a></li>-->
+                        <!--                        <li class="submenu-item "><a href="/home">Chuyển tới giao diện người dùng</a></li>-->
 
                     </ul>
                 </li>

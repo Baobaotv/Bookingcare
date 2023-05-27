@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -97,6 +99,24 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	}
 
 	@Override
+	public List<MedicalExaminationScheduleDto> findAllByStatusPage(Integer status, Pageable pageable) {
+		Page<MedicalExaminationScheduleEntity> page = medicalRepository.findAllByStatusPage(status, pageable);
+		List<MedicalExaminationScheduleEntity> lst = page.getContent();
+		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<>();
+		for(MedicalExaminationScheduleEntity entity : lst) {
+			MedicalExaminationScheduleDto dto = MedicalMapper.convertToDto(entity);
+			lstDto.add(dto);
+		}
+		return lstDto;
+	}
+
+	@Override
+	public Integer getToTalByStatusPage(Integer status, Pageable pageable) {
+		Page<MedicalExaminationScheduleEntity> page = medicalRepository.findAllByStatusPage(status, pageable);
+		return page.getTotalPages();
+	}
+
+	@Override
 	public List<MedicalExaminationScheduleDto> findAllByDoctorIdAndStatus(Long doctorID, Integer Status) {
 		List<MedicalExaminationScheduleEntity> lstEntity = medicalRepository.findAllByDoctorIdAndStatus(doctorID, Status);
 		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<MedicalExaminationScheduleDto>();
@@ -105,6 +125,24 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	@Override
+	public List<MedicalExaminationScheduleDto> findAllByDoctorIdAndStatusPage(Long doctorID, Integer Status, Pageable pageable) {
+		Page<MedicalExaminationScheduleEntity> pages = medicalRepository.findAllByDoctorIdAndStatusAndPage(doctorID, Status, pageable);
+		List<MedicalExaminationScheduleEntity> lstEntity = pages.getContent();
+		List<MedicalExaminationScheduleDto> lstDto = new ArrayList<>();
+		for(MedicalExaminationScheduleEntity entity : lstEntity) {
+			MedicalExaminationScheduleDto dto = MedicalMapper.convertToDto(entity);
+			lstDto.add(dto);
+		}
+		return lstDto;
+	}
+
+	@Override
+	public Integer getTotalByDoctorIdAndStatusPage(Long doctorID, Integer Status, Pageable pageable) {
+		Page<MedicalExaminationScheduleEntity> pages = medicalRepository.findAllByDoctorIdAndStatusAndPage(doctorID, Status, pageable);
+		return pages.getTotalPages();
 	}
 
 	@Override

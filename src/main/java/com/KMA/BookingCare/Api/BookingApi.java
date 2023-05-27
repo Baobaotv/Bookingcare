@@ -1,5 +1,6 @@
 package com.KMA.BookingCare.Api;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -62,7 +63,7 @@ public class BookingApi {
 	}
 	
 	@PostMapping(value = "/changedate")
-	public ResponseEntity<?> changeDate(@RequestBody ChangeDateForm form) {
+	public ResponseEntity<?> changeDate(@RequestBody ChangeDateForm form) throws ParseException {
 	List<WorkTimeDto> lstDtos = workTimeserviceImpl.findByDateAndDoctorId(form.getDate(), form.getIdDoctor());
 	 return new ResponseEntity<Object>(lstDtos, HttpStatus.OK);
 	}

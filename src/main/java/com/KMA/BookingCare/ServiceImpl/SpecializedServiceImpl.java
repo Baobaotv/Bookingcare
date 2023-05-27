@@ -188,5 +188,11 @@ public class SpecializedServiceImpl implements SpecializedService{
 		specializedRepository.deleteAllById(specialedIds);
 	}
 
+	@Override
+	public Integer getTotalByStatus(Integer status, Pageable pageable) {
+		Page<SpecializedEntity> lstEntity = specializedRepository.findAllByStatusPage(status,pageable);
+		return lstEntity.getTotalPages();
+	}
+
 
 }

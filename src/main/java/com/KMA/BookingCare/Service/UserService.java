@@ -1,6 +1,7 @@
 package com.KMA.BookingCare.Service;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import com.KMA.BookingCare.Api.form.*;
@@ -38,11 +39,13 @@ public interface UserService {
 
 	List<User> searchDoctorAndPageable( searchDoctorForm form, String roleUser, Pageable page, Integer status);
 
+	Integer searchTotalPageDoctorAndPageable( searchDoctorForm form, String roleUser, Pageable page, Integer status);
+
 	Page<User> findAllDoctor(Pageable pageable);
 	
 	
 	//tìm bác sĩ và lịch khám trống của nó
-	User findOneDoctorAndWorktime(Long id, String date);
+	User findOneDoctorAndWorktime(Long id, String date) throws ParseException;
 	
 	String findPeerIdById(Long id);
 	Integer updatePeerId(String peerId, Long id);

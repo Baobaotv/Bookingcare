@@ -28,4 +28,6 @@ public interface SpecializedService {
 	boolean isExistItemRelationWithSpecialIsUsing(List<String> ids);
 
 	void delete(List<String> ids);
+
+	Integer getTotalByStatus(Integer status,Pageable pageable);
 }
