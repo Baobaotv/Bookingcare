@@ -20,6 +20,9 @@ public interface SpecializedRepository extends JpaRepository<SpecializedEntity, 
 	SpecializedEntity findOneById(Long Id);
 	List<SpecializedEntity> findAllByStatus(Integer status,Pageable pageable);
 
+	@Query(value = "SELECT s FROM SpecializedEntity AS s WHERE s.status = :status")
+	Page<SpecializedEntity> findAllByStatusPage(@Param("status") Integer status,Pageable pageable);
+
 	@Query(value = "select * from specialized where status =:status limit 5 ", nativeQuery = true)
 	List<SpecializedEntity> findRandomSpecicalized(@Param("status") Integer status);
 

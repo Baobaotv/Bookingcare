@@ -1,5 +1,6 @@
 package com.KMA.BookingCare.Controller.client;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -136,7 +137,7 @@ public class HomeClientController {
 
 	//done
 	@GetMapping(value="/bac-si/{id}")
-	public String  infoDoctor(Model model,@PathVariable("id") Long id){
+	public String  infoDoctor(Model model,@PathVariable("id") Long id) throws ParseException {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String strDate = formatter.format(new Date());
 		User user= userServiceImpl.findOneDoctorAndWorktime(id, strDate);

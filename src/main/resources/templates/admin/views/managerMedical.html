@@ -404,6 +404,16 @@
                         </th:block>
                         </tbody>
                     </table>
+                    <div class="container d-flex align-items-center justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination" id="pagination"></ul>
+                        </nav>
+                    </div>
+                    <form action="" method="GET" id="formPagination">
+                        <input type="hidden" id="page" name="page"/>
+                        <input type="hidden" th:value="${currentPage}" id="currentPage"/>
+                        <input type="hidden" th:value="${totalPage}" id="totalPage"/>
+                    </form>
                 </div>
             </div>
         </div>

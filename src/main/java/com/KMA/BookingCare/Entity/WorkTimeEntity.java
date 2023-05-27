@@ -1,17 +1,19 @@
 package com.KMA.BookingCare.Entity;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "workTime")
+@Getter
+@Setter
 public class WorkTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,40 +28,6 @@ public class WorkTimeEntity {
 	@ManyToMany(mappedBy = "workTimeEntity")
 	private Set<UserEntity> userEntities;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
-	}
-
-	public Set<UserEntity> getUserEntities() {
-		return userEntities;
-	}
-
-	public void setUserEntities(Set<UserEntity> userEntities) {
-		this.userEntities = userEntities;
-	}
-	
-	
-	
-	
-	
+	@ManyToMany(mappedBy = "workTimes")
+	private Set<HolidayEntity> holidays;
 }

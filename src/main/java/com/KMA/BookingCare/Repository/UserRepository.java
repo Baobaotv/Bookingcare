@@ -84,6 +84,16 @@ public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomU
 												   @Param("roleIds") List<Integer> roleIds,
 												   @Param("status") Integer status);
 
+	@Query(value = "SELECT count(*)" +
+			" FROM user u ,user_role ur WHERE u.id= ur.user_id AND ur.role_id in (:roleIds) AND u.status = :status AND u.full_name   LIKE CONCAT('%',:fullName,'%')" +
+			" AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)" +
+			" AND  ( (:hospitalId IS NOT NULL AND hospital_id =:hospitalId) || :hospitalId IS NULL)",nativeQuery = true)
+	Integer searchToTalHandbookAndPageable(@Param("fullName") String fullName,
+											   @Param("specializedId") Long specializedId,
+											   @Param("hospitalId") Long hospitalId,
+											   @Param("roleIds") List<Integer> roleIds,
+											   @Param("status") Integer status);
+
 
 	Boolean existsByUsername(String username);
 

@@ -52,7 +52,7 @@ $(document)
                 let curentPage = parseInt($('#curentPage').val());
 
                 window.pagObj = $('#pagination').twbsPagination({
-                    totalPages: 10,
+                    totalPages: $('#totalPage').val(),
                     visiblePages: 4,
                     startPage: parseInt(curentPage),
                     onPageClick: function (event, page) {

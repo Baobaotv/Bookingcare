@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -146,14 +147,14 @@ public class UserApi {
 
     //get thong tin bac si
     @GetMapping(value = "/api/user/doctor/{id}")
-    public ResponseEntity<User> infoDoctor(@PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date) {
+    public ResponseEntity<User> infoDoctor(@PathVariable("id") Long id, @RequestParam(value = "date", required = false) String date) throws ParseException {
         log.info("Request to infoDocter");
         User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping(value = "/api/user/doctor-by-medical/{id}")
-    public ResponseEntity<?> infoDoctorByMedicalId(@PathVariable("id") Long id) {
+    public ResponseEntity<?> infoDoctorByMedicalId(@PathVariable("id") Long id) throws ParseException {
         log.info("Request to infoDocter");
         UserDetailsImpl userDetails = userDetailsService.getUserDetailsImplFromContext();
         Optional<MedicalExaminationScheduleEntity> entity = medicalService.findOneByIdAndUserId(id, userDetails.getId());

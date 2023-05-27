@@ -19,6 +19,8 @@ public interface HospitalService {
 	Page<HospitalDto> findAllByStatusApi(Integer status, Pageable pageable);
 	List<HospitalDto> findAllByStatus(Integer status);
 	List<HospitalDto> findAllByStatus(Integer status, Pageable pageable);
+
+	Integer getTotalByStatus(Integer status, Pageable pageable);
 	List<HospitalDto>  findRandomSpecicalized();
 	HospitalEntity findOneById(Long id);
 

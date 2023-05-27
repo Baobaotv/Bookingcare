@@ -1,6 +1,8 @@
 package com.KMA.BookingCare.Entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
-@Data
+@Getter
+@Setter
 public class UserEntity {
 	
 	@Id
@@ -56,8 +59,7 @@ public class UserEntity {
 	private String email;
 	
 	private String img;
-	
-	
+
 	private String yearOfBirth;
 	
 	private Integer status;
@@ -70,31 +72,9 @@ public class UserEntity {
 		return shortDescription;
 	}
 
-
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;
 	}
-
-
-	public String getPeerId() {
-		return peerId;
-	}
-
-
-	public void setPeerId(String peerId) {
-		this.peerId = peerId;
-	}
-
-
-	public List<HandbookEntity> getLstHandbook() {
-		return lstHandbook;
-	}
-
-
-	public void setLstHandbook(List<HandbookEntity> lstHandbook) {
-		this.lstHandbook = lstHandbook;
-	}
-
 
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinTable(name = "user_role",
@@ -116,185 +96,20 @@ public class UserEntity {
 	@JoinColumn(name = "hospitalId")
 	private HospitalEntity hospital;
 	
-	
 	@OneToMany(mappedBy = "user")
-	private List<HandbookEntity> lstHandbook=new ArrayList<HandbookEntity>();
-	
+	private List<HandbookEntity> lstHandbook=new ArrayList<>();
 
-	
 	@OneToMany(mappedBy = "doctor")
-	private List<MedicalExaminationScheduleEntity> medical=new ArrayList<MedicalExaminationScheduleEntity>();
+	private List<MedicalExaminationScheduleEntity> medical=new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
-	private List<MedicalExaminationScheduleEntity> medicalUser=new ArrayList<MedicalExaminationScheduleEntity>();
+	private List<MedicalExaminationScheduleEntity> medicalUser=new ArrayList<>();
 	
 	@OneToMany(mappedBy = "user")
-	private List<CommentEntity> comment =new ArrayList<CommentEntity>();
-	
+	private List<CommentEntity> comment =new ArrayList<>();
 
-	public List<MedicalExaminationScheduleEntity> getMedicalUser() {
-		return medicalUser;
-	}
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<HolidayEntity> holidayEntities = new ArrayList<>();
 
 
-	public void setMedicalUser(List<MedicalExaminationScheduleEntity> medicalUser) {
-		this.medicalUser = medicalUser;
-	}
-
-
-	public List<MedicalExaminationScheduleEntity> getMedical() {
-		return medical;
-	}
-
-
-	public void setMedical(List<MedicalExaminationScheduleEntity> medical) {
-		this.medical = medical;
-	}
-
-
-	public Integer getStatus() {
-		return status;
-	}
-
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-
-	public Set<RoleEntity> getRoles() {
-		return roles;
-	}
-
-
-	public void setRoles(Set<RoleEntity> roles) {
-		this.roles = roles;
-	}
-
-	
-	public String getYearOfBirth() {
-		return yearOfBirth;
-	}
-
-	public void setYearOfBirth(String yearOfBirth) {
-		this.yearOfBirth = yearOfBirth;
-	}
-
-
-	public String getFullName() {
-		return fullName;
-	}
-
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-
-	public Set<WorkTimeEntity> getWorkTimeEntity() {
-		return workTimeEntity;
-	}
-
-	public void setWorkTimeEntity(Set<WorkTimeEntity> workTimeEntity) {
-		this.workTimeEntity = workTimeEntity;
-	}
-
-
-	public UserEntity() {
-		super();
-	}
-	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getSex() {
-		return sex;
-	}
-
-	public void setSex(String sex) {
-		this.sex = sex;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-
-	
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public SpecializedEntity getSpecialized() {
-		return specialized;
-	}
-
-
-	public void setSpecialized(SpecializedEntity specialized) {
-		this.specialized = specialized;
-	}
-
-
-	public HospitalEntity getHospital() {
-		return hospital;
-	}
-
-
-	public void setHospital(HospitalEntity hospital) {
-		this.hospital = hospital;
-	}
-	
 }

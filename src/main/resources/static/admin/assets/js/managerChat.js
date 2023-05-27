@@ -11,6 +11,7 @@ var btnCallServer = document.querySelector('#btnCallServer');
 var myId = document.querySelector('#myId');
 var stompClient = null;
 var username = null;
+var uuidInBig;
 
 // Variable call video
 const PORT = 8080;

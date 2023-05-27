@@ -1,11 +1,11 @@
 package com.KMA.BookingCare.ServiceImpl;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import com.KMA.BookingCare.Repository.HolidayRepository;
 import com.KMA.BookingCare.common.GetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,9 @@ public class WorkTimeServiceImpl implements WorkTimeService {
 
     @Autowired
     private WorkTimeRepository workTimeRepository;
+
+    @Autowired
+    private HolidayRepository holidayRepository;
 
     @Override
     public List<WorkTimeDto> findAll() {
@@ -43,12 +46,17 @@ public class WorkTimeServiceImpl implements WorkTimeService {
     }
 
     @Override
-    public List<WorkTimeDto> findByDateAndDoctorId(String date, Long id) {
+    public List<WorkTimeDto> findByDateAndDoctorId(String date, Long id) throws ParseException {
         List<WorkTimeEntity> lstEntity = workTimeRepository.findByDateAndDoctorId(date, id);
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        Date currentDate = new Date();
+        boolean isSameDate = sp.format(currentDate).equals(date);
+        List<Long> wkIdInHoliday = holidayRepository.getWorkTimeIdByDateAndDoctorId(id, sp.parse(date));
         Calendar calendar = Calendar.getInstance();
         List<WorkTimeDto> lstDto = new ArrayList<>();
         for (WorkTimeEntity entity : lstEntity) {
-            if (GetUtils.isValidWorkTime(entity.getTime(), calendar)) {
+            if(wkIdInHoliday.contains(entity.getId())) continue;
+            if (!isSameDate || GetUtils.isValidWorkTime(entity.getTime(), calendar)) {
                 WorkTimeDto dto = WorkTimeMapper.convertToDto(entity);
                 lstDto.add(dto);
             }

@@ -4,7 +4,7 @@ $(document)
             (function () {
                 let currentPage = parseInt($('#curentPage').val());
                 window.pagObj = $('#pagination').twbsPagination({
-                    totalPages: 10,
+                    totalPages: $('#totalPage').val(),
                     visiblePages: 4,
                     startPage: parseInt(currentPage),
                     onPageClick: function (event, page) {
