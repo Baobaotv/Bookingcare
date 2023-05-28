@@ -61,6 +61,27 @@ public class BookingApi {
 		}
 		return ResponseEntity.ok(medicalServiceImpl.save(form));
 	}
+
+	@PostMapping(value = "/booking-mobile")
+	public ResponseEntity<?>  bookingForMobild(@RequestBody BookingForm form, HttpSession session) throws JsonProcessingException {
+		try {
+			if(session.getAttribute("userDetails")!=null) {
+				MyUser user =(MyUser) session.getAttribute("userDetails");
+				form.setUserId(user.getId());
+			} else {
+				log.info("login by app");
+				Object result = SecurityContextHolder.getContext().getAuthentication()
+						.getPrincipal();
+				UserDetailsImpl user = (UserDetailsImpl) result;
+				MyUser userDetails = UserMapper.convertToMyUser(user);
+				form.setUserId(userDetails.getId());
+			}
+		}catch (Exception e){
+			log.error(e.getMessage());
+		}
+		medicalServiceImpl.save(form);
+		return ResponseEntity.ok(true);
+	}
 	
 	@PostMapping(value = "/changedate")
 	public ResponseEntity<?> changeDate(@RequestBody ChangeDateForm form) throws ParseException {

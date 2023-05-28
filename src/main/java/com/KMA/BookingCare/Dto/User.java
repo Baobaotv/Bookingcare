@@ -3,9 +3,11 @@ package com.KMA.BookingCare.Dto;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.Mapper.WorkTimeMapper;
+import com.KMA.BookingCare.common.Constant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.logging.log4j.util.Strings;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -199,7 +201,7 @@ public class User {
 
 	public User(UserEntity entity) {
 		this.setId(entity.getId());
-		this.setImg(entity.getImg());
+		this.setImg(Strings.isBlank(entity.getImg()) ? Constant.default_avatar : entity.getImg());
 		this.setName(entity.getFullName());
 		this.setDescription(entity.getDescription());
 		this.setShortDescription(entity.getShortDescription());
@@ -236,14 +238,14 @@ public class User {
 	public User(Long id, String name, String img, String shortDescription) {
 		this.id = id;
 		this.name = name;
-		this.img = img;
+		this.img = Strings.isBlank(img) ? Constant.default_avatar : img;
 		this.shortDescription = shortDescription;
 	}
 
 	public User(Long id, String name, String img, String specializedName, String shortDescription) {
 		this.id = id;
 		this.name = name;
-		this.img = img;
+		this.img = Strings.isBlank(img) ? Constant.default_avatar : img;
 		this.specializedName = specializedName;
 		this.shortDescription = shortDescription;
 	}

@@ -1,7 +1,12 @@
 package com.KMA.BookingCare.Dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class JwtReponse {
 
     private String token;
@@ -16,6 +21,8 @@ public class JwtReponse {
 
     private List<String> roles;
 
+    private String fullName;
+
 
     public JwtReponse() {
     }
@@ -29,11 +36,12 @@ public class JwtReponse {
         this.roles = roles;
     }
 
-    public JwtReponse(String token, Long id, String username, List<String> roles) {
+    public JwtReponse(String token, Long id, String username, List<String> roles, String fullName) {
         this.token = token;
         this.id = id;
         this.username = username;
         this.roles = roles;
+        this.fullName = fullName;
     }
 
     public String getToken() {

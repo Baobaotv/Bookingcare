@@ -80,7 +80,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 			UserEntity userEntity2= userRepository.findOneById(form.getUserId());
 			entity.setUser(userEntity2);
 		}
-		entity.setStatusPayment(form.getStatusPayment());
+		entity.setStatusPayment(form.getStatusPayment() == null ? Constant.payment_unPaid : form.getStatusPayment());
 		entity.setCreatedDate(new Date());
 		entity = medicalRepository.save(entity);
 //		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);

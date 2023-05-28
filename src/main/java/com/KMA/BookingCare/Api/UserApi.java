@@ -3,9 +3,8 @@ package com.KMA.BookingCare.Api;
 import com.KMA.BookingCare.Api.form.*;
 import com.KMA.BookingCare.Dto.User;
 import com.KMA.BookingCare.Dto.UserInput;
+import com.KMA.BookingCare.Dto.WorkTimeDto;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
-import com.KMA.BookingCare.Service.HospitalService;
-import com.KMA.BookingCare.Service.SpecializedService;
 import com.KMA.BookingCare.Service.UserService;
 import com.KMA.BookingCare.ServiceImpl.MedicalExaminationScheduleServiceImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
@@ -21,11 +20,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,12 +38,6 @@ public class UserApi {
 
     @Autowired
     private UserService userServiceImpl;
-
-    @Autowired
-    private SpecializedService specializedServiceImpl;
-
-    @Autowired
-    private HospitalService hospitalServiceImpl;
 
     @Autowired
     private MedicalExaminationScheduleServiceImpl medicalService;
@@ -248,5 +244,27 @@ public class UserApi {
     public ResponseEntity<?> changePassword(@RequestBody ResetPasswordForm form) {
         userServiceImpl.changPassword(form.getUserName(), form.getPassword());
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping(value = "/api/user/docter")
+    public ResponseEntity<Page<User>> findAllDoctorAPI(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        log.debug("Request to get all doctor");
+        Page<User> page = userServiceImpl.findAllDoctor(pageable);
+        return ResponseEntity.ok(page);
+    }
+
+    //get thong tin bac si
+    @GetMapping(value="/api/user/docter/{id}")
+    public ResponseEntity<User>  infoDoctor(Model model, @PathVariable("id") Long id) throws ParseException {
+        log.info("Request to infoDocter");
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sp.format(new Date());
+        User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
+        WorkTimeDto dot = new WorkTimeDto();
+        dot.setId(1L);
+        dot.setName("Ca 1");
+        dot.setTime("7h-9h");
+        user.setLstWorkTime(List.of(dot));
+        return ResponseEntity.ok(user);
     }
 }

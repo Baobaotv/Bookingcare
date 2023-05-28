@@ -14,13 +14,15 @@ import com.KMA.BookingCare.Entity.RoleEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
+import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.common.GetUtils;
+import org.apache.logging.log4j.util.Strings;
 
 public class UserMapper {
 	public static User convertToDto(UserEntity entity) {
 		User dto = new User();
 		dto.setId(entity.getId());
-		dto.setImg(entity.getImg());
+		dto.setImg(Strings.isBlank(entity.getImg()) ? Constant.default_avatar : entity.getImg());
 		dto.setName(entity.getFullName());
 		dto.setDescription(entity.getDescription());
 		dto.setShortDescription(entity.getShortDescription());
@@ -69,7 +71,7 @@ public class UserMapper {
 		MyUser myUser= new MyUser(user.getUsername(), user.getPassword(), true, true, true, true, user.getAuthorities());
 		myUser.setFullName(user.getFullName());
 		myUser.setId(user.getId());
-		myUser.setImg(user.getImg());
+		myUser.setImg(Strings.isBlank(user.getImg()) ? Constant.default_avatar : user.getImg());
 		List<String> lstRole= new ArrayList<String>();
 		user.getAuthorities().forEach(p-> {
 			lstRole.add(p.getAuthority());

@@ -71,7 +71,7 @@ public class AuthApi {
         return ResponseEntity.ok(new JwtReponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                roles));
+                roles, myUser.getFullName()));
     }
 
 

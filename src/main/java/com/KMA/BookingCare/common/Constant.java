@@ -70,4 +70,6 @@ public class Constant {
 
     public static final String secret = "PBKDF2WithHmacSHA256";
 
+    public static final String default_avatar = "https://res.cloudinary.com/dtvkhopoe/image/upload/v1685261437/avatarDefault_xlxtba.webp";
+
 }
