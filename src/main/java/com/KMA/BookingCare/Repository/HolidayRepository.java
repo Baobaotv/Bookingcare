@@ -36,4 +36,9 @@ public interface HolidayRepository extends JpaRepository<HolidayEntity, Long> {
 
     @Query("SELECT h FROM HolidayEntity h INNER JOIN h.workTimes AS wk WHERE h.user.id in (:doctorIds) AND DATE_FORMAT(h.date,'%Y-%m-%d') = DATE_FORMAT(:date,'%Y-%m-%d')")
     List<HolidayEntity> getAllByDateAndDoctorIdAndWkId(@Param("doctorIds") List<Long> doctorIds, @Param("date") Date date);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM HolidayEntity h WHERE h.user.id in (:userIds)")
+    void deleteAllByUserIds(@Param("userIds") List<Long> userIds);
 }

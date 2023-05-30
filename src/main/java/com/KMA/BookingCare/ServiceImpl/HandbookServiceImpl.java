@@ -193,6 +193,19 @@ public class HandbookServiceImpl implements HandbookService{
 	}
 
 	@Override
+	public Integer getTotalHandbookAndPageable(searchHandbookForm form, Long userId, Pageable page) {
+		if(form.getTitle()==null||form.getTitle().equals("")) {
+			form.setTitle("");
+		}
+		Integer totalElement = handbookRepository.getTotalHandbookAndPageable(form.getTitle(),
+				form.getSpecializedId(),
+				userId,
+				Constant.del_flg_off);
+		Integer remainder = totalElement % page.getPageSize();
+		return remainder > 0 ? (totalElement / page.getPageSize()) + 1 : totalElement / page.getPageSize();
+	}
+
+	@Override
 	public List<HandbookDto> searchHandbookUDeleteAndPageable(searchHandbookForm form, Long userId, Pageable page) {
 		if(form.getTitle()==null||form.getTitle().equals("")) {
 			form.setTitle("");
@@ -208,6 +221,18 @@ public class HandbookServiceImpl implements HandbookService{
 			lstDto.add(dto);
 		}
 		return lstDto;
+	}
+
+	public Integer getTotalHandbookUDeleteAndPageable(searchHandbookForm form, Long userId, Pageable page) {
+		if(form.getTitle()==null||form.getTitle().equals("")) {
+			form.setTitle("");
+		}
+		Integer totalElement = handbookRepository.getTotalHandbookAndPageable(form.getTitle(),
+				form.getSpecializedId(),
+				userId,
+				Constant.del_flg_on);
+		Integer remainder = totalElement % page.getPageSize();
+		return remainder > 0 ? (totalElement / page.getPageSize()) + 1 : totalElement / page.getPageSize();
 	}
 
 	@Override

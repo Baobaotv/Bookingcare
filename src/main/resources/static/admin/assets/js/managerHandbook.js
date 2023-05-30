@@ -31,9 +31,11 @@ $(document)
             })();
             (function () {
                 var curentPage = parseInt($('#curentPage').val());
+                curentPage = !!curentPage ? curentPage : 1;
+                if(!$('#totalPage').val() || $('#totalPage').val() == 0) return;
 
                 window.pagObj = $('#pagination').twbsPagination({
-                    totalPages: 10,
+                    totalPages: $('#totalPage').val(),
                     visiblePages: 4,
                     startPage: parseInt(curentPage),
                     onPageClick: function (event, page) {

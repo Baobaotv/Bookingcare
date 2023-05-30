@@ -260,11 +260,11 @@ public class UserApi {
         SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
         String date = sp.format(new Date());
         User user = userServiceImpl.findOneDoctorAndWorktime(id, date);
-        WorkTimeDto dot = new WorkTimeDto();
-        dot.setId(1L);
-        dot.setName("Ca 1");
-        dot.setTime("7h-9h");
-        user.setLstWorkTime(List.of(dot));
+//        WorkTimeDto dot = new WorkTimeDto();
+//        dot.setId(1L);
+//        dot.setName("Ca 1");
+//        dot.setTime("7h-9h");
+//        user.setLstWorkTime(List.of(dot));
         return ResponseEntity.ok(user);
     }
 }

@@ -149,7 +149,7 @@
 									<th:block th:each="itemlstWorkTimeUser : ${userDto.lstWorkTime}">
 										<div class="form-check form-check-inline">
 											<input checked class="form-check-input  " type="checkbox"
-												name="workTimeIdOld" id=""
+												name="workTimeIdOld" id="" onclick="return false;"
 												th:value="${itemlstWorkTimeUser.id}"> <label
 												th:utext="${itemlstWorkTimeUser.time}" class="form-check-label "
 												for="inlineCheckbox1"></label>

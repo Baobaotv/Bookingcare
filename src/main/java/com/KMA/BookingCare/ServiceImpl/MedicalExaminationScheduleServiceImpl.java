@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Api.form.ChangeTimeCloseForm;
 import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
-import com.KMA.BookingCare.Dto.NotificationChangeTimeDTO;
-import com.KMA.BookingCare.Dto.NotificationScheduleDTO;
+import com.KMA.BookingCare.Dto.*;
 import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.Repository.WorkTimeRepository;
+import com.KMA.BookingCare.Service.MessageService;
 import com.KMA.BookingCare.common.Constant;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -27,7 +27,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.KMA.BookingCare.Api.form.BookingForm;
-import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Mapper.MedicalMapper;
@@ -56,6 +55,12 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 
 	@Autowired
 	private WorkTimeRepository workTimeRepository;
+
+	@Autowired
+	private InteractiveServiceImpl interactiveService;
+
+	@Autowired
+	private MessageService messageService;
 	
 	@Override
 	public Long  save(BookingForm form) throws JsonProcessingException {
@@ -75,7 +80,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		entity.setExaminationPrice(userEntity.getExaminationPrice());
 		entity.setYearOfBirth(form.getYearOfBirth());
 		entity.setStatus(1);
-		entity.setType(form.getType());
+		entity.setType(form.getType() == null ? "off" : form.getType());
 		if(form.getUserId() != null) {
 			UserEntity userEntity2= userRepository.findOneById(form.getUserId());
 			entity.setUser(userEntity2);
@@ -85,6 +90,60 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 		entity = medicalRepository.save(entity);
 //		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);
 		return entity.getId();
+	}
+
+	@Override
+	public Long saveForMobile(BookingForm form) throws JsonProcessingException {
+		MedicalExaminationScheduleEntity entity= new MedicalExaminationScheduleEntity();
+		entity.setDate(form.getDate());
+		entity.setLocation(form.getLocation());
+		entity.setNamePatient(form.getNamePatient());
+		entity.setNameScheduler(form.getNameScheduler());
+		entity.setPhonePatient(form.getPhonePatient());
+		entity.setPhoneScheduer(form.getPhoneScheduer());
+		entity.setReason(form.getReason());
+		entity.setSex(form.getSex());
+		entity.setWorkTimeID(form.getIdWorktime());
+		UserEntity userEntity= userRepository.findOneById(form.getIdDoctor());
+		entity.setHospitalName(userEntity.getHospital().getName());
+		entity.setDoctor(userEntity);
+		entity.setExaminationPrice(userEntity.getExaminationPrice());
+		entity.setYearOfBirth(form.getYearOfBirth());
+		entity.setStatus(1);
+		entity.setType(form.getType() == null ? "off" : form.getType());
+		if(form.getUserId() != null) {
+			UserEntity userEntity2= userRepository.findOneById(form.getUserId());
+			entity.setUser(userEntity2);
+		}
+		entity.setStatusPayment(form.getStatusPayment() == null ? Constant.payment_unPaid : form.getStatusPayment());
+		entity.setCreatedDate(new Date());
+		entity = medicalRepository.save(entity);
+		if("on".equals(entity.getType())) {
+			sendMessage(entity);
+		}
+//		sendKafkaNotification(entity, Constant.NOTIFICATION_TYPE_USER_BOOKING_SCHEDULE);
+		return entity.getId();
+	}
+
+	private void sendMessage(MedicalExaminationScheduleEntity entity) {
+		WorkTimeEntity wk = workTimeRepository.findById(entity.getWorkTimeID()).get();
+		StringBuilder content= new StringBuilder("Lịch khám online vào ngày: ");
+		content.append(entity.getDate());
+		content.append(" , khoảng thời gian: ");
+		content.append(wk.getTime());
+
+		MessageDto messageDoctor= new MessageDto();
+		messageDoctor.setContent(content.toString());
+		messageDoctor.setSenderId(entity.getUser().getId());
+		messageDoctor.setReceiverId(entity.getDoctor().getId());
+
+		MessageDto messageUser= new MessageDto();
+		messageUser.setContent(content.toString());
+		messageUser.setSenderId(entity.getDoctor().getId());
+		messageUser.setReceiverId(entity.getUser().getId());
+
+		interactiveService.saveOrUpdate(messageDoctor);
+		messageService.save(messageDoctor);
 	}
 
 	@Override

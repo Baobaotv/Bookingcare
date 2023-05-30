@@ -49,6 +49,14 @@ public interface HandbookRepository extends JpaRepository<HandbookEntity, Long>,
 												   @Param("status") Integer status,
 												   Pageable page);
 
+	@Query(value = "SELECT count(*) FROM handbook h  where h.status = :status AND title like CONCAT('%',:title,'%') "
+			+ "AND  ( (:specializedId IS NOT NULL AND specialized_id =:specializedId) || :specializedId IS NULL)"
+			+ "AND ( (:userId IS NOT NULL AND user_id =:userId) || :userId IS NULL)",nativeQuery = true)
+	Integer getTotalHandbookAndPageable(@Param("title") String title,
+												   @Param("specializedId") Long specializedId,
+												   @Param("userId") Long userId,
+												   @Param("status") Integer status);
+
 	@Query(value = "SELECT new com.KMA.BookingCare.Dto.HandbookDto(h.id, h.title, h.description, h.img) FROM HandbookEntity h  where h.status =1 AND h.title like CONCAT('%',:title,'%') "
 			+ "AND ((:specializedId is not null and h.specialized.id =:specializedId) or :specializedId is null) "
 			+ "AND ((:userId IS NOT NULL AND h.user.username =:userId) or :userId is null)")

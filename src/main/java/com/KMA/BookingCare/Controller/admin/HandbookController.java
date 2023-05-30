@@ -41,16 +41,21 @@ public class HandbookController {
 		List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
 		MyUser user = (MyUser) session.getAttribute("userDetails");
 		List<HandbookDto> lstHandbook= new ArrayList<HandbookDto>();
+		Integer totalPage = 0;
 		if(user.getRoles().contains("ROLE_DOCTOR")) {
 			 lstHandbook= handbookSeviceImpl.searchHandbookAndPageable(form, user.getId(),pageable);
+			 totalPage = handbookSeviceImpl.getTotalHandbookAndPageable(form, user.getId(),pageable);
 		}else {
-			 lstHandbook= handbookSeviceImpl.searchHandbookAndPageable(form, null,pageable);
+			 lstHandbook = handbookSeviceImpl.searchHandbookAndPageable(form, null,pageable);
+			 totalPage = handbookSeviceImpl.getTotalHandbookAndPageable(form, null,pageable);
 		}
+
 		model.addAttribute("lstSpecialized", lstSpecialized);
 		model.addAttribute("lstHandbook",lstHandbook);
 		model.addAttribute("formSearch",form);
 		Integer curentPage=page;
 		model.addAttribute("curentPage", curentPage);
+		model.addAttribute("totalPage", totalPage);
 		return "admin/views/managerHandbook";
 	}
 
@@ -62,15 +67,19 @@ public class HandbookController {
 		List<SpecializedDto> lstSpecialized= specializedServiceImpl.findAll();
 		MyUser user = (MyUser) session.getAttribute("userDetails");
 		List<HandbookDto> lstHandbook;
+		Integer totalPage = 0;
 		if(user.getRoles().contains("ROLE_DOCTOR")) {
 			lstHandbook= handbookSeviceImpl.searchHandbookUDeleteAndPageable(form, user.getId(),pageable);
+			totalPage = handbookSeviceImpl.getTotalHandbookUDeleteAndPageable(form, user.getId(),pageable);
 		}else {
 			lstHandbook= handbookSeviceImpl.searchHandbookUDeleteAndPageable(form, null,pageable);
+			totalPage = handbookSeviceImpl.getTotalHandbookUDeleteAndPageable(form, null,pageable);
 		}
 		model.addAttribute("lstSpecialized", lstSpecialized);
 		model.addAttribute("lstHandbook",lstHandbook);
 		model.addAttribute("formSearch",form);
 		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPage", totalPage);
 		return "admin/views/managerHandbookUDelete";
 	}
 

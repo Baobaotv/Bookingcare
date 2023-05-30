@@ -624,11 +624,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(List<String> ids) {
         List<Long> userIds = ids.stream().map(Long::parseLong).collect(Collectors.toList());
+        holidayRepository.deleteAllByUserIds(userIds);
         List<UserEntity> userEntities = userRepository.findAllById(userIds);
         for (UserEntity user : userEntities) {
             user.setWorkTimeEntity(Collections.emptySet());
             user.setRoles(Collections.emptySet());
         }
+
         List<Long> handBookIds = handbookRepository.findAllByUser(userIds).stream().map(HandbookDto::getId).collect(Collectors.toList());
         commentRepository.deleteAllByHandbookIds(handBookIds);
         commentRepository.deleteAllByUser(userIds);

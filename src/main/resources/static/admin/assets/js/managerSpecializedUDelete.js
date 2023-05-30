@@ -2,7 +2,9 @@ $(document)
     .ready(
         function () {
             (function () {
-                var curentPage = parseInt($('#curentPage').val());
+                let curentPage = parseInt($('#curentPage').val());
+                curentPage = !!curentPage ? curentPage : 1;
+                if(!$('#totalPage').val() || $('#totalPage').val() == 0) return;
 
                 window.pagObj = $('#pagination').twbsPagination({
                     totalPages: $('#totalPage').val(),

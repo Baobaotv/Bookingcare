@@ -38,7 +38,7 @@ public class HolidayController {
         MyUser userDetails = UserMapper.convertToMyUser(user);
         List<WorkTimeDto> workTimeDTOS = workTimeService.findAllByDoctorId(userDetails.getId());
         Pageable pageable = PageRequest.of(page - 1, 5);
-        Page<HolidayEntity> pageResult = holidayService.findAllOfDoctor(pageable);
+        Page<HolidayEntity> pageResult = holidayService.findAllOfDoctorId(userDetails.getId() ,pageable);
         List<HolidayDTO> holidayDTOS = holidayService.getDTOs(pageResult);
         Integer total = holidayService.getTotal(pageResult);
         model.addAttribute("holidays", holidayDTOS);
@@ -54,12 +54,14 @@ public class HolidayController {
         UserDetailsImpl user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Pageable pageable = PageRequest.of(page - 1, 5);
+        List<WorkTimeDto> workTimeDTOS = workTimeService.findAll();
         Page<HolidayEntity> pageResult = holidayService.findAllOfDoctor(pageable);
         List<HolidayDTO> holidayDTOS = holidayService.getDTOs(pageResult);
         Integer total = holidayService.getTotal(pageResult);
         model.addAttribute("holidays", holidayDTOS);
         model.addAttribute("total", total);
         model.addAttribute("currentPage", page);
+        model.addAttribute("workTimes", workTimeDTOS);
         return "admin/views/managerHolidayAdmin";
     }
 }

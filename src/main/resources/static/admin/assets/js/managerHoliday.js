@@ -6,6 +6,7 @@ $(document)
             (function () {
                 let currentPage = parseInt($('#currentPage').val());
                 currentPage = !!currentPage ? currentPage : 1;
+                if(!$('#totalPage').val() || $('#totalPage').val() == 0) return;
 
                 window.pagObj = $('#pagination').twbsPagination({
                     totalPages: $('#totalPage').val(),
@@ -29,6 +30,7 @@ $(document)
                     $('#btnConfirmEdit').hide();
                     $('#date').val(new Date().toJSON().slice(0, 10));
                     $('#date').attr('min', new Date().toJSON().slice(0, 10));
+                    $('#date').attr('readonly', false);
                     $('input[name="workTimeId"][type="checkbox"]').prop('checked', false);
                 });
 
@@ -61,6 +63,47 @@ $(document)
                             if ($(this).val() === itemWkIdOfUser) {
                                 $(this).prop('checked', true);
                             }
+                            $(this).removeAttr('disabled');
+                        });
+                    }
+                });
+
+            $("#btnInfo").click(
+                function (event) {
+                    event.preventDefault();
+                    $('#btnConfirmAdd').hide();
+                    $('#btnConfirmEdit').hide();
+                    let values = [];
+                    let values2 = [];
+
+                    $.each($("input[name='checkOne']:checked")
+                            .closest("td").siblings("td"),
+                        function () {
+                            values.push($(this).text());
+                        });
+
+                    $.each($("input[name='checkOne']:checked")
+                            .closest("td").siblings("input"),
+                        function () {
+                            values2.push($(this).val());
+                        });
+
+                    $('input[name="workTimeId"][type="checkbox"]').prop('checked', false);
+                    $('#idHoliday').val($("input[name='checkOne']:checked").val());
+                    $('#date').val(values[1]);
+                    if(window.location.href.includes("admin")) {
+                        $('#date').val(values[1]);
+                    } else {
+                        $('#date').val(values[0]);
+                    }
+                    $('#date').attr('readonly', true);
+                    for (let i = 0; i < values2.length; ++i) {
+                        let itemWkIdOfUser = values2[i];
+                        $('.checkWorkTime').each(function () {
+                            if ($(this).val() === itemWkIdOfUser) {
+                                $(this).prop('checked', true);
+                            }
+                            $(this).attr('disabled', true);
                         });
                     }
                 });
@@ -169,14 +212,17 @@ $(document)
                 if (count < 1) {
                     $("#btnAdd").prop("disabled", false);
                     $("#btnEdit").prop("disabled", true);
+                    $("#btnInfo").prop("disabled", true);
                     $("#btnDelete").prop("disabled", true);
 
                 } else {
                     $("#btnDelete").prop("disabled", false);
                     $("#btnAdd").prop("disabled", true);
                     $("#btnEdit").prop("disabled", true);
+                    $("#btnInfo").prop("disabled", true);
                     if (count == 1) {
                         $("#btnEdit").prop("disabled", false);
+                        $("#btnInfo").prop("disabled", false);
                     }
                 }
             };
