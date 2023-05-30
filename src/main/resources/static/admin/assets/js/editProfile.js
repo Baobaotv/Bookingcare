@@ -2,11 +2,6 @@ $(document).ready(function () {
     $('#editLich').on('change', function () {
         if (this.checked) {
             $('#editLichKham').removeAttr('hidden');
-//			 var lstWkOld=$('.workTimeIdOld');
-//			 var lstWkNew=$('.checkWorkTime');
-//			 lstWkNew.forEach(element =>{
-//				 element.value();
-//			 });
 
             $('input[name=workTimeIdOld]').each(function () {
                 var value = this.defaultValue;
@@ -198,8 +193,7 @@ $(document).ready(function () {
                     var stringShortDescription = $.trim(jQuery(shortDescriptionHTML).text());
                     if (stringDesctiption && stringShortDescription) {
                         event.preventDefault();
-                        var lich = $('#editLich');
-                        if (!lich.checked) {
+                        if (!$('#editLich').prop('checked')) {
                             $('input[name=workTimeIdOld]').each(function () {
                                 var value = this.defaultValue;
                                 $('input[name=workTimeId]').each(function () {
@@ -226,24 +220,12 @@ $(document).ready(function () {
                                 success: function (e) {
                                     if (e) {
                                         alert('Bạn đã cập nhập thành công');
-                                        setTimeout(
-                                            function () {
-                                                window.location
-                                                    .replace(urlpath)
-                                            }, 1500);
+                                        window.location.replace(urlpath)
                                     }
                                 },
                                 error: function (e) {
-                                    if (e) {
-                                        alert('Đã có lỗi xảy ra !');
-                                        setTimeout(
-                                            function () {
-                                                window.location
-                                                    .replace(urlpath)
-                                            }, 1500);
-                                    } else {
-                                        alert('Đã có lỗi xảy ra !');
-                                    }
+                                    alert('Đã có lỗi xảy ra !');
+                                    window.location.replace(urlpath)
                                 }
                             });
                     } else {

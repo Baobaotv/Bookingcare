@@ -54,7 +54,7 @@ public class InteractiveServiceImpl implements InteractiveService {
         entity2.setYouId(chatMessage.getReceiverId());
         entity2.setStatus(0);
         entityOld2 = interactiveRepository.findOneByUserIdAndYouId(entity2.getUserId(), entity2.getYouId());
-        if (entityOld != null) {
+        if (entityOld2 != null) {
             entity2.setId(entityOld2.getId());
         }
         entity2.setLastMessage(chatMessage.getContent());

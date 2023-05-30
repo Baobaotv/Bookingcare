@@ -51,6 +51,11 @@ public class HolidayServiceImpl implements HolidayService {
     }
 
     @Override
+    public Page<HolidayEntity> findAllOfDoctorId(Long doctorId, Pageable pageable) {
+        return holidayRepository.findAllByUserIds(List.of(doctorId), pageable);
+    }
+
+    @Override
     public boolean isExistHolidayByDate(Date date) {
         return holidayRepository.totalHolidayByDate(date) > 0L;
     }

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface MedicalExaminationScheduleService {
 	Long save(BookingForm form) throws JsonProcessingException;
+
+	Long saveForMobile(BookingForm form) throws JsonProcessingException;
 	List<MedicalExaminationScheduleDto> findAllByStatus(Integer status);
 
 	List<MedicalExaminationScheduleDto> findAllByStatusPage(Integer status, Pageable pageable);

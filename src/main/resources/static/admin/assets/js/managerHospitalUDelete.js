@@ -3,6 +3,8 @@ $(document)
         function () {
             (function () {
                 let currentPage = parseInt($('#curentPage').val());
+                currentPage = !!currentPage ? currentPage : 1;
+                if(!$('#totalPage').val() || $('#totalPage').val() == 0) return;
                 window.pagObj = $('#pagination').twbsPagination({
                     totalPages: $('#totalPage').val(),
                     visiblePages: 4,

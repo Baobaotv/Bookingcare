@@ -37,6 +37,9 @@ public interface HandbookService {
 	
 	List<HandbookDto> searchHandbookAndPageable(searchHandbookForm form,Long userId, Pageable page);
 
+	Integer getTotalHandbookAndPageable(searchHandbookForm form,Long userId, Pageable page);
+	Integer getTotalHandbookUDeleteAndPageable(searchHandbookForm form,Long userId, Pageable page);
+
 	List<HandbookDto> searchHandbookUDeleteAndPageable(searchHandbookForm form,Long userId, Pageable page);
 
 	Page<HandbookDto> searchHandbookAndPageableapi(String title,Long specialzed,String userId, Pageable page);

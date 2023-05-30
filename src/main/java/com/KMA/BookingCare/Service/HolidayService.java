@@ -15,6 +15,8 @@ public interface HolidayService {
 
     Page<HolidayEntity> findAllOfDoctor(Pageable pageable);
 
+    Page<HolidayEntity> findAllOfDoctorId(Long doctorId, Pageable pageable);
+
     boolean isExistHolidayByDate(Date date);
 
     String isExistMedicalByDateAndWorkTime(HolidayForm form);

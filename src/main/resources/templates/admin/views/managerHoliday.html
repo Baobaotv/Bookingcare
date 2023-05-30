@@ -30,6 +30,18 @@
                     <button style="width: 60px;" type="button"
                             class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
                             data-toggle="modal" data-target="#exampleModal"
+                            title='Chi tiết ngày nghỉ' id="btnInfo">
+							<span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                  <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                </svg>
+							</span>
+                    </button>
+
+                    <button style="width: 60px;" type="button"
+                            class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
+                            data-toggle="modal" data-target="#exampleModal"
                             title='Sửa ngày nghỉ' id="btnEdit">
 							<span>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
@@ -159,10 +171,20 @@
                                 <td style="text-align: center;" th:utext="${#dates.format(holiday.date, 'yyyy-MM-dd')}"
                                     data-toggle="modal" ></td>
                                 <td style="text-align: center;" >
-                                    <th:block  th:each="item : ${holiday.workTimeDTOs}">
-                                        <p th:utext="${item.name + ': ' + item.time}"></p>
-                                        <input type="hidden" name="idWk" th:value="${item.id}">
+                                    <th:block th:if="${holiday != null && holiday.workTimeDTOs != null
+                                    && holiday.workTimeDTOs.size() >=3}">
+                                        <p th:utext="${holiday.workTimeDTOs.get(0).name + ': ' + holiday.workTimeDTOs.get(0).time}"></p>
+                                        <p th:utext="${holiday.workTimeDTOs.get(1).name + ': ' + holiday.workTimeDTOs.get(1).time}"></p>
+                                        <p th:utext="..."></p>
                                     </th:block>
+
+                                    <th:block th:unless="${holiday != null && holiday.workTimeDTOs != null
+                                    && holiday.workTimeDTOs.size() >=3}">
+                                        <th:block  th:each="item : ${holiday.workTimeDTOs}">
+                                            <p th:utext="${item.name + ': ' + item.time}"></p>
+                                        </th:block>
+                                    </th:block>
+
                                 </td>
                                 <th:block  th:each="item : ${holiday.workTimeDTOs}">
                                     <input type="hidden" name="idWk" th:value="${item.id}">

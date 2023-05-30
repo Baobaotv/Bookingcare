@@ -79,7 +79,7 @@ public class BookingApi {
 		}catch (Exception e){
 			log.error(e.getMessage());
 		}
-		medicalServiceImpl.save(form);
+		medicalServiceImpl.saveForMobile(form);
 		return ResponseEntity.ok(true);
 	}
 	
