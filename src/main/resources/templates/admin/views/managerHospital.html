@@ -8,7 +8,7 @@
     <title>Manager Hospital</title>
 <!--    <script src="https://maps.googleapis.com/maps/api/js?client=gme-mitsuifudosanrealty&libraries=places&language=vi&region=VI&callback=initMap"-->
 <!--            async defer></script>-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKyKM9Ni3ph5yXc-bx7PJRJPbuwQXn928&libraries=places&language=vi&region=VI&callback=initMap"
+    <script th:src="${'https://maps.googleapis.com/maps/api/js?key=' +@environment.getProperty('map-api-key') + '&libraries=places&language=vi&region=VI&callback=initMap'}"
             async defer></script>
     <style>
         .pac-container {
