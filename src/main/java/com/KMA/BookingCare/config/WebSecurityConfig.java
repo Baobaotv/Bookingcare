@@ -58,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             "http://127.0.0.1:3000","http://localhost:3000",
                             "http://165.232.161.206:3000"
                             ,"http://booking-care.online:3000",
-                            "https://client.booking-care.online"));
+                            "https://client.booking-care.online",
+                            "https://admin.booking-care.online"));
                     cors.setAllowedMethods(List.of("*"));
                     cors.setAllowedHeaders(List.of("*"));
                     return cors;
