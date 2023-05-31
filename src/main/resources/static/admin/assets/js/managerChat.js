@@ -186,7 +186,7 @@ selectUser();
 //Start handle call video
 connectToWss();
 function connectToWss() {
-	ws = new WebSocket('ws://' + window.location.hostname + ':' + PORT + MAPPING);
+	ws = new WebSocket('wss://' + window.location.hostname + MAPPING);
 	ws.onmessage = processWsMessage;
 	ws.onopen = handleWhenOpenWs;
 	ws.onclose = logMessage;
