@@ -7,6 +7,7 @@ import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsServiceImpl;
 import com.KMA.BookingCare.common.JsonUtils;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,6 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         newMenOnBoard.setType("show_id");
         newMenOnBoard.setSender(session.getId());
         newMenOnBoard.setData(session.getId());
-//        connectedUsers.put(session.getId(), session);
-//        connectedUsers.put(String.valueOf(userDetailsService.getUserId()), session);
-//        session.sendMessage(new TextMessage(JsonUtils.getString(newMenOnBoard)));
     }
 
     @Override
@@ -73,8 +71,6 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
         WebSocketSession destSocket = connectedUsers.get(destinationUser);
         // if the socket exists and is open, we go on
         if (destSocket != null && destSocket.isOpen()) {
-            // set the sender as current sessionId.
-//            signalMessage.setSender(session.getId());
             final String resendingMessage = JsonUtils.getString(signalMessage);
             LOG.info("send message {} to {}", resendingMessage, destinationUser);
             destSocket.sendMessage(new TextMessage(resendingMessage));
@@ -84,17 +80,26 @@ public class SignalingSocketHandler extends TextWebSocketHandler {
     private void removeUserAndSendLogout(final String sessionId) {
 
         // send the message to all other peers, somebody(sessionId) leave.
-        final SignalMessage menOut = new SignalMessage();
-        menOut.setType(TYPE_LOGOUT);
-        menOut.setSender(sessionId);
-
-        connectedUsers.values().forEach(webSocket -> {
-            try {
-                webSocket.sendMessage(new TextMessage(JsonUtils.getString(menOut)));
-            } catch (Exception e) {
-                LOG.warn("Error while message sending.", e);
+        String senderId = "";
+        for (Map.Entry<String, WebSocketSession> entry : connectedUsers.entrySet()) {
+            if(sessionId != null && sessionId.equals(entry.getValue().getId())) {
+                senderId = entry.getKey();
             }
-        });
+        }
+
+        if(Strings.isNotBlank(senderId)) {
+            final SignalMessage menOut = new SignalMessage();
+            menOut.setType(TYPE_LOGOUT);
+            menOut.setSender(senderId);
+
+            connectedUsers.values().forEach(webSocket -> {
+                try {
+                    webSocket.sendMessage(new TextMessage(JsonUtils.getString(menOut)));
+                } catch (Exception e) {
+                    LOG.warn("Error while message sending.", e);
+                }
+            });
+        }
     }
 
 }

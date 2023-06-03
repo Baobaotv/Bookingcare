@@ -52,7 +52,7 @@ function onConnected() {
 }
 
 function onError(error) {
-	alert('connect fail' + error);
+	console.log('connect fail' + error);
 }
 
 function  sendMessage(event) {
@@ -83,7 +83,7 @@ function  sendMessage(event) {
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
     if(message.type=="CALL"){
-    	 var video = document.getElementById('localStreamServer');
+		let video = document.getElementById('localStreamServer');
       	const mediaStream = video.srcObject;
       	const tracks = mediaStream.getTracks();
       	tracks.forEach(track => track.stop());
@@ -186,7 +186,7 @@ selectUser();
 //Start handle call video
 connectToWss();
 function connectToWss() {
-	ws = new WebSocket('wss://' + window.location.hostname + MAPPING);
+	ws = new WebSocket('ws://' + window.location.hostname + ':8080' + MAPPING);
 	ws.onmessage = processWsMessage;
 	ws.onopen = handleWhenOpenWs;
 	ws.onclose = logMessage;
@@ -251,9 +251,21 @@ const handleInit = async (signal) => {
 }
 
 function handleLogout(signal) {
-	peerIdRTC = signal.sender;
-	if (peerIdRTC === uuidInBig) {
+	if (peerIdRTC === signal.sender) {
+		console.log('Handle logout');
 		remoteVideo.srcObject = null;
+		selfVideo.srcObject = null;
+		if(!!localStream.getTracks()) {
+			localStream.getTracks().forEach(function (track) {
+				track.stop();
+			});
+		}
+		modal.style.display = 'none';
+		document.getElementById('modal-notification').style.display = 'block';
+		document.getElementById('modal-video').style.display = 'none';
+		connections[peerIdRTC].close();
+		delete connections[peerIdRTC];
+		window.location.reload();
 	}
 }
 
@@ -302,15 +314,16 @@ const handleAnswer = async (signal) => {
 const handleIce = async (signal) => {
 	if (signal.data) {
 		console.log('Adding ice candidate');
-		var connection = await getRTCPeerConnectionObject(signal.sender);
+		let connection = await getRTCPeerConnectionObject(signal.sender);
 		connection.addIceCandidate(new RTCIceCandidate(signal.data));
 	}
 }
 
 function handleExit(signal) {
-	if (signal.data) {
+	if (signal.data && signal.sender === peerIdRTC) {
 		console.log('Handle exit');
 		remoteVideo.srcObject = null;
+		selfVideo.srcObject = null;
 		if(!!localStream.getTracks()) {
 			localStream.getTracks().forEach(function (track) {
 				track.stop();
@@ -321,6 +334,7 @@ function handleExit(signal) {
 		document.getElementById('modal-video').style.display = 'none';
 		connections[peerIdRTC].close();
 		delete connections[peerIdRTC];
+		window.location.reload();
 	}
 }
 
@@ -332,7 +346,7 @@ const getRTCPeerConnectionObject = async (uuid) => {
 	let connection = new RTCPeerConnection(peerConnectionConfig);
 
 	await navigator.mediaDevices
-		.getUserMedia({ video: true, audio: true })
+		.getUserMedia({ video: true, audio: false })
 		.then(function (stream) {
 			console.log('Stream OK');
 			localStream = stream;
@@ -439,7 +453,7 @@ function handleCallToUser(signal) {
 function eventCallOff() {
 	sendMessageRTC({
 		type: 'exit',
-		receiver: peerIdRTC,
+		receiver: !!Number(peerIdRTC) ? peerIdRTC : idUser,
 		sender: userLoginId,
 		data: peerIdRTC + 'exit',
 	});
@@ -448,13 +462,15 @@ function eventCallOff() {
 			track.stop();
 		});
 	}
-	modal.style.display = 'none';
-	document.getElementById('modal-notification').style.display = 'none';
-	document.getElementById('modal-video').style.display = 'none';
 	if (!!connections && !!connections[peerIdRTC]) {
 		connections[peerIdRTC].close();
 		delete connections[peerIdRTC];
 	}
+	document.getElementById('modal-notification').style.display = 'none';
+	document.getElementById('modal-video').style.display = 'none';
+	modal.style.display = 'none';
+	window.location.reload();
+
 }
 
 function changStatusCam() {
