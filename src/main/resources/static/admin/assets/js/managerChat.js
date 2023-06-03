@@ -4,14 +4,12 @@
 var messageFormServer = document.querySelector('#messageFormServer');
 var messageInputServer = document.querySelector('#messageInputServer');
 var elementChat = document.querySelector('#elementChat');
-var connectingElement = document.querySelector('#connecting');
 var showLstUser = document.querySelector('#showLstUser');
 var idUser;
 var btnCallServer = document.querySelector('#btnCallServer');
 var myId = document.querySelector('#myId');
 var stompClient = null;
 var username = null;
-var uuidInBig;
 
 // Variable call video
 const PORT = 8080;
@@ -33,6 +31,7 @@ let btnAccept = document.getElementById('btnAccept');
 let userLoginId = document.getElementById('userLoginId').value;
 let showCam = true;
 let turnOnMic = true;
+let showScreen = true;
 // Variable call video
 function connect(e) {
     var socket = new SockJS('/ws');
@@ -186,7 +185,7 @@ selectUser();
 //Start handle call video
 connectToWss();
 function connectToWss() {
-	ws = new WebSocket('ws://' + window.location.hostname + ':8080' + MAPPING);
+	ws = new WebSocket('wss://' + window.location.hostname + MAPPING);
 	ws.onmessage = processWsMessage;
 	ws.onopen = handleWhenOpenWs;
 	ws.onclose = logMessage;
@@ -500,8 +499,75 @@ function changeStatusMic() {
 	}
 }
 
-btnCallServer.onclick = function() {
+const shareScreen = async () => {
+	if (!!showScreen) {
+		const constraints = { video: { cursor: 'always' }, audio: false };
+		const screenCaptureStream = await navigator.mediaDevices.getDisplayMedia(constraints);
+		let videoTrack = screenCaptureStream.getVideoTracks()[0];
+		localStream = screenCaptureStream;
+		selfVideo.srcObject = localStream;
+		connections[peerIdRTC].getSenders().forEach(function (rtpSender) {
+			if (rtpSender.track.kind === 'video') {
+				rtpSender
+					.replaceTrack(videoTrack)
+					.then(function () {
+						console.log('Replaced video track from camera to screen');
+					})
+					.catch(function (error) {
+						console.log('Could not replace video track: ' + error);
+					});
+			}
+		});
+	} else {
+		const cameraStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+		if (!!localStream) {
+			localStream.getTracks().forEach(function (track) {
+				track.stop();
+			});
+		}
+		localStream = cameraStream;
+		selfVideo.srcObject = localStream;
+		let videoTrack = cameraStream.getVideoTracks()[0];
+		let audioTrack = cameraStream.getAudioTracks()[0];
+		connections[peerIdRTC].getSenders().forEach(function (rtpSender) {
+			if (rtpSender.track.kind === 'video') {
+				rtpSender
+					.replaceTrack(videoTrack)
+					.then(function () {
+						console.log('Replaced video track from camera to screen');
+					})
+					.catch(function (error) {
+						console.log('Could not replace video track: ' + error);
+					});
+			}
+			if (rtpSender.track.kind === 'audio') {
+				rtpSender
+					.replaceTrack(audioTrack)
+					.then(function () {
+						console.log('Replaced video track from camera to screen');
+					})
+					.catch(function (error) {
+						console.log('Could not replace video track: ' + error);
+					});
+			}
+		});
+	}
 
+	showScreen = !showScreen;
+	if(showScreen) {
+		document.getElementById('share-screen').style.display ='none';
+		document.getElementById('share-screen-off').style.display ='block';
+	} else {
+		document.getElementById('share-screen').style.display ='block';
+		document.getElementById('share-screen-off').style.display ='none';
+	}
+}
+
+btnCallServer.onclick = function() {
+	if(!idUser) {
+		alert("Bạn chưa chọn người nhận cuộc gọi");
+		return;
+	}
 	document.getElementById('modal-wrapper').style.display = 'block';
 	document.getElementById('modal-notification').style.display = 'none';
 	document.getElementById('modal-video').style.display = 'block';
