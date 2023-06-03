@@ -5,11 +5,16 @@ import com.KMA.BookingCare.Api.form.UploadMedicalRecordsForm;
 import com.KMA.BookingCare.Api.form.DeleteForm;
 import com.KMA.BookingCare.Dto.MedicalExaminationScheduleDto;
 import com.KMA.BookingCare.Dto.MyUser;
+import com.KMA.BookingCare.Entity.HolidayEntity;
 import com.KMA.BookingCare.Entity.MedicalExaminationScheduleEntity;
+import com.KMA.BookingCare.Entity.WorkTimeEntity;
 import com.KMA.BookingCare.Mapper.MedicalMapper;
+import com.KMA.BookingCare.Repository.HolidayRepository;
 import com.KMA.BookingCare.Repository.MedicalExaminationScheduleRepository;
+import com.KMA.BookingCare.Repository.WorkTimeRepository;
 import com.KMA.BookingCare.ServiceImpl.UserDetailsImpl;
 import com.KMA.BookingCare.common.Constant;
+import com.KMA.BookingCare.common.GetUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +32,10 @@ import org.springframework.web.bind.annotation.*;
 import com.KMA.BookingCare.Service.MedicalExaminationScheduleService;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,6 +51,12 @@ public class MedicalApi {
 
 	@Autowired
 	private MedicalExaminationScheduleRepository medicalExaminationScheduleRepository;
+
+	@Autowired
+	private WorkTimeRepository workTimeRepository;
+
+	@Autowired
+	private HolidayRepository holidayRepository;
 
 	@Hidden
 	@PutMapping(value = {"/api/medical/update-status"})
@@ -141,10 +156,35 @@ public class MedicalApi {
 	public ResponseEntity<?>  book(Model model, @PathVariable("idDoctor") Long idDoctor, @PathVariable("idWorktime") Long idWorktime,
 								   @PathVariable("date") String date){
 
+		if(isSampleDate(date)) {
+			WorkTimeEntity wk = workTimeRepository.findById(idWorktime).get();
+			boolean isValidWk = GetUtils.isValidWorkTime(wk.getTime(), Calendar.getInstance());
+			if(!isValidWk) return ResponseEntity.badRequest().body("Không thể đặt lịch khám trong quá khứ, vui lòng chọn lại");
+		}
 		Boolean check = medicalExaminationScheduleRepository.existsByDateAndAndDoctorIdAndWorkTimeID(date, idDoctor,idWorktime);
-		//true da co lich
-		//false chua co lich
-		return ResponseEntity.ok(check);
+		if (check) {
+			//true da co lich
+			//false chua co lich
+			return ResponseEntity.badRequest().body("Ca khám đã có người khác đặt, vui lòng chọn ca khác");
+		}
+		HolidayEntity holiday = holidayRepository.getOneByDateAndDoctorIdAndWorkTimeId(date, idDoctor, idWorktime);
+		if (holiday != null) {
+			return ResponseEntity.badRequest().body("Ca khám không còn trống, xin vui lòng chọn qua ca khác");
+		}
+		return ResponseEntity.ok(true);
+
+	}
+
+	private boolean isSampleDate(String date) {
+		SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate = sp.format(new Date());
+		String dateFilter;
+		try {
+			dateFilter = sp.format(sp.parse(date));
+		} catch (ParseException e) {
+			dateFilter = currentDate;
+		}
+		return currentDate.equals(dateFilter);
 	}
 
 	@PostMapping(value = "/api/media/change-time-close")
