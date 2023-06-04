@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
 		}
 		Long idUser= idSelect;
 		List<MessageEntity> lstEntity=messageRepository.findAllMessageBySelectUser( idUser,  idServer);
-		List<MessageDto> lstDto = new ArrayList<MessageDto>();
+		List<MessageDto> lstDto = new ArrayList<>();
 		SimpleDateFormat sp = new SimpleDateFormat("dd/MM/yyyy");
 		for(MessageEntity entity: lstEntity) {
 			MessageDto dto = MessageMapper.convertToDto(entity,sp);

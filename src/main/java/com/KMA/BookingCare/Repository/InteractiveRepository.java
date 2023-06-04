@@ -13,7 +13,7 @@ public interface InteractiveRepository extends JpaRepository<InteractiveEntity, 
 	
 	InteractiveEntity findOneByUserIdAndYouId(Long userId,Long youId);
 
-	List<InteractiveEntity> findAllByYouId(Long youId);
+	List<InteractiveEntity> findAllByYouIdOrderByCreatedDateDesc(Long youId);
 
 	@Modifying
 	@Query("DELETE FROm InteractiveEntity AS i WHERE i.userId in (:ids) OR i.youId in (:ids)")

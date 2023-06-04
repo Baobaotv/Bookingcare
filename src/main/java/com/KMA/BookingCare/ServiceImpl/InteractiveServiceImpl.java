@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.KMA.BookingCare.Mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.KMA.BookingCare.Dto.InteractiveDto;
 import com.KMA.BookingCare.Dto.MessageDto;
 import com.KMA.BookingCare.Dto.MyUser;
 import com.KMA.BookingCare.Entity.InteractiveEntity;
-import com.KMA.BookingCare.Entity.RoleEntity;
 import com.KMA.BookingCare.Entity.UserEntity;
 import com.KMA.BookingCare.Mapper.InteractiveMapper;
 import com.KMA.BookingCare.Repository.InteractiveRepository;
@@ -53,6 +50,7 @@ public class InteractiveServiceImpl implements InteractiveService {
         entity2.setUserId(chatMessage.getSenderId());
         entity2.setYouId(chatMessage.getReceiverId());
         entity2.setStatus(0);
+        entity2.setCreatedDate(new Date());
         entityOld2 = interactiveRepository.findOneByUserIdAndYouId(entity2.getUserId(), entity2.getYouId());
         if (entityOld2 != null) {
             entity2.setId(entityOld2.getId());
@@ -67,9 +65,9 @@ public class InteractiveServiceImpl implements InteractiveService {
     public List<InteractiveDto> findAll(MyUser userDetails) {
         List<InteractiveEntity> lstEntity = new ArrayList<>();
         if (userDetails.getRoles().contains("ROLE_ADMIN")) {
-            lstEntity = interactiveRepository.findAllByYouId((long) 0);
+            lstEntity = interactiveRepository.findAllByYouIdOrderByCreatedDateDesc((long) 0);
         } else {
-            lstEntity = interactiveRepository.findAllByYouId(userDetails.getId());
+            lstEntity = interactiveRepository.findAllByYouIdOrderByCreatedDateDesc(userDetails.getId());
         }
         List<InteractiveDto> lstDto = new ArrayList<>();
         for (InteractiveEntity entity : lstEntity) {

@@ -4,7 +4,7 @@
 	layout:decorate="~{client/masterLayout.html}">
 <head>
 <meta charset="ISO-8859-1">
-<title>Đăng nhập</title>
+<title>Đăng nhập</title>
 <link rel="stylesheet" th:href="@{/client/css/duoiSlider.css}">
 </head>
 <body>
@@ -13,9 +13,7 @@
            <form th:action="@{\login}" method="POST" class="form" id="form-1">
                 <div class="form-heading ">
                     <h3 class="heading-login">Đăng Nhập</h3>
-                    <!-- <h2 class="heading-res ">Đăng Ký</h2> -->
                 </div>
-                <!-- <div class="spacer"></div> -->
                 <div class="form-body">
                     <div class="form-group">
                         <label for="username" class="form-label">Username</label>
@@ -29,7 +27,7 @@
                         <span class="form-message"></span>
                     </div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <button class="form-submit">Sign Up</button>
+                    <button class="form-submit">Đăng nhập</button>
                 </div>
             </form>
    

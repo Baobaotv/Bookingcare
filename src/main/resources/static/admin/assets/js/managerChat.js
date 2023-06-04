@@ -345,7 +345,7 @@ const getRTCPeerConnectionObject = async (uuid) => {
 	let connection = new RTCPeerConnection(peerConnectionConfig);
 
 	await navigator.mediaDevices
-		.getUserMedia({ video: true, audio: false })
+		.getUserMedia({ video: true, audio: true })
 		.then(function (stream) {
 			console.log('Stream OK');
 			localStream = stream;

@@ -21,6 +21,8 @@ import com.KMA.BookingCare.Entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long>, CustomUserRepository {
 	 UserEntity findByUsername(String username);
 
+	 UserEntity findByUsernameAndStatus(String username, Integer status);
+
 	 Optional<UserEntity> findById(Long id);
 	
 	List<UserEntity> findAllByStatus(Integer status,Pageable pageable);
