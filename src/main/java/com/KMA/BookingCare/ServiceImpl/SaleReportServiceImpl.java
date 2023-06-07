@@ -511,7 +511,7 @@ public class SaleReportServiceImpl implements SaleReportService {
     private TableReportDto convertToTableReportByTypeMedical(List<Map<String, Object>> result) {
         TableReportDto tableReportDto = new TableReportDto();
         List<RecordTableReportDto> records = result.stream().map(e -> RecordTableReportDto.builder()
-                        .title("on".equals(e.get("type")) ? "Khám online" : "Khám tại cơ sở")
+                        .title("on".equalsIgnoreCase(e.get("type") != null ? e.get("type").toString() : "") ? "Khám online" : "Khám tại cơ sở")
                         .price((Long) e.get("price"))
                         .totalSchedule((Long) e.get("totalSchedule")).build())
                 .collect(Collectors.toList());
@@ -524,8 +524,8 @@ public class SaleReportServiceImpl implements SaleReportService {
         OverviewReportDto overviewReportDto = new OverviewReportDto();
         double percentOn = 0.0;
         double percentOf = 0.0;
-        Optional<Map<String, Object>> off = result.stream().filter(e -> "off".equals(e.get("type"))).findFirst();
-        Optional<Map<String, Object>> on = result.stream().filter(e -> "on".equals(e.get("type"))).findFirst();
+        Optional<Map<String, Object>> off = result.stream().filter(e -> "off".equalsIgnoreCase(e.get("type") != null ? e.get("type").toString() : "")).findFirst();
+        Optional<Map<String, Object>> on = result.stream().filter(e -> "on".equalsIgnoreCase(e.get("type") != null ? e.get("type").toString() : "")).findFirst();
         Long totalPriceOff = off.isPresent() ? (Long) off.get().get("price") : 0L;
         Long totalPriceOn = on.isPresent() ? (Long) on.get().get("price") : 0L;
         if (totalPriceOff != 0 || totalPriceOn != 0) {
