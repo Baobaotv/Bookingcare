@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import com.KMA.BookingCare.Repository.HolidayRepository;
 import com.KMA.BookingCare.common.GetUtils;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,12 @@ public class WorkTimeServiceImpl implements WorkTimeService {
 
     @Override
     public List<WorkTimeDto> findAll() {
-        List<WorkTimeEntity> lstentity = workTimeRepository.findAll();
-        List<WorkTimeDto> lstDto = new ArrayList<WorkTimeDto>();
-        for (WorkTimeEntity entity : lstentity) {
+        List<WorkTimeEntity> entities = workTimeRepository.findAll();
+        List<WorkTimeDto> lstDto = new ArrayList<>();
+        for (WorkTimeEntity entity : entities) {
+            if (Strings.isBlank(entity.getTime()) || Strings.isBlank(entity.getName())) {
+                continue;
+            }
             WorkTimeDto dto = new WorkTimeDto();
             dto.setId(entity.getId());
             dto.setTime(entity.getTime());
