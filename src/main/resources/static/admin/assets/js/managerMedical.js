@@ -27,13 +27,13 @@ $(document)
                     function (event) {
                         event.preventDefault();
                         let data = {};
-                        let urlpath = window.location.href;
+                        let urlPath = window.location.origin + window.location.pathname ;
                         let ids = $('tbody input[name="checkOne"]:checked').map(function () {
                             return $(this).val();
                         }).get();
                         data['ids'] = ids;
                         $.ajax({
-                            url: urlpath + "/complete",
+                            url: urlPath + "/complete",
                             type: "post",
                             contentType: "application/json",
                             data: JSON.stringify(data),
@@ -248,7 +248,7 @@ $(document)
                     let idWkChange = $("input[name='workTimeId']:checked").val();
                     let values = {idWk: idWkChange, idMedical: idMedicalChange};
                     $.ajax({
-                        url: '/api/media/change-time-close',
+                        url:  window.location.origin + '/api/media/change-time-close',
                         type: "post",
                         data: JSON.stringify(values),
                         dataType: 'json',
@@ -311,7 +311,7 @@ $(document)
                     function () {
                         event.preventDefault();
                         var form = $('#uploadMedical')[0];
-                        var urlpath = window.location.href;
+                        var urlpath = window.location.origin + window.location.pathname;
                         var data = new FormData(form);
                         $
                             .ajax({
