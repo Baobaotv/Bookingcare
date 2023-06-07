@@ -110,6 +110,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setPhoneNumber(user.getPhone());
         userEntity.setFullName(user.getName());
         userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
+        userEntity.setStatus(Constant.del_flg_off);
 
         if (nameRole.equals("admin")) {
             Set<RoleEntity> role = new HashSet<RoleEntity>(roleRepository.findAll());
