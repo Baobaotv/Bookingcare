@@ -292,7 +292,7 @@ $(document)
                         url: urlPath,
                         type: "POST",
                         contentType: "application/json",
-                        data: JSON.stringify(ids),
+                        data: JSON.stringify(data),
                         cache: false,
                         success: function (result) {
                             alert("Đã huỷ thành công");
