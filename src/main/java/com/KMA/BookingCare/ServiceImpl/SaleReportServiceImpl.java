@@ -156,7 +156,7 @@ public class SaleReportServiceImpl implements SaleReportService {
         OverviewReportDto overviewReportDto = new OverviewReportDto();
         double percentOn = 0.0;
         double percentOf = 0.0;
-        if (totalPriceOff != 0 || totalPriceOn == 0) {
+        if (totalPriceOff != 0 || totalPriceOn != 0) {
             percentOn = 100 * Double.valueOf(totalPriceOn) / (totalPriceOn + totalPriceOff);
             percentOf = 100 - percentOn;
         }
@@ -524,9 +524,11 @@ public class SaleReportServiceImpl implements SaleReportService {
         OverviewReportDto overviewReportDto = new OverviewReportDto();
         double percentOn = 0.0;
         double percentOf = 0.0;
-        Long totalPriceOff = (Long) result.stream().filter(e -> "off".equals(e.get("type"))).findFirst().get().get("price");
-        Long totalPriceOn = (Long) result.stream().filter(e -> "on".equals(e.get("type"))).findFirst().get().get("price");
-        if (totalPriceOff != 0 || totalPriceOn == 0) {
+        Optional<Map<String, Object>> off = result.stream().filter(e -> "off".equals(e.get("type"))).findFirst();
+        Optional<Map<String, Object>> on = result.stream().filter(e -> "on".equals(e.get("type"))).findFirst();
+        Long totalPriceOff = off.isPresent() ? (Long) off.get().get("price") : 0L;
+        Long totalPriceOn = on.isPresent() ? (Long) on.get().get("price") : 0L;
+        if (totalPriceOff != 0 || totalPriceOn != 0) {
             percentOn = 100 * Double.valueOf(totalPriceOn) / (totalPriceOn + totalPriceOff);
             percentOf = 100 - percentOn;
         }
