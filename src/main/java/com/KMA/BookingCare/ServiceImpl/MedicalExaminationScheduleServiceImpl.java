@@ -207,13 +207,15 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 	@Override
 	public void updateMedicalByStatus(Integer status,List<String> ids) {
 		medicalRepository.updateByStatus(status,ids);
-		NotificationScheduleDTO dto = new NotificationScheduleDTO();
-		dto.setIds(ids.stream().map(Long::parseLong).collect(Collectors.toList()));
-		dto.setTypeNotification(Constant.NOTIFICATION_TYPE_CANCEL_MEDICAL);
-		try {
-			sendKafkaNotificationCancel(dto);
-		} catch (JsonProcessingException e) {
-			System.err.println("Cannot send message kafka when cancel medical");
+		if (status == Constant.MEDICAL_SCHEDULE_IS_CANCEL) {
+			NotificationScheduleDTO dto = new NotificationScheduleDTO();
+			dto.setIds(ids.stream().map(Long::parseLong).collect(Collectors.toList()));
+			dto.setTypeNotification(Constant.NOTIFICATION_TYPE_CANCEL_MEDICAL);
+			try {
+				sendKafkaNotificationCancel(dto);
+			} catch (JsonProcessingException e) {
+				System.err.println("Cannot send message kafka when cancel medical");
+			}
 		}
 	}
 
