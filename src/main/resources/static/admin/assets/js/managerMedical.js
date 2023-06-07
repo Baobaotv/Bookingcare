@@ -185,7 +185,7 @@ $(document)
                         window.location.reload();
                     }
                     let form = $('#uploadMedicalRecords')[0];
-                    let urlPath = window.location.origin + '/api/medical/uploadMedicalRecords';
+                    let urlPath = 'http://165.232.161.206:8080/' + '/api/medical/uploadMedicalRecords';
                     let data = new FormData(form);
                     $.ajax({
                         url: urlPath,
