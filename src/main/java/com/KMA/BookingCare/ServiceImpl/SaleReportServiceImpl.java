@@ -515,6 +515,17 @@ public class SaleReportServiceImpl implements SaleReportService {
                         .price((Long) e.get("price"))
                         .totalSchedule((Long) e.get("totalSchedule")).build())
                 .collect(Collectors.toList());
+        if (records.size() == 1) {
+            Optional<RecordTableReportDto> reportDto = records.stream().filter(e -> "Khám online".equalsIgnoreCase(e.getTitle())).findFirst();
+            if (reportDto.isPresent()) {
+                RecordTableReportDto record = RecordTableReportDto.builder().title("Khám tại cơ sở").price(0L).totalSchedule(0L).build();
+                records.add(record);
+            } else {
+                RecordTableReportDto record = RecordTableReportDto.builder().title("Khám online").price(0L).totalSchedule(0L).build();
+                records.add(record);
+
+            }
+        }
         tableReportDto.setRecords(records);
         return tableReportDto;
     }
