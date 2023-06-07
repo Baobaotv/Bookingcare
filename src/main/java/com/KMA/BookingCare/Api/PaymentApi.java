@@ -8,6 +8,7 @@ import com.KMA.BookingCare.common.Constant;
 import com.KMA.BookingCare.common.PaymentUtils;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,6 +26,9 @@ public class PaymentApi {
 
     @Autowired
     private PaymentService paymentService;
+
+    @Value("${booking_care.ui.domain}")
+    private String domain;
 
     @PostMapping("api/payment")
     public ResponseEntity<?> createPayment(@RequestBody PaymentForm form) throws UnsupportedEncodingException {
@@ -49,7 +53,7 @@ public class PaymentApi {
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
         vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
         vnp_Params.put("vnp_Locale", Constant.vnp_Locale);
-        vnp_Params.put("vnp_ReturnUrl", Constant.vnp_ReturnUrl);
+        vnp_Params.put("vnp_ReturnUrl", domain + Constant.vnp_ReturnUrl);
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));

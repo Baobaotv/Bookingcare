@@ -39,7 +39,7 @@ public class Constant {
 
     public static final String vnp_Locale = "vn";
 
-    public static final String vnp_ReturnUrl = "http://localhost:3000/thong-tin-thanh-toan";
+    public static final String vnp_ReturnUrl = "/thong-tin-thanh-toan";
 
     public static final String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
