@@ -269,7 +269,7 @@ public class MedicalExaminationScheduleServiceImpl implements MedicalExamination
 						break;
 					}
 					if (item.getWorkTimeID() < idWk ) {
-						if (idWk <= 4 ) {
+						if (idWk <= 8 ) {
 							// truong hop tang nhưng chua vuot qua ca cuoi ngay
 							item.setWorkTimeID(idWk);
 							idWk = idWk +1;
