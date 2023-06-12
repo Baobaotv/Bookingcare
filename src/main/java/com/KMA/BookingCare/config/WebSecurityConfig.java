@@ -56,7 +56,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     var cors = new CorsConfiguration();
                     cors.setAllowedOrigins(List.of("http://192.168.1.5:3000",
                             "http://127.0.0.1:3000","http://localhost:3000",
-                            "http://165.232.161.206:3000"
+                            "http://165.232.161.206:3000",
+                            "http://18.143.161.64:3000"
                             ,"http://booking-care.online:3000",
                             "https://client.booking-care.online",
                             "https://admin.booking-care.online"));
