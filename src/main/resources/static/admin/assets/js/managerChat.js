@@ -40,7 +40,7 @@ function connect(e) {
 }
 
 // Connect to WebSocket Server.
-connect();
+// connect();
 
 function onConnected() {
 	if (window.location.href.endsWith('/doctor/managerChat')) {

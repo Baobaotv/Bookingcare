@@ -20,17 +20,17 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
  * Date: 28/12/20
  * Time: 17.41
  */
-@Configuration
-@EnableWebSocket
-public class WebSocketsConfiguration implements WebSocketConfigurer {
+//@Configuration
+//@EnableWebSocket
+public class WebSocketsConfiguration {
 
-    @Autowired
-    private SignalingSocketHandler signalingSocketHandler;
-
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
-        webSocketHandlerRegistry.addHandler(signalingSocketHandler, "/room").setAllowedOrigins("*");
-    }
+//    @Autowired
+//    private SignalingSocketHandler signalingSocketHandler;
+//
+//    @Override
+//    public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
+//        webSocketHandlerRegistry.addHandler(signalingSocketHandler, "/room").setAllowedOrigins("*");
+//    }
 
 
 }
